@@ -1,0 +1,62 @@
+[
+  {
+    "reader_id": "R001",
+    "name": "Nguyen Van An",
+    "email": "an.nguyen@email.com",
+    "phone": "0901234567"
+  },
+  {
+    "reader_id": "R002",
+    "name": "Tran Thi Bich",
+    "email": "bich.tran@email.com",
+    "phone": "0912345678"
+  },
+  {
+    "reader_id": "R003",
+    "name": "Le Hoang Cuong",
+    "email": "cuong.le@email.com",
+    "phone": "0923456789"
+  },
+  {
+    "reader_id": "R004",
+    "name": "Pham Minh Duc",
+    "email": "duc.pham@email.com",
+    "phone": "0934567890"
+  },
+  {
+    "reader_id": "R005",
+    "name": "Hoang Ngoc En",
+    "email": "en.hoang@email.com",
+    "phone": "0945678901"
+  },
+  {
+    "reader_id": "R006",
+    "name": "Vu Quoc Huy",
+    "email": "huy.vu@email.com",
+    "phone": "0956789012"
+  },
+  {
+    "reader_id": "R007",
+    "name": "Dang Thanh Huong",
+    "email": "huong.dang@email.com",
+    "phone": "0967890123"
+  },
+  {
+    "reader_id": "R008",
+    "name": "Bui Duc Khanh",
+    "email": "khanh.bui@email.com",
+    "phone": "0978901234"
+  },
+  {
+    "reader_id": "R009",
+    "name": "Do Tuyet Mai",
+    "email": "mai.do@email.com",
+    "phone": "0989012345"
+  },
+  {
+    "reader_id": "R010",
+    "name": "Ngo Quang Nam",
+    "email": "nam.ngo@email.com",
+    "phone": "0990123456"
+  }
+]

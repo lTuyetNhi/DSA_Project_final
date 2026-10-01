@@ -1,0 +1,86 @@
+CAU TRUC DU LIEU - HE THONG QUAN LY THU VIEN
+================================================
+
+1. BOOKS - DU LIEU TAI LIEU/SACH
+---------------------------------
+book_id             : String  - Ma tai lieu duy nhat
+title               : String  - Ten tai lieu
+author              : String  - Tac gia
+category            : String  - The loai
+published_year      : Integer - Nam xuat ban
+total_quantity      : Integer - Tong so ban sach
+available_quantity  : Integer - So ban hien con
+borrow_count        : Integer - Tong so luot da muon
+
+Phuc vu:
+- MC1: book_id
+- MC2: borrow_count
+- RQ1: category
+
+
+2. READERS - DU LIEU DOC GIA
+-----------------------------
+reader_id           : String - Ma doc gia duy nhat
+name                : String - Ho ten doc gia
+email               : String - Email
+phone               : String - So dien thoai
+
+Phuc vu:
+- Quan ly thong tin doc gia
+- Lien ket voi phieu muon va danh sach cho
+
+
+3. BORROW_RECORDS - DU LIEU MUON/TRA
+------------------------------------
+borrow_id           : String    - Ma phieu muon duy nhat
+reader_id           : String    - Ma doc gia
+book_id             : String    - Ma tai lieu
+borrow_date         : Date      - Ngay muon (YYYY-MM-DD)
+due_date            : Date      - Han tra (YYYY-MM-DD)
+return_date         : Date/null - Ngay tra thuc te; null neu chua tra
+status              : String    - BORROWING hoac RETURNED
+
+Quy tac qua han:
+status = BORROWING va due_date < current_date => Qua han
+
+Phuc vu:
+- Nghiep vu muon/tra
+- RQ2: due_date
+
+
+4. WAITLIST - DANH SACH CHO MUON
+--------------------------------
+wait_id             : String   - Ma luot cho duy nhat
+book_id             : String   - Ma tai lieu dang cho
+reader_id           : String   - Ma doc gia dang cho
+registered_at       : DateTime - Thoi diem dang ky (YYYY-MM-DDTHH:MM:SS)
+
+Quy tac:
+- FIFO: dang ky truoc duoc phuc vu truoc
+- Khong can priority, rank hay position
+
+Phuc vu:
+- RQ3: danh sach cho muon theo FIFO
+
+
+TOM TAT ANH XA DSA
+==================
+MC1: Books.book_id
+Baseline: Linear Search
+Final: Hash Table
+
+MC2: Books.borrow_count
+Baseline: Linear Scan tim max
+Final: Max-Heap
+
+RQ1: Books.category
+Baseline: Linear Scan
+Final: Hash Table theo category
+
+RQ2: BorrowRecords.due_date
+Baseline: Linear Scan
+Final: Balanced BST theo due_date
+
+RQ3: Waitlist.book_id + registered_at
+Baseline: Array/List
+Final: Hash<BookID, Queue> voi Queue FIFO

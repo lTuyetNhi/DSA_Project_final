@@ -1,0 +1,102 @@
+[
+  {
+    "book_id": "B001",
+    "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen",
+    "category": "Computer Science",
+    "published_year": 2009,
+    "total_quantity": 5,
+    "available_quantity": 2,
+    "borrow_count": 45
+  },
+  {
+    "book_id": "B002",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "category": "Software Engineering",
+    "published_year": 2008,
+    "total_quantity": 8,
+    "available_quantity": 5,
+    "borrow_count": 62
+  },
+  {
+    "book_id": "B003",
+    "title": "Design Patterns",
+    "author": "Erich Gamma",
+    "category": "Software Engineering",
+    "published_year": 1994,
+    "total_quantity": 4,
+    "available_quantity": 0,
+    "borrow_count": 38
+  },
+  {
+    "book_id": "B004",
+    "title": "Artificial Intelligence: A Modern Approach",
+    "author": "Stuart Russell",
+    "category": "Computer Science",
+    "published_year": 2020,
+    "total_quantity": 6,
+    "available_quantity": 3,
+    "borrow_count": 50
+  },
+  {
+    "book_id": "B005",
+    "title": "Database System Concepts",
+    "author": "Abraham Silberschatz",
+    "category": "Database",
+    "published_year": 2019,
+    "total_quantity": 5,
+    "available_quantity": 1,
+    "borrow_count": 29
+  },
+  {
+    "book_id": "B006",
+    "title": "Computer Networking: A Top-Down Approach",
+    "author": "James Kurose",
+    "category": "Networking",
+    "published_year": 2021,
+    "total_quantity": 7,
+    "available_quantity": 4,
+    "borrow_count": 41
+  },
+  {
+    "book_id": "B007",
+    "title": "The Pragmatic Programmer",
+    "author": "Andrew Hunt",
+    "category": "Software Engineering",
+    "published_year": 2019,
+    "total_quantity": 6,
+    "available_quantity": 0,
+    "borrow_count": 70
+  },
+  {
+    "book_id": "B008",
+    "title": "Operating System Concepts",
+    "author": "Abraham Silberschatz",
+    "category": "Operating System",
+    "published_year": 2018,
+    "total_quantity": 5,
+    "available_quantity": 2,
+    "borrow_count": 33
+  },
+  {
+    "book_id": "B009",
+    "title": "Linear Algebra and Its Applications",
+    "author": "Gilbert Strang",
+    "category": "Mathematics",
+    "published_year": 2016,
+    "total_quantity": 4,
+    "available_quantity": 3,
+    "borrow_count": 15
+  },
+  {
+    "book_id": "B010",
+    "title": "Discrete Mathematics and Its Applications",
+    "author": "Kenneth Rosen",
+    "category": "Mathematics",
+    "published_year": 2019,
+    "total_quantity": 5,
+    "available_quantity": 4,
+    "borrow_count": 22
+  }
+]

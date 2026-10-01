@@ -1,0 +1,62 @@
+[
+  {
+    "wait_id": "W001",
+    "book_id": "B003",
+    "reader_id": "R001",
+    "registered_at": "2026-09-20T08:30:00"
+  },
+  {
+    "wait_id": "W002",
+    "book_id": "B003",
+    "reader_id": "R005",
+    "registered_at": "2026-09-20T09:15:00"
+  },
+  {
+    "wait_id": "W003",
+    "book_id": "B003",
+    "reader_id": "R008",
+    "registered_at": "2026-09-21T10:00:00"
+  },
+  {
+    "wait_id": "W004",
+    "book_id": "B007",
+    "reader_id": "R002",
+    "registered_at": "2026-09-21T14:20:00"
+  },
+  {
+    "wait_id": "W005",
+    "book_id": "B007",
+    "reader_id": "R003",
+    "registered_at": "2026-09-22T08:45:00"
+  },
+  {
+    "wait_id": "W006",
+    "book_id": "B007",
+    "reader_id": "R009",
+    "registered_at": "2026-09-22T11:10:00"
+  },
+  {
+    "wait_id": "W007",
+    "book_id": "B005",
+    "reader_id": "R004",
+    "registered_at": "2026-09-23T15:30:00"
+  },
+  {
+    "wait_id": "W008",
+    "book_id": "B005",
+    "reader_id": "R007",
+    "registered_at": "2026-09-24T09:00:00"
+  },
+  {
+    "wait_id": "W009",
+    "book_id": "B001",
+    "reader_id": "R006",
+    "registered_at": "2026-09-25T16:45:00"
+  },
+  {
+    "wait_id": "W010",
+    "book_id": "B004",
+    "reader_id": "R010",
+    "registered_at": "2026-09-26T13:20:00"
+  }
+]
