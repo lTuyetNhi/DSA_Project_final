@@ -1,19 +1,13 @@
 #include "../../../include/core/mc2/MaxHeap.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
 #include <algorithm>
-#include <cctype>
 
 using namespace std;
 
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
-
 MaxHeap::MaxHeap() {}
 
+// Ham so sanh do uu tien: borrow_count lon hon -> uu tien hon; neu bang nhau uu tien book_id nho hon
 bool MaxHeap::higherPriority(const Book* a, const Book* b) {
     if (!a) return false;
     if (!b) return true;
@@ -23,6 +17,7 @@ bool MaxHeap::higherPriority(const Book* a, const Book* b) {
     return a->book_id < b->book_id;
 }
 
+// Vun dong tu duoi len (khi chen phan tu moi hoac tang gia tri)
 void MaxHeap::heapifyUp(int index) {
     while (index > 0) {
         int parent = (index - 1) / 2;
@@ -35,6 +30,7 @@ void MaxHeap::heapifyUp(int index) {
     }
 }
 
+// Vun dong tu tren xuong (de duy tri tinh chat Max-Heap)
 void MaxHeap::heapifyDown(int index) {
     int n = static_cast<int>(heap.size());
     while (true) {
@@ -58,6 +54,7 @@ void MaxHeap::heapifyDown(int index) {
     }
 }
 
+// Xay dung Heap tu danh sach sach trong O(n)
 void MaxHeap::build(vector<Book>& books) {
     heap.clear();
     heap.reserve(books.size());
@@ -77,6 +74,7 @@ void MaxHeap::insert(Book* book) {
     heapifyUp(static_cast<int>(heap.size()) - 1);
 }
 
+// Lay sach co luot muon nhieu nhat o dinh Heap trong O(1)
 MaxResult MaxHeap::getMax() const {
     if (heap.empty()) {
         return MaxResult(nullptr, 0, 0, "Max-Heap", "O(1) getMax");
@@ -91,11 +89,12 @@ MaxResult MaxHeap::getMax() const {
     return MaxResult(maxBook, durationNs, 1, "Max-Heap", "O(1) getMax");
 }
 
+// Cap nhat borrow_count cua mot sach va duy tri lai Heap trong O(log n)
 bool MaxHeap::updateBorrowCount(const string& bookId, int newCount) {
-    string target = toLowerStr(bookId);
+    string target = StringUtils::toLower(bookId);
     int n = static_cast<int>(heap.size());
     for (int i = 0; i < n; ++i) {
-        if (toLowerStr(heap[i]->book_id) == target) {
+        if (StringUtils::toLower(heap[i]->book_id) == target) {
             int oldCount = heap[i]->borrow_count;
             heap[i]->borrow_count = newCount;
             if (newCount > oldCount) {

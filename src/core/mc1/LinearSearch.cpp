@@ -1,27 +1,22 @@
 #include "../../../include/core/mc1/LinearSearch.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
-#include <cctype>
 
 using namespace std;
-
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
 
 SearchResult LinearSearch::search(vector<Book>& books, const string& bookId) {
     long long comparisons = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string target = toLowerStr(bookId);
+    string target = StringUtils::toLower(bookId);
     Book* foundBook = nullptr;
+
+    // Duyet tuan tu qua tung cuon sach trong danh sach
     for (size_t i = 0; i < books.size(); ++i) {
         comparisons++;
-        if (toLowerStr(books[i].book_id) == target) {
+        if (StringUtils::toLower(books[i].book_id) == target) {
             foundBook = &books[i];
-            break;
+            break; // Tim thay -> dung luon
         }
     }
 

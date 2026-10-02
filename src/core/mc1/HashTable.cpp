@@ -1,15 +1,8 @@
 #include "../../../include/core/mc1/HashTable.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
-#include <cctype>
 
 using namespace std;
-
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
 
 HashTable::HashTable(int cap) : capacity(cap) {
     if (capacity <= 0) capacity = 10007;
@@ -38,20 +31,21 @@ void HashTable::clear() {
     }
 }
 
+// Ham bam da thuc: hash = (hash * 31 + char) % capacity
 int HashTable::hashFunction(const string& key) const {
     unsigned long long hash = 0;
     for (char c : key) {
-        char lowerC = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-        hash = (hash * 31 + static_cast<unsigned char>(lowerC));
+        hash = (hash * 31 + static_cast<unsigned char>(tolower(static_cast<unsigned char>(c))));
     }
     return static_cast<int>(hash % capacity);
 }
 
+// Them hoac cap nhat sach vao Bang bam (Separate Chaining)
 void HashTable::insert(const string& key, Book* book) {
-    string normKey = toLowerStr(key);
+    string normKey = StringUtils::toLower(key);
     int index = hashFunction(normKey);
-    
-    // Check neu key da ton tai thi cap nhat book
+
+    // Kiem tra neu key da ton tai
     HashNode* curr = buckets[index];
     while (curr != nullptr) {
         if (curr->key == normKey) {
@@ -61,20 +55,22 @@ void HashTable::insert(const string& key, Book* book) {
         curr = curr->next;
     }
 
-    // Them node moi vao dau danh sach lien ket (Separate Chaining)
+    // Chen node moi vao dau bucket
     HashNode* newNode = new HashNode(normKey, book);
     newNode->next = buckets[index];
     buckets[index] = newNode;
 }
 
+// Tra cuu sach theo book_id trong O(1) average
 SearchResult HashTable::search(const string& bookId) const {
     long long comparisons = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string target = toLowerStr(bookId);
+    string target = StringUtils::toLower(bookId);
     Book* foundBook = nullptr;
     int index = hashFunction(target);
 
+    // Duyet danh sach lien ket trong bucket tuong ung
     HashNode* curr = buckets[index];
     while (curr != nullptr) {
         comparisons++;

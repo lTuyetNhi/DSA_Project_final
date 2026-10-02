@@ -1,27 +1,20 @@
 #include "../../../include/core/rq3/LinearTitleScan.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
-#include <algorithm>
-#include <cctype>
 
 using namespace std;
-
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
 
 TitleSearchResult LinearTitleScan::search(vector<Book>& books, const string& keyword) {
     long long booksChecked = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string targetKw = toLowerStr(keyword);
+    string targetKw = StringUtils::toLower(keyword);
     vector<Book*> foundBooks;
 
+    // Duyet tuan tu qua tat ca sach trong he thong va kiem tra tieu de
     for (size_t i = 0; i < books.size(); ++i) {
         booksChecked++;
-        if (toLowerStr(books[i].title).find(targetKw) != string::npos) {
+        if (StringUtils::toLower(books[i].title).find(targetKw) != string::npos) {
             foundBooks.push_back(&books[i]);
         }
     }

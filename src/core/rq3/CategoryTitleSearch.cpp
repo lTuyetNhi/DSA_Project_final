@@ -1,4 +1,5 @@
 #include "../../../include/core/rq3/CategoryTitleSearch.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
 #include <algorithm>
 #include <cctype>
@@ -6,13 +7,6 @@
 #include <unordered_set>
 
 using namespace std;
-
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
 
 CategoryTitleSearch::CategoryTitleSearch() {
     table.resize(TABLE_SIZE, nullptr);
@@ -25,7 +19,7 @@ CategoryTitleSearch::~CategoryTitleSearch() {
 void CategoryTitleSearch::clear() {
     for (size_t i = 0; i < table.size(); ++i) {
         TitleHashNode* curr = table[i];
-        while (curr) {
+        while (curr != nullptr) {
             TitleHashNode* temp = curr;
             curr = curr->next;
             delete temp;
@@ -34,6 +28,7 @@ void CategoryTitleSearch::clear() {
     }
 }
 
+// Ham bam DJB2 cho cac tu trong tieu de sach
 size_t CategoryTitleSearch::hashFunction(const string& key) const {
     unsigned long hashVal = 5381;
     for (char c : key) {
@@ -42,14 +37,15 @@ size_t CategoryTitleSearch::hashFunction(const string& key) const {
     return hashVal % TABLE_SIZE;
 }
 
+// Chen tu khoa (word) va con tro sach vao Bang bam
 void CategoryTitleSearch::insertWord(const string& word, Book* book) {
     if (word.empty() || !book) return;
     size_t index = hashFunction(word);
     TitleHashNode* curr = table[index];
 
-    while (curr) {
+    while (curr != nullptr) {
         if (curr->word == word) {
-            // Kiem tra tranh trung lap sach trong cung 1 token
+            // Tranh trung lap sach trong cung mot token
             for (auto* b : curr->books) {
                 if (b && b->book_id == book->book_id) return;
             }
@@ -65,10 +61,11 @@ void CategoryTitleSearch::insertWord(const string& word, Book* book) {
     table[index] = newNode;
 }
 
+// Xay dung chi muc nguoc (Inverted Index) tu tieu de cua toan bo danh muc sach
 void CategoryTitleSearch::build(vector<Book>& books) {
     clear();
     for (auto& book : books) {
-        // Tach cac tu trong tieu de sach
+        // Chuyen ky tu dac biet thanh khoang trang de tach tu sach
         string cleanTitle;
         for (char c : book.title) {
             if (isalnum(static_cast<unsigned char>(c)) || c == ' ') {
@@ -86,12 +83,13 @@ void CategoryTitleSearch::build(vector<Book>& books) {
     }
 }
 
+// Tra cuu tu khoa trong tieu de sach qua Inverted Hash Index
 TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
     auto start = chrono::high_resolution_clock::now();
     long long checks = 0;
 
-    string targetKw = toLowerStr(keyword);
-    // Xoa khoang trang thua o 2 dau
+    string targetKw = StringUtils::toLower(keyword);
+    // Trim khoang trang
     size_t first = targetKw.find_first_not_of(" \t\r\n");
     size_t last = targetKw.find_last_not_of(" \t\r\n");
     if (first != string::npos && last != string::npos) {
@@ -101,12 +99,12 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
     vector<Book*> matchedBooks;
     unordered_set<string> seenBookIds;
 
-    // 1. Thu tra cuu truc tiep theo Hash neu keyword la 1 tu don
+    // 1. Tra cuu truc tiep theo Hash neu keyword la 1 tu don
     bool isSingleWord = (targetKw.find(' ') == string::npos);
     if (isSingleWord && !targetKw.empty()) {
         size_t index = hashFunction(targetKw);
         TitleHashNode* curr = table[index];
-        while (curr) {
+        while (curr != nullptr) {
             checks++;
             if (curr->word == targetKw) {
                 for (auto* b : curr->books) {
@@ -121,11 +119,11 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
         }
     }
 
-    // 2. Neu keyword la chuoi con (substring) hoac chua tim thay, quet cac token da danh chi muc
+    // 2. Neu la chuoi con hoac chua tim thay qua tu don, quet tren tap cac token da danh chi muc
     if (matchedBooks.empty() && !targetKw.empty()) {
         for (size_t i = 0; i < table.size(); ++i) {
             TitleHashNode* curr = table[i];
-            while (curr) {
+            while (curr != nullptr) {
                 checks++;
                 if (curr->word.find(targetKw) != string::npos) {
                     for (auto* b : curr->books) {

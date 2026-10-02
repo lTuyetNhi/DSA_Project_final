@@ -1,16 +1,8 @@
 #include "../../../include/core/rq1/CategoryHashTable.h"
+#include "../../../include/utils/StringUtils.h"
 #include <chrono>
-#include <algorithm>
-#include <cctype>
 
 using namespace std;
-
-static string toLowerStr(string s) {
-    for (char& c : s) {
-        c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-    }
-    return s;
-}
 
 CategoryHashTable::CategoryHashTable(int cap) : capacity(cap) {
     if (capacity <= 0) capacity = 1009;
@@ -39,15 +31,16 @@ void CategoryHashTable::clear() {
     }
 }
 
+// Ham bam chuoi the loai
 int CategoryHashTable::hashFunction(const string& key) const {
     unsigned long long hash = 0;
     for (char c : key) {
-        char lowerC = static_cast<char>(tolower(static_cast<unsigned char>(c)));
-        hash = (hash * 31 + static_cast<unsigned char>(lowerC));
+        hash = (hash * 31 + static_cast<unsigned char>(tolower(static_cast<unsigned char>(c))));
     }
     return static_cast<int>(hash % capacity);
 }
 
+// Xay dung Bang bam the loai tu toan bo danh muc sach
 void CategoryHashTable::build(vector<Book>& books) {
     clear();
     for (auto& b : books) {
@@ -55,39 +48,42 @@ void CategoryHashTable::build(vector<Book>& books) {
     }
 }
 
+// Chen sach vao the loai tuong ung
 void CategoryHashTable::insert(Book* book) {
     if (!book) return;
-    string normCat = toLowerStr(book->category);
+    string normCat = StringUtils::toLower(book->category);
     int index = hashFunction(normCat);
 
+    // Kiem tra neu the loai da co node trong bucket
     CategoryHashNode* curr = buckets[index];
     while (curr != nullptr) {
-        if (toLowerStr(curr->category) == normCat) {
+        if (StringUtils::toLower(curr->category) == normCat) {
             curr->books.push_back(book);
             return;
         }
         curr = curr->next;
     }
 
-    // Neu category chua co trong bucket, tao node moi
+    // Tao node the loai moi va chen vao dau bucket
     CategoryHashNode* newNode = new CategoryHashNode(book->category);
     newNode->books.push_back(book);
     newNode->next = buckets[index];
     buckets[index] = newNode;
 }
 
+// Tra cuu tat ca sach theo the loai trong O(1 + k) average
 CategoryResult CategoryHashTable::search(const string& category) const {
     long long comparisons = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string target = toLowerStr(category);
+    string target = StringUtils::toLower(category);
     int index = hashFunction(target);
     vector<Book*> foundBooks;
 
     CategoryHashNode* curr = buckets[index];
     while (curr != nullptr) {
         comparisons++;
-        if (toLowerStr(curr->category) == target) {
+        if (StringUtils::toLower(curr->category) == target) {
             foundBooks = curr->books;
             break;
         }
@@ -101,12 +97,12 @@ CategoryResult CategoryHashTable::search(const string& category) const {
 }
 
 vector<Book*> CategoryHashTable::getBooksInCategory(const string& category) const {
-    string target = toLowerStr(category);
+    string target = StringUtils::toLower(category);
     int index = hashFunction(target);
 
     CategoryHashNode* curr = buckets[index];
     while (curr != nullptr) {
-        if (toLowerStr(curr->category) == target) {
+        if (StringUtils::toLower(curr->category) == target) {
             return curr->books;
         }
         curr = curr->next;

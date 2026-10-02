@@ -4,19 +4,23 @@
 using namespace std;
 
 MaxResult LinearMaxScan::findMax(vector<Book>& books) {
-    if (books.empty()) {
-        return MaxResult(nullptr, 0, 0, "Linear Max Scan", "O(n)");
-    }
-
     long long comparisons = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    Book* maxBook = &books[0];
-    for (size_t i = 1; i < books.size(); ++i) {
-        comparisons++;
-        if (books[i].borrow_count > maxBook->borrow_count || 
-           (books[i].borrow_count == maxBook->borrow_count && books[i].book_id < maxBook->book_id)) {
-            maxBook = &books[i];
+    Book* maxBook = nullptr;
+    if (!books.empty()) {
+        maxBook = &books[0];
+        // Duyet qua toan bo danh sach sach de tim sach co borrow_count lon nhat
+        for (size_t i = 1; i < books.size(); ++i) {
+            comparisons++;
+            if (books[i].borrow_count > maxBook->borrow_count) {
+                maxBook = &books[i];
+            } else if (books[i].borrow_count == maxBook->borrow_count) {
+                // Tie-break: Neu bang nhau, uu tien book_id nho hon
+                if (books[i].book_id < maxBook->book_id) {
+                    maxBook = &books[i];
+                }
+            }
         }
     }
 
