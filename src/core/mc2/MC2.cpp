@@ -1,62 +1,69 @@
-#include "../../../include/core/mc1/MC1.h"
+#include "../../../include/core/mc2/MC2.h"
 #include <iostream>
 #include <iomanip>
 
 using namespace std;
 
-MC1::MC1(vector<Book>& bookList) : books(bookList), finalSolution(10007) {}
+MC2::MC2(vector<Book>& bookList) : books(bookList) {}
 
-void MC1::build() {
-    finalSolution.clear();
-    for (auto& b : books) {
-        finalSolution.insert(b.book_id, &b);
-    }
+void MC2::build() {
+    finalSolution.build(books);
 }
 
-bool MC1::sameResult(const SearchResult& baselineRes, const SearchResult& finalSolRes) {
+bool MC2::sameResult(const MaxResult& baselineRes, const MaxResult& finalSolRes) {
     if (baselineRes.book == nullptr && finalSolRes.book == nullptr) {
         return true;
     }
     if (baselineRes.book != nullptr && finalSolRes.book != nullptr) {
-        return baselineRes.book->book_id == finalSolRes.book->book_id;
+        return (baselineRes.book->book_id == finalSolRes.book->book_id) &&
+               (baselineRes.book->borrow_count == finalSolRes.book->borrow_count);
     }
     return false;
 }
 
-void MC1::printComparison(size_t datasetSize, const string& bookId, const SearchResult& baselineRes, const SearchResult& finalSolRes) {
+void MC2::printComparison(size_t datasetSize, const MaxResult& baselineRes, const MaxResult& finalSolRes) {
     bool isSame = sameResult(baselineRes, finalSolRes);
 
     cout << "==============================================================================================\n";
-    cout << "                             MC1: SO SANH 2 THUAT TOAN TRA CUU                                \n";
+    cout << "                         MC2: SO SANH THUAT TOAN TIM SACH MUON NHIEU NHAT                      \n";
     cout << "==============================================================================================\n\n";
 
-    cout << "  * Ma sach tra cuu: " << bookId << " (Tong so sach: " << datasetSize << ")\n\n";
+    cout << "  * Tong so sach trong he thong: " << datasetSize << "\n\n";
 
     // Bang so sanh chi tiet can le chinh xac
     cout << "+--------------------------+------------------------------+----------------------------------+\n";
     cout << "| " << left << setw(24) << "Tieu chi so sanh" 
-         << " | " << left << setw(28) << "Baseline (Linear Search)" 
-         << " | " << left << setw(32) << "Final Solution (Hash Table)" << " |\n";
+         << " | " << left << setw(28) << "Baseline (Linear Max Scan)" 
+         << " | " << left << setw(32) << "Final Solution (Max-Heap)" << " |\n";
     cout << "+--------------------------+------------------------------+----------------------------------+\n";
 
-    // Hang 1: Ket qua
-    cout << "| " << left << setw(24) << "Ket qua tim kiem" 
-         << " | " << left << setw(28) << (baselineRes.book ? "FOUND" : "NOT FOUND")
-         << " | " << left << setw(32) << (finalSolRes.book ? "FOUND" : "NOT FOUND") << " |\n";
+    // Hang 1: Ma sach
+    string baseBookId = baselineRes.book ? baselineRes.book->book_id : "NULL";
+    string finalBookId = finalSolRes.book ? finalSolRes.book->book_id : "NULL";
+    cout << "| " << left << setw(24) << "Ma sach (Result)" 
+         << " | " << left << setw(28) << baseBookId 
+         << " | " << left << setw(32) << finalBookId << " |\n";
 
-    // Hang 2: Thoi gian
+    // Hang 2: So luot muon
+    string baseBorrow = baselineRes.book ? to_string(baselineRes.book->borrow_count) : "0";
+    string finalBorrow = finalSolRes.book ? to_string(finalSolRes.book->borrow_count) : "0";
+    cout << "| " << left << setw(24) << "So luot muon (Max Count)" 
+         << " | " << left << setw(28) << baseBorrow 
+         << " | " << left << setw(32) << finalBorrow << " |\n";
+
+    // Hang 3: Thoi gian thuc thi
     string baseTime = to_string(baselineRes.executionTime) + " ns";
     string finalTime = to_string(finalSolRes.executionTime) + " ns";
     cout << "| " << left << setw(24) << "Thoi gian thuc thi" 
          << " | " << left << setw(28) << baseTime 
          << " | " << left << setw(32) << finalTime << " |\n";
 
-    // Hang 3: So lan so sanh
-    cout << "| " << left << setw(24) << "So lan so sanh key" 
+    // Hang 4: So lan so sanh / buoc
+    cout << "| " << left << setw(24) << "So lan so sanh / Buoc" 
          << " | " << left << setw(28) << baselineRes.comparisons 
          << " | " << left << setw(32) << finalSolRes.comparisons << " |\n";
 
-    // Hang 4: Big-O
+    // Hang 5: Do phuc tap Big-O
     cout << "| " << left << setw(24) << "Do phuc tap (Big-O)" 
          << " | " << left << setw(28) << baselineRes.bigO 
          << " | " << left << setw(32) << finalSolRes.bigO << " |\n";
@@ -70,13 +77,13 @@ void MC1::printComparison(size_t datasetSize, const string& bookId, const Search
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void MC1::printBook(const Book* book) {
+void MC2::printBook(const Book* book) {
     if (!book) {
-        cout << "  [!] Khong tim thay sach trong he thong.\n";
+        cout << "  [!] Khong co sach nao trong he thong.\n";
         return;
     }
     cout << "+--------------------------------------------------------------------------------------------+\n";
-    cout << "|                              THONG TIN TAI LIEU TIM THAY                                   |\n";
+    cout << "|                          THONG TIN TAI LIEU DUOC MUON NHIEU NHAT                           |\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
     cout << "  [+] Ma sach        : " << book->book_id << "\n";
     cout << "  [+] Ten sach       : " << book->title << "\n";
@@ -88,31 +95,43 @@ void MC1::printBook(const Book* book) {
     cout << "+--------------------------------------------------------------------------------------------+\n";
 }
 
-void MC1::comparisonMode(const string& bookId) {
-    SearchResult baselineRes = LinearSearch::search(books, bookId);
-    SearchResult finalSolRes = finalSolution.search(bookId);
-    printComparison(books.size(), bookId, baselineRes, finalSolRes);
+void MC2::comparisonMode() {
+    MaxResult baselineRes = LinearMaxScan::findMax(books);
+    MaxResult finalSolRes = finalSolution.getMax();
+    printComparison(books.size(), baselineRes, finalSolRes);
 
     cout << "\n";
     if (finalSolRes.book) {
         printBook(finalSolRes.book);
-    } else {
-        cout << "  [!] Ket qua: Khong tim thay tai lieu voi Ma sach '" << bookId << "' trong he thong.\n";
     }
 }
 
-void MC1::normalMode(const string& bookId) {
+void MC2::normalMode() {
     cout << "==============================================================================================\n";
-    cout << "                               MC1: TRA CUU SACH (HASH TABLE)                                 \n";
+    cout << "                     MC2: TIM SACH DUOC MUON NHIEU NHAT (MAX-HEAP)                           \n";
     cout << "==============================================================================================\n\n";
 
-    SearchResult finalSolRes = finalSolution.search(bookId);
-    cout << "  * Ma sach can tim : " << bookId << "\n";
-    cout << "  * Thoi gian tim   : " << finalSolRes.executionTime << " ns (So phep so sanh: " << finalSolRes.comparisons << ")\n\n";
+    MaxResult finalSolRes = finalSolution.getMax();
+    cout << "  * Thoi gian tim : " << finalSolRes.executionTime << " ns (So buoc: " << finalSolRes.comparisons << ")\n\n";
 
     if (finalSolRes.book) {
         printBook(finalSolRes.book);
     } else {
-        cout << "  [!] Ket qua: Khong tim thay tai lieu voi Ma sach '" << bookId << "' trong he thong.\n";
+        cout << "  [!] Khong co sach nao trong he thong.\n";
     }
+}
+
+void MC2::updateComparisonMode(const string& bookId, int newCount) {
+    // 1. Update dataset & baseline
+    for (auto& b : books) {
+        if (b.book_id == bookId) {
+            b.borrow_count = newCount;
+            break;
+        }
+    }
+    // 2. Update Heap
+    finalSolution.updateBorrowCount(bookId, newCount);
+
+    // 3. Re-run comparison
+    comparisonMode();
 }

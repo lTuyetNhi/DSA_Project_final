@@ -23,7 +23,7 @@ public:
     void normalMode(const string& bookId);
 
     static bool sameResult(const SearchResult& baselineRes, const SearchResult& finalSolRes);
-    static void printComparison(const string& bookId, const SearchResult& baselineRes, const SearchResult& finalSolRes);
+    static void printComparison(size_t datasetSize, const string& bookId, const SearchResult& baselineRes, const SearchResult& finalSolRes);
     static void printBook(const Book* book);
 };
 
