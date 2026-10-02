@@ -1,0 +1,472 @@
+PROMPT TRIỂN KHAI MODULE MC1 - DỰ ÁN DSA QUẢN LÝ THƯ VIỆN
+==========================================================
+
+I. BỐI CẢNH DỰ ÁN
+-----------------
+Dự án: Hệ thống quản lý thư viện và mượn - trả tài liệu.
+Ngôn ngữ: C++.
+Phong cách code: OOP, sử dụng "using namespace std;" trong toàn bộ code C++.
+Persistence đã hoàn thành trước đó, vì vậy module MC1 KHÔNG tự đọc file JSON trực tiếp.
+Dữ liệu sách sau khi load từ Persistence được cung cấp dưới dạng vector<Book> hoặc cấu trúc tương đương.
+
+MC1 là chức năng:
+"Tra cứu chính xác một tài liệu theo book_id."
+
+MC1 có:
+- Baseline: Linear Search.
+- Final Solution: Hash Table.
+- Mode 1: So sánh Baseline và Final Solution trên CÙNG MỘT INPUT.
+- Mode 2: Chỉ sử dụng Final Solution (Hash Table) để tìm và hiển thị kết quả.
+
+
+II. YÊU CẦU CHÍNH CỦA MC1
+--------------------------
+Input:
+- book_id do người dùng nhập.
+Ví dụ:
+B000123
+
+Output:
+- Nếu tìm thấy: trả về đúng Book có book_id tương ứng.
+- Nếu không tồn tại: trả về nullptr hoặc thông báo "Book not found".
+
+Access Pattern:
+- Exact-key lookup.
+- Một book_id chỉ tương ứng 0 hoặc 1 Book.
+
+Yêu cầu correctness:
+- Baseline và Final Solution phải nhận cùng book_id.
+- Kết quả của hai phương án phải giống nhau.
+- Nếu cả hai cùng tìm thấy cùng book_id => PASS.
+- Nếu cả hai cùng không tìm thấy => PASS.
+- Nếu kết quả khác nhau => FAIL.
+
+
+III. BASELINE - LINEAR SEARCH
+-----------------------------
+Linear Search là phương án baseline.
+
+Cách hoạt động:
+- Duyệt tuần tự vector<Book>.
+- Với mỗi Book, so sánh book.bookId với bookId cần tìm.
+- Dừng ngay khi tìm thấy.
+- Nếu duyệt hết mà không tìm thấy thì trả nullptr.
+
+Yêu cầu Linear Search phải thu thập:
+1. Book* kết quả.
+2. Thời gian thực thi tìm kiếm.
+3. Số lần so sánh book_id.
+4. Tên phương pháp: "Linear Search".
+5. Big-O: O(n).
+
+Độ phức tạp:
+- Best case: O(1).
+- Average: O(n).
+- Worst case: O(n).
+- Khi hiển thị benchmark có thể dùng O(n) để mô tả chính.
+
+
+IV. FINAL SOLUTION - HASH TABLE
+-------------------------------
+Final Solution của MC1 là Hash Table.
+
+Mục tiêu:
+book_id -> Book*
+
+Hash Table phải:
+- Tự cài đặt.
+- Không sử dụng unordered_map để thay thế logic Hash Table.
+- Có hashFunction().
+- Có insert().
+- Có search().
+- Có cơ chế xử lý collision.
+
+Cơ chế collision đề xuất:
+- Separate Chaining.
+- Mỗi bucket chứa một linked list HashNode.
+
+HashNode tối thiểu:
+- string key
+- Book* book
+- HashNode* next
+
+Yêu cầu Hash Table search phải thu thập:
+1. Book* kết quả.
+2. Thời gian thực thi search.
+3. Số key/node đã so sánh trong bucket.
+4. Tên phương pháp: "Hash Table".
+5. Big-O:
+   - O(1) average.
+   - O(n) worst case.
+
+Lưu ý:
+- Chỉ đo thời gian search.
+- KHÔNG cộng thời gian build Hash Table vào search time khi so với Linear Search.
+- Hash Table được build một lần sau khi Persistence load books.
+
+
+V. MODE 1 - COMPARISON MODE
+---------------------------
+Mode 1 dùng để so sánh Baseline và Final Solution.
+
+Hai phương án bắt buộc:
+- Nhận cùng book_id.
+- Chạy trên cùng vector<Book>.
+- Trả kết quả dưới cùng một kiểu dữ liệu SearchResult.
+
+Các tiêu chí cần so sánh:
+
+1. KẾT QUẢ TRẢ VỀ CÓ GIỐNG NHAU KHÔNG
+- So sánh book_id của kết quả.
+- Nếu cả hai nullptr => PASS.
+- Nếu cả hai có Book và cùng bookId => PASS.
+- Trường hợp khác => FAIL.
+
+2. THỜI GIAN THỰC THI
+- Dùng chrono.
+- Đơn vị khuyến nghị: nanoseconds.
+- Chỉ đo thời gian search của từng phương án.
+
+3. SỐ LẦN SO SÁNH
+- Linear Search:
+  số lần kiểm tra book.bookId == bookId.
+- Hash Table:
+  số HashNode/key được kiểm tra trong bucket sau khi hash.
+
+4. ĐỘ PHỨC TẠP THUẬT TOÁN
+- Linear Search:
+  Best O(1), Average O(n), Worst O(n).
+- Hash Table:
+  Average O(1), Worst O(n).
+
+5. BIG-O
+- Gộp cùng phần độ phức tạp khi hiển thị.
+- Linear Search: O(n).
+- Hash Table: O(1) average, O(n) worst case.
+
+6. TRADE-OFF TỐC ĐỘ VÀ BỘ NHỚ
+Không cần đo RAM chính xác.
+Chỉ cần giải thích:
+
+Linear Search:
++ Không cần cấu trúc index phụ.
++ Ít bộ nhớ phụ hơn.
+- Tìm kiếm chậm hơn khi dữ liệu lớn.
+- Search O(n).
+
+Hash Table:
++ Tìm kiếm trung bình nhanh hơn.
++ Search O(1) average.
+- Cần thêm bộ nhớ cho buckets, HashNode và con trỏ.
+- Có collision và cần cơ chế xử lý collision.
+
+Output Mode 1 nên có dạng:
+
+=================================
+        MC1 COMPARISON
+=================================
+
+Book ID: B009999
+
+BASELINE
+---------------------------------
+Method      : Linear Search
+Result      : FOUND
+Time        : ... ns
+Comparisons : ...
+Big-O       : O(n)
+
+FINAL SOLUTION
+---------------------------------
+Method      : Hash Table
+Result      : FOUND
+Time        : ... ns
+Comparisons : ...
+Big-O       : O(1) average
+
+VALIDATION
+---------------------------------
+Same Result : PASS
+
+TRADE-OFF
+---------------------------------
+Linear Search:
++ Less additional memory
+- Slower lookup when dataset grows
+
+Hash Table:
++ Faster average lookup
+- Uses additional memory for buckets and HashNodes
+
+
+VI. MODE 2 - NORMAL MODE
+------------------------
+Mode 2 chỉ sử dụng Final Solution.
+
+Luồng:
+book_id
+-> HashTable.search(book_id)
+-> Book*
+-> Hiển thị thông tin Book
+
+Mode 2 KHÔNG:
+- Chạy Linear Search.
+- Benchmark.
+- So sánh.
+- In trade-off.
+
+Output ví dụ:
+
+=================================
+        MC1 SEARCH BOOK
+=================================
+
+Book ID   : B000123
+Title     : Data Structures
+Author    : Nguyen Van A
+Category  : CNTT
+Available : 3 / 5
+Borrow Count: 120
+
+Nếu không tìm thấy:
+Book not found.
+
+
+VII. YÊU CẦU OOP
+----------------
+Tổ chức class theo Single Responsibility ở mức đơn giản:
+
+1. Book
+- Là Model.
+- Chỉ chứa dữ liệu sách.
+
+2. SearchResult
+- Chứa kết quả của một lần search.
+- Dùng chung cho Baseline và Final Solution.
+
+3. LinearSearch
+- Chỉ chịu trách nhiệm triển khai Baseline.
+
+4. HashTable
+- Chỉ chịu trách nhiệm triển khai Final Solution.
+- Bao gồm hash, insert, search, collision handling.
+
+5. MC1
+- Điều phối toàn bộ module.
+- Có Mode 1 và Mode 2.
+- So sánh kết quả.
+- Hiển thị benchmark.
+- Không tự cài thuật toán Linear Search hay Hash Table bên trong MC1.cpp.
+
+
+VIII. CẤU TRÚC THƯ MỤC MỚI NHẤT
+--------------------------------
+DSA_Project_final/
+│
+├── include/
+│   └── core/
+│       └── mc1/
+│           ├── MC1.h
+│           ├── LinearSearch.h
+│           ├── HashTable.h
+│           └── SearchResult.h
+│
+├── src/
+│   ├── core/
+│   │   └── mc1/
+│   │       ├── MC1.cpp
+│   │       ├── LinearSearch.cpp
+│   │       └── HashTable.cpp
+│   │
+│   ├── models/
+│   │   ├── Book.h
+│   │   ├── Reader.h
+│   │   ├── BorrowRecord.h
+│   │   └── WaitlistEntry.h
+│   │
+│   └── persistence/
+│       ├── FileStore.h
+│       └── FileStore.cpp
+│
+└── main.cpp
+
+
+IX. NHIỆM VỤ TỪNG FILE
+-----------------------
+
+1. include/core/mc1/MC1.h
+- Khai báo class MC1.
+- Giữ reference tới vector<Book>.
+- Chứa LinearSearch baseline.
+- Chứa HashTable finalSolution.
+- Khai báo:
+  - build()
+  - comparisonMode(bookId)
+  - normalMode(bookId)
+  - sameResult(...)
+  - printComparison(...)
+  - printBook(...)
+
+2. src/core/mc1/MC1.cpp
+- Cài constructor.
+- Build Hash Table một lần.
+- Triển khai Mode 1.
+- Triển khai Mode 2.
+- So sánh SearchResult.
+- Hiển thị kết quả.
+- Hiển thị trade-off.
+
+3. include/core/mc1/LinearSearch.h
+- Khai báo class LinearSearch.
+- Hàm chính:
+  SearchResult search(vector<Book>& books, const string& bookId);
+
+4. src/core/mc1/LinearSearch.cpp
+- Cài Linear Search.
+- Đếm comparisons.
+- Đo executionTime.
+- Gán method và bigO.
+- Trả SearchResult.
+
+5. include/core/mc1/HashTable.h
+- Khai báo HashNode.
+- Khai báo class HashTable.
+- Thuộc tính:
+  - HashNode** buckets
+  - int capacity
+- Hàm:
+  - hashFunction()
+  - insert()
+  - search()
+  - constructor
+  - destructor
+
+6. src/core/mc1/HashTable.cpp
+- Cài hashFunction().
+- Cài insert().
+- Cài Separate Chaining.
+- Cài search().
+- Đếm số node/key đã kiểm tra.
+- Đo executionTime.
+- Trả SearchResult.
+
+7. include/core/mc1/SearchResult.h
+- Chỉ cần header, không cần .cpp.
+- Struct:
+  - Book* book
+  - long long executionTime
+  - long long comparisons
+  - string method
+  - string bigO
+
+8. src/models/Book.h
+- Model Book dùng chung toàn hệ thống.
+- MC1 chỉ sử dụng, không sửa cấu trúc thư mục Model.
+
+9. src/persistence/FileStore.h/.cpp
+- Persistence đã hoàn thành.
+- Chỉ load/save dữ liệu.
+- MC1 không đọc JSON trực tiếp.
+
+10. main.cpp
+- Load books bằng FileStore.
+- Tạo MC1.
+- Gọi mc1.build() một lần.
+- Cho người dùng chọn:
+  1. Comparison Mode
+  2. Normal Mode
+- Truyền book_id vào MC1.
+
+
+X. LUỒNG CHẠY CHƯƠNG TRÌNH
+--------------------------
+
+Khởi động:
+FileStore
+-> load books
+-> vector<Book>
+-> tạo MC1
+-> MC1.build()
+-> build Hash Table một lần
+
+Mode 1:
+Cùng book_id
+-> LinearSearch.search()
+-> SearchResult baseline
+
+Cùng book_id
+-> HashTable.search()
+-> SearchResult final
+
+Sau đó:
+-> so sánh result
+-> in time
+-> in comparisons
+-> in Big-O
+-> in trade-off
+
+Mode 2:
+book_id
+-> HashTable.search()
+-> Book*
+-> printBook()
+
+
+XI. YÊU CẦU CODE STYLE
+----------------------
+- C++.
+- Dùng using namespace std; trong toàn bộ code.
+- Tách .h và .cpp.
+- Không tạo thêm src lồng bên trong module.
+- Toàn project chỉ có một thư mục src ở root.
+- Header MC1 nằm trong:
+  include/core/mc1/
+- Source MC1 nằm trong:
+  src/core/mc1/
+- Không dùng unordered_map để thay thế Hash Table tự cài.
+- Code rõ ràng, dễ giải thích khi bảo vệ.
+- Không nhồi quá nhiều class không cần thiết.
+- Không tạo Service/Controller/Repository riêng cho MC1.
+- MC1 là class điều phối chính.
+
+
+XII. TEST TỐI THIỂU CHO MC1
+---------------------------
+Cần kiểm thử:
+1. book_id tồn tại ở đầu dataset.
+2. book_id tồn tại ở giữa dataset.
+3. book_id tồn tại ở cuối dataset.
+4. book_id không tồn tại.
+5. Dataset rỗng.
+6. Chỉ có một Book.
+7. Collision trong Hash Table.
+8. Hai phương án luôn trả cùng kết quả.
+
+Dataset benchmark có thể dùng:
+- 1.000 Book.
+- 10.000 Book.
+- 100.000 Book.
+
+
+XIII. MỤC TIÊU CUỐI CÙNG
+------------------------
+Sau khi triển khai xong, MC1 phải chứng minh được:
+
+Baseline:
+Linear Search
+- Search O(n).
+- Ít bộ nhớ phụ.
+- Số lần so sánh tăng theo vị trí và kích thước dataset.
+
+Final Solution:
+Hash Table
+- Search O(1) trung bình.
+- Worst case O(n).
+- Ít số lần so sánh hơn trung bình.
+- Tốn thêm bộ nhớ cho index/buckets/nodes.
+
+Mode 1:
+Dùng để chứng minh và so sánh hai phương án.
+
+Mode 2:
+Dùng như chức năng thật của hệ thống và chỉ sử dụng Hash Table.

@@ -1,6 +1,6 @@
 # HỆ THỐNG QUẢN LÝ THƯ VIỆN (DSA PROJECT)
 
-Dự án C++ ứng dụng Cấu trúc dữ liệu và Giải thuật (DSA) vào việc xây dựng hệ thống Quản lý Thư viện, hỗ trợ đọc/ghi dữ liệu từ các file JSON (Sách, Độc giả, Phiếu mượn, Danh sách chờ).
+Dự án C++ ứng dụng Cấu trúc dữ liệu và Giải thuật (DSA) vào việc xây dựng hệ thống Quản lý Thư viện, hỗ trợ đọc/ghi dữ liệu từ các file JSON và thực hiện các nghiệp vụ tra cứu, mượn trả tài liệu.
 
 ---
 
@@ -14,9 +14,20 @@ DSA_Project_final/
 │   ├── borrow_records.json     # Lịch sử mượn trả
 │   └── waitlist.json           # Danh sách hàng đợi chờ mượn
 ├── include/
+│   ├── core/
+│   │   └── mc1/                # Header cho Module MC1 (Tra cứu chính xác sách theo ID)
+│   │       ├── MC1.h
+│   │       ├── LinearSearch.h
+│   │       ├── HashTable.h
+│   │       └── SearchResult.h
 │   └── nlohmann/               # Thư viện JSON for Modern C++ (header-only)
 │       └── json.hpp
 ├── src/
+│   ├── core/
+│   │   └── mc1/                # Cài đặt thuật toán Module MC1
+│   │       ├── MC1.cpp
+│   │       ├── LinearSearch.cpp
+│   │       └── HashTable.cpp
 │   ├── models/                 # Định nghĩa các struct / class dữ liệu
 │   │   ├── Book.h
 │   │   ├── Reader.h
@@ -26,9 +37,20 @@ DSA_Project_final/
 │   └── persistence/            # Xử lý đọc / ghi file JSON
 │       ├── FileStore.h
 │       └── FileStore.cpp
-├── main.cpp                    # Điểm bắt đầu chương trình (kiểm tra & chạy các module)
+├── main.cpp                    # Điểm bắt đầu chương trình (Giao diện dòng lệnh & Điều phối)
+├── doc/                        # Tài liệu đặc tả và prompt triển khai chi tiết
 └── README.md                   # Tài liệu hướng dẫn
 ```
+
+---
+
+## 🔍 Module MC1: Tra cứu chính xác một tài liệu theo `book_id`
+
+- **Baseline**: `Linear Search` - Độ phức tạp $O(n)$, duyệt tuần tự.
+- **Final Solution**: `Hash Table` (tự cài đặt bằng cơ chế *Separate Chaining*) - Độ phức tạp trung bình $O(1)$.
+- **Các chế độ hoạt động**:
+  - **Mode 1 (Comparison Mode)**: Chạy song song cả hai thuật toán trên cùng một `book_id`, kiểm tra tính nhất quán kết quả (PASS/FAIL), đo thời gian thực thi ($ns$), đếm số phép so sánh và phân tích Trade-off.
+  - **Mode 2 (Normal Mode)**: Tra cứu nhanh bằng `Hash Table` và hiển thị chi tiết thông tin sách.
 
 ---
 
@@ -46,8 +68,8 @@ DSA_Project_final/
 Mở terminal PowerShell tại thư mục gốc của dự án (`DSA_Project_final`), chạy lệnh sau:
 
 ```powershell
-# Biên dịch chương trình
-g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe
+# Biên dịch toàn bộ chương trình
+g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp -o main.exe
 
 # Chạy chương trình
 .\main.exe
@@ -55,7 +77,7 @@ g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe
 
 > **Mẹo chạy nhanh (Biên dịch và chạy 1 dòng):**
 > ```powershell
-> g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe; .\main.exe
+> g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp -o main.exe; .\main.exe
 > ```
 
 ---
@@ -64,19 +86,8 @@ g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe
 
 ```cmd
 :: Biên dịch và chạy
-g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe && main.exe
+g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp -o main.exe && main.exe
 ```
-
----
-
-### 3. Chạy trực tiếp trong Visual Studio Code
-
-1. Mở thư mục `DSA_Project_final` bằng VS Code.
-2. Mở Terminal tích hợp (`Ctrl + ~` hoặc `Ctrl + ` ` `).
-3. Nhập lệnh biên dịch và chạy bằng PowerShell:
-   ```powershell
-   g++ -std=c++17 main.cpp src/persistence/FileStore.cpp -o main.exe; .\main.exe
-   ```
 
 ---
 
@@ -92,5 +103,5 @@ Chương trình đọc dữ liệu từ các tệp sau trong thư mục `data/`:
 
 ## ⚠️ Lưu ý khi chạy
 
-1. **Đường dẫn dữ liệu**: Hãy đảm bảo chạy lệnh từ **thư mục gốc** (`DSA_Project_final`) để chương trình có thể tìm thấy thư mục `data/`.
-2. **Cờ `-std=c++17`**: Bắt buộc thêm cờ `-std=c++17` khi dùng `g++` để trình biên dịch hỗ trợ thư viện `nlohmann/json`.
+1. **Đường dẫn dữ liệu**: Luôn chạy lệnh từ **thư mục gốc** (`DSA_Project_final`) để chương trình nạp đúng thư mục `data/`.
+2. **Cờ `-std=c++17`**: Bắt buộc thêm cờ `-std=c++17` để hỗ trợ C++17 và thư viện `nlohmann/json`.
