@@ -1,6 +1,6 @@
--x
-c++
+-xc++-header
 -std=c++17
+-fexceptions
 -I.
 -Iinclude
 -Isrc
