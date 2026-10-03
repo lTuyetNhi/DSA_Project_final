@@ -1,6 +1,5 @@
--xc++-header
+--driver-mode=g++
 -std=c++17
--fexceptions
 -I.
 -Iinclude
 -Isrc
