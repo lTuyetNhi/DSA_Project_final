@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBolt, faXmark, faRotateRight, faServer } from '@fortawesome/free-solid-svg-icons';
+import { Modal, Input, Button, ConfigProvider, message } from 'antd';
+import { ReloadOutlined, ThunderboltFilled, CloseOutlined } from '@ant-design/icons';
 
 interface RamInjectorModalProps {
   isOpen: boolean;
@@ -21,9 +21,6 @@ export default function RamInjectorModal({
 }: RamInjectorModalProps) {
   const [injectInput, setInjectInput] = useState<string>('500000');
   const [isInjecting, setIsInjecting] = useState(false);
-  const [successMsg, setSuccessMsg] = useState(false);
-
-  if (!isOpen) return null;
 
   const handleInject = () => {
     const num = parseInt(injectInput.replace(/,/g, '').replace(/\./g, ''), 10);
@@ -32,110 +29,113 @@ export default function RamInjectorModal({
       setTimeout(() => {
         onInject(num);
         setIsInjecting(false);
-        setSuccessMsg(true);
-        setTimeout(() => {
-          setSuccessMsg(false);
-          onClose();
-        }, 800);
+        message.success(`Đã nạp thêm ${num.toLocaleString('vi-VN')} sách vào C++ In-Memory RAM thành công!`);
+        onClose();
       }, 300);
+    } else {
+      message.warning('Vui lòng nhập số lượng hợp lệ (> 0)');
     }
   };
 
   const handleResetClick = () => {
     onReset();
     setInjectInput('500000');
-    setSuccessMsg(true);
-    setTimeout(() => {
-      setSuccessMsg(false);
-      onClose();
-    }, 600);
+    message.info('Đã đặt lại bộ nhớ RAM về mặc định (500.000 sách)!');
+    onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 animate-in fade-in duration-150">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden p-6 space-y-5 animate-in zoom-in-95 duration-150">
-        {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-base">
-              ✨
-            </div>
-            <h3 className="text-sm sm:text-base font-bold text-gray-900">
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#2563eb',
+          borderRadius: 12,
+          fontFamily: 'inherit',
+        },
+      }}
+    >
+      <Modal
+        open={isOpen}
+        onCancel={onClose}
+        footer={null}
+        centered
+        width={480}
+        closeIcon={<CloseOutlined className="text-gray-400 hover:text-gray-700" />}
+        styles={{
+          body: {
+            padding: '8px 0',
+          },
+        }}
+        title={
+          <div className="flex items-center gap-2.5 pb-2 border-b border-gray-100">
+            <span className="text-lg">✨</span>
+            <span className="text-sm sm:text-base font-bold text-gray-900">
               Nạp Thêm Dữ Liệu Vào RAM (In-Memory Bulk Injector)
-            </h3>
+            </span>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-7 h-7 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 flex items-center justify-center transition-colors cursor-pointer"
-          >
-            <FontAwesomeIcon icon={faXmark} className="text-sm" />
-          </button>
-        </div>
+        }
+      >
+        <div className="space-y-4 pt-3">
+          {/* Current RAM Status Box */}
+          <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-600">Đang có trong RAM:</span>
+            <span className="text-sm font-bold font-mono text-blue-700">
+              {currentCount.toLocaleString('vi-VN')} sách
+            </span>
+          </div>
 
-        {/* Current RAM Status Box */}
-        <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-between">
-          <span className="text-xs font-semibold text-gray-700">Đang có trong RAM:</span>
-          <span className="text-sm font-bold font-mono text-blue-700">
-            {currentCount.toLocaleString('vi-VN')} sách
-          </span>
-        </div>
+          {/* Inject Amount Input */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-gray-800 block">
+              Điền số lượng sách cần nạp thêm:
+            </label>
+            <Input
+              size="large"
+              value={injectInput}
+              onChange={(e) => setInjectInput(e.target.value)}
+              onPressEnter={handleInject}
+              placeholder="500000"
+              className="font-mono font-bold text-sm rounded-xl"
+            />
+            {/* Quick Increment Preset Tags */}
+            <div className="flex items-center gap-1.5 flex-wrap pt-1">
+              {['100000', '200000', '500000', '1000000'].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => setInjectInput(preset)}
+                  className="px-2.5 py-1 rounded-md border border-gray-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-gray-600 hover:text-blue-700 text-[11px] font-mono font-semibold shadow-2xs cursor-pointer transition-colors"
+                >
+                  +{parseInt(preset).toLocaleString('vi-VN')}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        {/* Inject Amount Input */}
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-gray-800">
-            Điền số lượng sách cần nạp thêm:
-          </label>
-          <input
-            type="text"
-            value={injectInput}
-            onChange={(e) => setInjectInput(e.target.value)}
-            placeholder="500000"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-gray-900 text-sm font-mono font-bold focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-2xs"
-          />
-          <div className="flex items-center gap-1.5 flex-wrap pt-1">
-            {['100000', '200000', '500000', '1000000'].map((preset) => (
-              <button
-                key={preset}
-                type="button"
-                onClick={() => setInjectInput(preset)}
-                className="px-2.5 py-1 rounded-md border border-gray-200 bg-white hover:bg-gray-50 text-gray-600 hover:text-blue-700 text-[11px] font-mono font-semibold shadow-2xs cursor-pointer transition-colors"
-              >
-                +{parseInt(preset).toLocaleString('vi-VN')}
-              </button>
-            ))}
+          {/* Ant Design Action Buttons Footer */}
+          <div className="flex items-center gap-2.5 pt-3 border-t border-gray-100">
+            <Button
+              type="primary"
+              size="large"
+              icon={<ThunderboltFilled />}
+              loading={isInjecting}
+              onClick={handleInject}
+              className="flex-1 font-bold text-xs h-10 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-sm"
+            >
+              Nạp Thêm Vào RAM
+            </Button>
+
+            <Button
+              size="large"
+              icon={<ReloadOutlined />}
+              onClick={handleResetClick}
+              className="font-semibold text-xs h-10 rounded-xl text-gray-700 hover:text-gray-900 border-gray-300 shadow-2xs"
+            >
+              Reset
+            </Button>
           </div>
         </div>
-
-        {/* Success Alert */}
-        {successMsg && (
-          <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold text-center animate-in fade-in">
-            ✓ Đã nạp thành công dữ liệu vào cấu trúc C++ In-Memory RAM!
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3 pt-2">
-          <button
-            type="button"
-            onClick={handleInject}
-            disabled={isInjecting}
-            className="flex-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm hover:shadow transition-all active:scale-98 cursor-pointer border border-blue-700"
-          >
-            <span>✨</span>
-            <span>{isInjecting ? 'Đang cấp phát RAM...' : 'Nạp Thêm Vào RAM'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleResetClick}
-            className="py-2.5 px-4 rounded-xl bg-white hover:bg-gray-50 active:bg-gray-100 text-gray-700 font-bold text-xs flex items-center justify-center gap-1.5 border border-gray-300 shadow-2xs transition-all active:scale-98 cursor-pointer"
-          >
-            <FontAwesomeIcon icon={faRotateRight} className="text-xs text-gray-500" />
-            <span>Reset</span>
-          </button>
-        </div>
-      </div>
-    </div>
+      </Modal>
+    </ConfigProvider>
   );
 }
