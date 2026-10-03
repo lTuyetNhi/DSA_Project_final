@@ -2,34 +2,23 @@
 #define HASH_TABLE_H
 
 #include <string>
+#include <vector>
 #include "SearchResult.h"
 
 using namespace std;
 
-struct HashNode {
-    string key;
-    Book* book;
-    HashNode* next;
-
-    HashNode(const string& k, Book* b) : key(k), book(b), next(nullptr) {}
-};
-
+// Bảng băm tra cứu sách O(1) theo mã sách (sử dụng Separate Chaining với vector, không dùng con trỏ)
 class HashTable {
 private:
-    HashNode** buckets;
-    int capacity;
+    vector<vector<Book>> buckets; // Mảng các ô chứa danh sách sách (giải quyết va chạm)
+    int capacity;                 // Số lượng ô trong bảng băm
 
     int hashFunction(const string& key) const;
 
 public:
-    HashTable(int cap = 10007);
-    ~HashTable();
+    explicit HashTable(int cap = 10007);
 
-    // Disable copy to prevent double free
-    HashTable(const HashTable&) = delete;
-    HashTable& operator=(const HashTable&) = delete;
-
-    void insert(const string& key, Book* book);
+    void insert(const Book& book);
     SearchResult search(const string& bookId) const;
     void clear();
 };

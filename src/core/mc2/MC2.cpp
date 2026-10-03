@@ -11,12 +11,12 @@ void MC2::build() {
 }
 
 bool MC2::sameResult(const MaxResult& baselineRes, const MaxResult& finalSolRes) {
-    if (baselineRes.book == nullptr && finalSolRes.book == nullptr) {
+    if (!baselineRes.found && !finalSolRes.found) {
         return true;
     }
-    if (baselineRes.book != nullptr && finalSolRes.book != nullptr) {
-        return (baselineRes.book->book_id == finalSolRes.book->book_id) &&
-               (baselineRes.book->borrow_count == finalSolRes.book->borrow_count);
+    if (baselineRes.found && finalSolRes.found) {
+        return (baselineRes.book.book_id == finalSolRes.book.book_id) &&
+               (baselineRes.book.borrow_count == finalSolRes.book.borrow_count);
     }
     return false;
 }
@@ -38,15 +38,15 @@ void MC2::printComparison(size_t datasetSize, const MaxResult& baselineRes, cons
     cout << "+--------------------------+------------------------------+----------------------------------+\n";
 
     // Hang 1: Ma sach
-    string baseBookId = baselineRes.book ? baselineRes.book->book_id : "NULL";
-    string finalBookId = finalSolRes.book ? finalSolRes.book->book_id : "NULL";
+    string baseBookId = baselineRes.found ? baselineRes.book.book_id : "NOT FOUND";
+    string finalBookId = finalSolRes.found ? finalSolRes.book.book_id : "NOT FOUND";
     cout << "| " << left << setw(24) << "Ma sach (Result)" 
          << " | " << left << setw(28) << baseBookId 
          << " | " << left << setw(32) << finalBookId << " |\n";
 
     // Hang 2: So luot muon
-    string baseBorrow = baselineRes.book ? to_string(baselineRes.book->borrow_count) : "0";
-    string finalBorrow = finalSolRes.book ? to_string(finalSolRes.book->borrow_count) : "0";
+    string baseBorrow = baselineRes.found ? to_string(baselineRes.book.borrow_count) : "0";
+    string finalBorrow = finalSolRes.found ? to_string(finalSolRes.book.borrow_count) : "0";
     cout << "| " << left << setw(24) << "So luot muon (Max Count)" 
          << " | " << left << setw(28) << baseBorrow 
          << " | " << left << setw(32) << finalBorrow << " |\n";
@@ -77,21 +77,17 @@ void MC2::printComparison(size_t datasetSize, const MaxResult& baselineRes, cons
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void MC2::printBook(const Book* book) {
-    if (!book) {
-        cout << "  [!] Khong co sach nao trong he thong.\n";
-        return;
-    }
+void MC2::printBook(const Book& book) {
     cout << "+--------------------------------------------------------------------------------------------+\n";
     cout << "|                          THONG TIN TAI LIEU DUOC MUON NHIEU NHAT                           |\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
-    cout << "  [+] Ma sach        : " << book->book_id << "\n";
-    cout << "  [+] Ten sach       : " << book->title << "\n";
-    cout << "  [+] Tac gia        : " << book->author << "\n";
-    cout << "  [+] The loai       : " << book->category << "\n";
-    cout << "  [+] Nam xuat ban   : " << book->published_year << "\n";
-    cout << "  [+] So luong       : " << book->available_quantity << " / " << book->total_quantity << " (San co / Tong)\n";
-    cout << "  [+] Luot da muon   : " << book->borrow_count << "\n";
+    cout << "  [+] Ma sach        : " << book.book_id << "\n";
+    cout << "  [+] Ten sach       : " << book.title << "\n";
+    cout << "  [+] Tac gia        : " << book.author << "\n";
+    cout << "  [+] The loai       : " << book.category << "\n";
+    cout << "  [+] Nam xuat ban   : " << book.published_year << "\n";
+    cout << "  [+] So luong       : " << book.available_quantity << " / " << book.total_quantity << " (San co / Tong)\n";
+    cout << "  [+] Luot da muon   : " << book.borrow_count << "\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
 }
 
@@ -101,7 +97,7 @@ void MC2::comparisonMode() {
     printComparison(books.size(), baselineRes, finalSolRes);
 
     cout << "\n";
-    if (finalSolRes.book) {
+    if (finalSolRes.found) {
         printBook(finalSolRes.book);
     }
 }
@@ -114,7 +110,7 @@ void MC2::normalMode() {
     MaxResult finalSolRes = finalSolution.getMax();
     cout << "  * Thoi gian tim : " << finalSolRes.executionTime << " ns (So buoc: " << finalSolRes.comparisons << ")\n\n";
 
-    if (finalSolRes.book) {
+    if (finalSolRes.found) {
         printBook(finalSolRes.book);
     } else {
         cout << "  [!] Khong co sach nao trong he thong.\n";
@@ -122,16 +118,16 @@ void MC2::normalMode() {
 }
 
 void MC2::updateComparisonMode(const string& bookId, int newCount) {
-    // 1. Update dataset & baseline
+    // 1. Cập nhật dữ liệu gốc
     for (auto& b : books) {
         if (b.book_id == bookId) {
             b.borrow_count = newCount;
             break;
         }
     }
-    // 2. Update Heap
+    // 2. Cập nhật Heap
     finalSolution.updateBorrowCount(bookId, newCount);
 
-    // 3. Re-run comparison
+    // 3. Chạy lại so sánh
     comparisonMode();
 }

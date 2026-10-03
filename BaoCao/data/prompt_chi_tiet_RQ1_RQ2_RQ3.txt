@@ -1,0 +1,1416 @@
+PROMPT TRIỂN KHAI CHI TIẾT RQ1, RQ2, RQ3
+DỰ ÁN DSA - HỆ THỐNG QUẢN LÝ THƯ VIỆN
+========================================
+
+TÀI LIỆU NÀY BÁM THEO BÁO CÁO DSA-D3 HIỆN TẠI CỦA NHÓM.
+
+QUY ƯỚC CHUNG
+-------------
+- Ngôn ngữ: C++.
+- Tổ chức theo OOP.
+- Dùng using namespace std; trong toàn bộ code.
+- Persistence đã hoàn thành.
+- FileStore chịu trách nhiệm load/save dữ liệu.
+- Các module RQ1, RQ2, RQ3 KHÔNG trực tiếp đọc JSON.
+- Dữ liệu được load một lần khi chương trình khởi động.
+- Final Solution được build một lần sau khi load dữ liệu.
+- Benchmark Mode luôn dùng cùng dataset và cùng input cho Baseline và Final Solution.
+- Không cộng thời gian build Final DSA vào query time.
+- Không tính thời gian validation vào benchmark time.
+- Không dùng bảng ASCII nhiều cột khi in CLI vì dễ lệch format.
+- Output benchmark dùng dạng dọc:
+  [BASELINE]
+  [FINAL SOLUTION]
+  [VALIDATION]
+  [TRADE-OFF]
+
+
+============================================================
+PHẦN A - RQ1: TRA CỨU TẤT CẢ TÀI LIỆU THEO THỂ LOẠI
+============================================================
+
+I. BỐI CẢNH RQ1
+---------------
+RQ1:
+"Tra cứu tất cả tài liệu theo thể loại."
+
+Baseline:
+Linear Scan toàn bộ danh sách Book.
+
+Final Solution:
+Category Hash Table.
+
+Mapping:
+category -> vector<Book*>
+
+RQ1 là truy vấn một-nhiều:
+1 category -> 0, 1 hoặc nhiều Book.
+
+Ví dụ:
+
+B001 -> CNTT
+B002 -> KinhTe
+B003 -> CNTT
+B004 -> VanHoc
+B005 -> CNTT
+
+Input:
+CNTT
+
+Output:
+B001
+B003
+B005
+
+RQ1 phải trả TẤT CẢ Book thuộc category.
+Không được dừng sau Book đầu tiên.
+
+
+II. INPUT / OUTPUT
+------------------
+Input:
+string category
+
+Ví dụ:
+CNTT
+
+Output:
+vector<Book*> chứa tất cả Book thuộc category.
+
+Nếu không có Book:
+- trả vector rỗng.
+- Result Count = 0.
+
+
+III. BASELINE - LINEAR CATEGORY SCAN
+-----------------------------------
+Class đề xuất:
+LinearCategoryScan
+
+Cách hoạt động:
+1. Nhận vector<Book>& books.
+2. Nhận const string& category.
+3. Duyệt toàn bộ books.
+4. Với mỗi Book:
+   kiểm tra:
+   book.category == category
+5. Nếu đúng:
+   push_back(&book) vào result.
+6. Không dừng sớm.
+7. Trả CategoryResult.
+
+Baseline phải thu thập:
+- vector<Book*> books
+- executionTime
+- comparisons
+- method
+- bigO
+
+method:
+"Linear Scan"
+
+bigO:
+"O(n)"
+
+comparisons:
+số lần kiểm tra category.
+
+Độ phức tạp:
+O(n)
+
+
+IV. FINAL SOLUTION - CATEGORY HASH TABLE
+----------------------------------------
+Class đề xuất:
+CategoryHashTable
+
+Mục tiêu:
+Dùng category làm key để tìm trực tiếp nhóm Book.
+
+Mapping:
+category -> vector<Book*>
+
+Hash node đề xuất:
+
+struct CategoryHashNode {
+    string category;
+    vector<Book*> books;
+    CategoryHashNode* next;
+};
+
+CategoryHashTable phải có:
+- constructor
+- destructor
+- hashFunction()
+- insert(Book*)
+- build(vector<Book>&)
+- search(const string& category)
+- collision handling
+
+Collision:
+Separate Chaining.
+
+Không dùng unordered_map để thay toàn bộ logic Hash Table nếu yêu cầu môn học là tự cài DSA.
+
+Luồng search:
+
+category
+  ->
+hashFunction()
+  ->
+bucket
+  ->
+CategoryHashNode
+  ->
+vector<Book*>
+
+
+V. BIG-O RQ1
+------------
+Baseline:
+Linear Scan
+O(n)
+
+Final:
+Tìm category:
+O(1) average
+
+Liệt kê k Book:
+O(k)
+
+Tổng:
+O(1 + k) average
+
+Trong đó:
+n = tổng số Book.
+k = số Book thực sự thuộc category.
+
+Không được ghi Final là O(1) hoàn toàn vì vẫn phải trả k kết quả.
+
+
+VI. MODE 1 - BENCHMARK MODE
+---------------------------
+Input duy nhất:
+category
+
+Ví dụ:
+CNTT
+
+Cùng category phải được đưa vào:
+
+LinearCategoryScan.search(...)
+
+và:
+
+CategoryHashTable.search(...)
+
+So sánh:
+
+1. Result Count.
+2. Same Result Set.
+3. Execution Time.
+4. Comparisons / Checks.
+5. Big-O.
+6. Trade-off tốc độ và bộ nhớ.
+
+
+VII. VALIDATION RQ1
+-------------------
+Không chỉ so Result Count.
+
+Ví dụ:
+
+Baseline:
+B001, B003, B005
+
+Final:
+B005, B001, B003
+
+Vẫn phải:
+PASS
+
+Vì RQ1 không yêu cầu thứ tự kết quả.
+
+Cách kiểm tra:
+1. So size.
+2. Lấy bookId của hai danh sách.
+3. Copy ra hai vector<string>.
+4. Sort hai bản sao.
+5. So từng bookId.
+
+Không tính thời gian sort validation vào benchmark.
+
+
+VIII. THỜI GIAN THỰC THI
+------------------------
+Dùng:
+chrono::high_resolution_clock
+
+Đơn vị:
+nanoseconds
+
+Baseline:
+đo thời gian Linear Scan query.
+
+Final:
+đo thời gian Category Hash lookup + lấy danh sách.
+
+Không tính build time của Category Hash vào query time.
+
+
+IX. COMPARISONS / CHECKS
+------------------------
+Baseline:
+comparisons =
+số Book đã kiểm tra category.
+
+Vì cần tìm tất cả,
+thường comparisons = n.
+
+Final:
+comparisons =
+số CategoryHashNode/key phải kiểm tra trong bucket.
+
+Có thể hiển thị thêm:
+Result Count = k
+
+Không nên đánh đồng:
+- key comparisons
+với
+- số Book kết quả phải trả.
+
+
+X. TRADE-OFF RQ1
+----------------
+Linear Scan:
+
+Ưu:
+- Không cần index phụ.
+- Ít bộ nhớ phụ.
+- Cài đặt đơn giản.
+
+Nhược:
+- Mỗi query phải scan toàn bộ books.
+- O(n).
+
+Category Hash:
+
+Ưu:
+- Tìm đúng category nhanh hơn.
+- O(1 + k) average.
+- Phù hợp với query category thường xuyên.
+
+Nhược:
+- Tốn thêm memory.
+- Cần lưu HashNode và vector<Book*>.
+- Khi thêm/xóa/đổi category phải cập nhật index.
+- Có thể lệch dữ liệu nếu index không được đồng bộ đúng.
+
+
+XI. MODE 2 - NORMAL MODE
+------------------------
+Mode 2 chỉ dùng Final Solution:
+
+CategoryHashTable.search(category)
+
+Sau đó:
+- hiển thị tất cả Book.
+- không chạy Baseline.
+- không benchmark.
+- không validation.
+- không in trade-off.
+
+
+XII. OOP RQ1
+------------
+Book
+- Model dùng chung.
+
+CategoryResult
+- chứa kết quả benchmark.
+
+LinearCategoryScan
+- Baseline.
+
+CategoryHashTable
+- Final Solution.
+
+RQ1
+- class điều phối.
+- build().
+- comparisonMode().
+- normalMode().
+- sameResultSet().
+- printComparison().
+- printBooks().
+
+
+XIII. CATEGORYRESULT
+--------------------
+
+struct CategoryResult {
+    vector<Book*> books;
+    long long executionTime;
+    long long comparisons;
+    string method;
+    string bigO;
+};
+
+
+XIV. CÂY THƯ MỤC RQ1
+---------------------
+
+include/
+└── core/
+    └── rq1/
+        ├── RQ1.h
+        ├── LinearCategoryScan.h
+        ├── CategoryHashTable.h
+        └── CategoryResult.h
+
+src/
+└── core/
+    └── rq1/
+        ├── RQ1.cpp
+        ├── LinearCategoryScan.cpp
+        └── CategoryHashTable.cpp
+
+
+XV. OUTPUT BENCHMARK RQ1
+------------------------
+
+========================================
+          RQ1 BENCHMARK RESULT
+========================================
+
+Input Category : CNTT
+Dataset Size   : 10000
+
+[BASELINE]
+Method         : Linear Scan
+Result Count   : 120
+Time           : ... ns
+Comparisons    : 10000
+Big-O          : O(n)
+
+[FINAL SOLUTION]
+Method         : Category Hash
+Result Count   : 120
+Time           : ... ns
+Comparisons    : ...
+Big-O          : O(1 + k) average
+
+[VALIDATION]
+Same Count     : PASS
+Same Result Set: PASS
+
+[TRADE-OFF]
+
+Linear Scan:
++ Less additional memory
+- Must scan all books
+
+Category Hash:
++ Faster category lookup
+- Uses additional memory
+- Must maintain category index
+
+========================================
+
+
+XVI. TEST TỐI THIỂU RQ1
+-----------------------
+1. Dataset rỗng.
+2. Category không tồn tại.
+3. Category có 1 Book.
+4. Category có nhiều Book.
+5. Tất cả Book cùng category.
+6. Nhiều category.
+7. Collision giữa category.
+8. Same Result Count.
+9. Same Result Set.
+10. Khác thứ tự nhưng cùng tập kết quả vẫn PASS.
+11. Dataset 1k / 10k / 100k.
+
+
+============================================================
+PHẦN B - RQ2: THEO DÕI TÀI LIỆU ĐANG MƯỢN VÀ QUÁ HẠN
+============================================================
+
+I. BỐI CẢNH RQ2
+---------------
+RQ2:
+"Theo dõi tài liệu đang được mượn và tài liệu quá hạn."
+
+Baseline:
+Linear Scan.
+
+Final Solution:
+Balanced BST / AVL Tree theo dueDate.
+
+Dữ liệu:
+vector<BorrowRecord>
+
+Điều kiện overdue:
+
+status == "BORROWING"
+AND
+dueDate < currentDate
+
+
+II. INPUT / OUTPUT
+------------------
+Input:
+currentDate
+
+Format:
+YYYY-MM-DD
+
+Ví dụ:
+2026-10-02
+
+Output:
+tất cả BorrowRecord quá hạn.
+
+
+III. BASELINE - LINEAR OVERDUE SCAN
+-----------------------------------
+Class đề xuất:
+LinearOverdueScan
+
+Cách hoạt động:
+1. Nhận vector<BorrowRecord>&.
+2. Nhận currentDate.
+3. Duyệt toàn bộ records.
+4. Với mỗi record:
+   kiểm tra status.
+   kiểm tra dueDate.
+5. Nếu:
+   status == "BORROWING"
+   AND
+   dueDate < currentDate
+   thì thêm BorrowRecord* vào result.
+6. Trả OverdueResult.
+
+Baseline phải thu thập:
+- vector<BorrowRecord*> records
+- executionTime
+- checks
+- method
+- bigO
+
+method:
+"Linear Scan"
+
+bigO:
+"O(n)"
+
+Độ phức tạp:
+O(n)
+
+
+IV. FINAL SOLUTION - AVL TREE
+-----------------------------
+Class đề xuất:
+AVLTree
+
+Key:
+dueDate
+
+Vì nhiều BorrowRecord có thể có cùng dueDate,
+mỗi AVL node nên chứa một nhóm records.
+
+Node đề xuất:
+
+struct AVLNode {
+    string dueDate;
+    vector<BorrowRecord*> records;
+
+    AVLNode* left;
+    AVLNode* right;
+
+    int height;
+};
+
+AVL Tree phải có:
+- insert()
+- remove() nếu cần
+- rotateLeft()
+- rotateRight()
+- getBalance()
+- updateHeight()
+- build()
+- findOverdue()
+- range query
+
+
+V. RANGE QUERY
+--------------
+Mục tiêu:
+
+dueDate < currentDate
+
+và:
+status == BORROWING
+
+Final không được pop/xóa record chỉ để xem overdue.
+
+Cây phải:
+- duyệt có thứ tự.
+- cắt nhánh khi có thể.
+- chỉ truy cập vùng ngày cần thiết.
+
+
+VI. BIG-O RQ2
+-------------
+Baseline:
+O(n)
+
+Final:
+O(log n + k)
+
+Trong đó:
+n = số record.
+k = số BorrowRecord quá hạn trả về.
+
+Insert:
+O(log n)
+
+Delete:
+O(log n)
+
+
+VII. MODE 1 - BENCHMARK MODE
+----------------------------
+Cùng input currentDate phải được đưa vào:
+
+LinearOverdueScan.search(...)
+
+và:
+
+AVLTree.findOverdue(...)
+
+So sánh:
+
+1. Result Count.
+2. Same Result Set.
+3. Execution Time.
+4. Checks / Nodes Visited.
+5. Big-O.
+6. Trade-off.
+
+
+VIII. VALIDATION RQ2
+--------------------
+Không chỉ so Result Count.
+
+Phải so tập ID BorrowRecord.
+
+Ví dụ:
+
+Baseline:
+BR001
+BR005
+BR009
+
+Final:
+BR009
+BR001
+BR005
+
+Vẫn phải PASS nếu RQ2 không yêu cầu thứ tự.
+
+Validation:
+1. kiểm tra size.
+2. lấy borrowRecordId.
+3. copy.
+4. sort.
+5. compare.
+
+Không tính validation time vào benchmark.
+
+
+IX. CHECKS / NODES VISITED
+--------------------------
+Baseline:
+Checks =
+số BorrowRecord được kiểm tra.
+
+Final:
+Nodes Visited =
+số AVL node được truy cập trong range query.
+
+Output có thể dùng hai tên riêng:
+- Checks
+- Nodes Visited
+
+
+X. THỜI GIAN THỰC THI
+----------------------
+Dùng:
+chrono::high_resolution_clock
+
+Đơn vị:
+nanoseconds
+
+Baseline:
+đo Linear Scan query.
+
+Final:
+đo AVL range query.
+
+Không tính build tree vào query time.
+
+
+XI. TRADE-OFF RQ2
+-----------------
+Linear Scan:
+
+Ưu:
+- Đơn giản.
+- Ít memory phụ.
+
+Nhược:
+- Mỗi lần kiểm tra overdue phải scan toàn bộ.
+- O(n).
+
+AVL Tree:
+
+Ưu:
+- Range query phù hợp.
+- O(log n + k).
+- Insert/delete O(log n).
+- Độ trễ ổn định hơn.
+
+Nhược:
+- Tốn memory cho node/pointer.
+- Cần logic cân bằng.
+- Code phức tạp hơn.
+- Phải cập nhật tree khi borrow/return thay đổi.
+
+
+XII. MODE 2 - NORMAL MODE
+-------------------------
+Input:
+currentDate
+
+Chỉ dùng:
+
+AVLTree.findOverdue(currentDate)
+
+Sau đó:
+- hiển thị toàn bộ overdue records.
+- không chạy Linear Scan.
+- không benchmark.
+- không validation.
+- không trade-off.
+
+
+XIII. OOP RQ2
+-------------
+BorrowRecord
+- Model.
+
+OverdueResult
+- Result benchmark.
+
+LinearOverdueScan
+- Baseline.
+
+AVLTree
+- Final Solution.
+
+RQ2
+- class điều phối.
+- build().
+- comparisonMode().
+- normalMode().
+- sameResultSet().
+- printComparison().
+- printRecords().
+
+
+XIV. OVERDUERESULT
+------------------
+
+struct OverdueResult {
+    vector<BorrowRecord*> records;
+    long long executionTime;
+    long long checks;
+    string method;
+    string bigO;
+};
+
+
+XV. CÂY THƯ MỤC RQ2
+--------------------
+
+include/
+└── core/
+    └── rq2/
+        ├── RQ2.h
+        ├── LinearOverdueScan.h
+        ├── AVLTree.h
+        └── OverdueResult.h
+
+src/
+└── core/
+    └── rq2/
+        ├── RQ2.cpp
+        ├── LinearOverdueScan.cpp
+        └── AVLTree.cpp
+
+
+XVI. OUTPUT BENCHMARK RQ2
+-------------------------
+
+========================================
+          RQ2 BENCHMARK RESULT
+========================================
+
+Current Date : 2026-10-02
+Dataset Size : 10000
+
+[BASELINE]
+Method       : Linear Scan
+Result Count : 250
+Time         : ... ns
+Checks       : 10000
+Big-O        : O(n)
+
+[FINAL SOLUTION]
+Method       : AVL Tree
+Result Count : 250
+Time         : ... ns
+Nodes Visited: ...
+Big-O        : O(log n + k)
+
+[VALIDATION]
+Same Count     : PASS
+Same Result Set: PASS
+
+[TRADE-OFF]
+
+Linear Scan:
++ Simple
++ Less index memory
+- Scans all records
+
+AVL Tree:
++ Efficient range query
+- Extra memory
+- More complex maintenance
+
+========================================
+
+
+XVII. TEST TỐI THIỂU RQ2
+------------------------
+1. Dataset rỗng.
+2. Không có overdue.
+3. Một overdue.
+4. Nhiều overdue.
+5. Tất cả overdue.
+6. Nhiều records cùng dueDate.
+7. status RETURNED không được tính overdue.
+8. dueDate == currentDate không tính overdue nếu điều kiện là <.
+9. AVL vẫn cân bằng sau insert.
+10. Same Result Set.
+11. Dataset 1k / 10k / 100k.
+
+
+============================================================
+PHẦN C - RQ3: TRA CỨU / TÌM KIẾM TÀI LIỆU THEO TÊN SÁCH
+============================================================
+
+I. BỐI CẢNH RQ3
+---------------
+Theo báo cáo hiện tại:
+
+RQ3:
+"Tra cứu và tìm kiếm tài liệu theo tên sách hoặc từ khóa."
+
+Baseline:
+Linear Scan toàn bộ thư viện + String Matching.
+
+Final Solution:
+Tận dụng Category Hash Table của RQ1
++
+String Matching cục bộ trong category.
+
+KHÔNG tạo thêm một Title Hash Table độc lập.
+
+Mục tiêu:
+- giảm memory phụ.
+- tránh duy trì bảng hash thứ ba.
+- linh hoạt với partial keyword.
+- thu hẹp phạm vi tìm kiếm trước khi string matching.
+
+
+II. LƯU Ý QUAN TRỌNG VỀ INPUT
+-----------------------------
+Báo cáo hiện tại mô tả:
+- người dùng tìm theo tên/từ khóa.
+- Final Solution tận dụng Category Hash để thu hẹp nhóm rồi lọc chuỗi.
+
+Vì vậy để triển khai đúng Final Solution hiện tại,
+nên dùng input:
+
+category
+keyword
+
+Ví dụ:
+
+Category:
+CNTT
+
+Keyword:
+data
+
+Nếu nhóm muốn RQ3 chỉ nhập keyword mà không chọn category,
+cần chốt lại thiết kế vì báo cáo chưa mô tả rõ cách xác định category chỉ từ keyword.
+
+
+III. STRING MATCHING
+--------------------
+RQ3 phải hỗ trợ:
+- exact title.
+hoặc
+- partial keyword.
+
+Ví dụ:
+
+Title:
+"Data Structures and Algorithms"
+
+Keyword:
+"data"
+
+=> MATCH
+
+Đề xuất:
+case-insensitive.
+
+Có thể:
+- chuyển title về lowercase.
+- chuyển keyword về lowercase.
+- dùng cùng một hàm string matching cho Baseline và Final.
+
+Không được để Baseline và Final dùng quy tắc matching khác nhau.
+
+
+IV. BASELINE - FULL LINEAR TITLE SCAN
+------------------------------------
+Class đề xuất:
+LinearTitleScan
+
+Nếu benchmark dùng category + keyword,
+Baseline phải dùng cùng điều kiện:
+
+book.category == inputCategory
+
+AND
+
+title matches keyword
+
+Nhưng vẫn phải scan toàn bộ vector<Book>.
+
+Cách hoạt động:
+1. Duyệt toàn bộ books.
+2. Tăng booksChecked.
+3. Kiểm tra category.
+4. Nếu category đúng:
+   kiểm tra title với keyword.
+5. Nếu match:
+   thêm Book* vào result.
+
+Baseline phải thu thập:
+- vector<Book*> books
+- executionTime
+- booksChecked
+- method
+- bigO
+
+method:
+"Full Linear Title Scan"
+
+bigO:
+"O(n) + string matching"
+
+
+V. FINAL SOLUTION - CATEGORY HASH + STRING MATCHING
+---------------------------------------------------
+Class đề xuất:
+CategoryTitleSearch
+
+Final Solution không build Title Hash thứ ba.
+
+Luồng:
+
+category
+  ->
+CategoryHashTable.search(category)
+  ->
+vector<Book*> trong category
+  ->
+lọc title theo keyword
+  ->
+vector<Book*> kết quả
+
+CategoryTitleSearch nên sử dụng CategoryHashTable đã có của RQ1.
+
+Không nên build một CategoryHashTable mới riêng cho RQ3 nếu mục tiêu kiến trúc là tái sử dụng cùng index.
+
+
+VI. CHIA SẺ CATEGORY HASH VỚI RQ1
+---------------------------------
+Đề xuất:
+
+RQ1
+  |
+  v
+CategoryHashTable
+  ^
+  |
+RQ3
+
+Hoặc:
+
+RQ3(CategoryHashTable& categoryIndex)
+
+Trong RQ3:
+- giữ reference đến CategoryHashTable của RQ1.
+- không rebuild index riêng.
+
+
+VII. BIG-O RQ3
+--------------
+Baseline:
+
+Full scan:
+O(n)
++
+string matching cost
+
+Có thể mô tả:
+O(n * m)
+
+n = số Book
+m = chi phí string matching tương đối
+
+Final:
+
+Hash category:
+O(1) average
+
+Lọc k Book trong category:
+O(k * m)
+
+Có thể mô tả đơn giản trong UI:
+O(1 + k) average + string matching
+
+Không được ghi Final là O(1) hoàn toàn.
+
+
+VIII. MODE 1 - BENCHMARK MODE
+-----------------------------
+Cùng input:
+
+category
+keyword
+
+được đưa vào:
+
+LinearTitleScan.search(...)
+
+và:
+
+CategoryTitleSearch.search(...)
+
+So sánh:
+
+1. Result Count.
+2. Same Result Set.
+3. Execution Time.
+4. Books Checked.
+5. Big-O.
+6. Trade-off.
+
+
+IX. VALIDATION RQ3
+------------------
+Không chỉ so Result Count.
+
+Phải so toàn bộ bookId.
+
+Ví dụ:
+
+Baseline:
+B001
+B014
+
+Final:
+B014
+B001
+
+Vẫn PASS.
+
+Validation:
+- size.
+- copy bookId.
+- sort.
+- compare.
+
+Không tính validation time vào benchmark.
+
+
+X. BOOKS CHECKED
+----------------
+Baseline:
+Books Checked = toàn bộ n Book.
+
+Final:
+Books Checked = số Book trong category, tức k.
+
+Ví dụ:
+
+Dataset:
+10000 Book
+
+Category CNTT:
+1200 Book
+
+Baseline:
+Books Checked = 10000
+
+Final:
+Books Checked = 1200
+
+
+XI. THỜI GIAN THỰC THI
+----------------------
+Dùng:
+chrono::high_resolution_clock
+
+Đơn vị:
+nanoseconds
+
+Baseline:
+đo full scan + local string match.
+
+Final:
+đo category lookup + local string match.
+
+Không tính Category Hash build time vào query time.
+
+
+XII. TRADE-OFF RQ3
+------------------
+Linear Scan:
+
+Ưu:
+- Không cần index mới.
+- Logic đơn giản.
+
+Nhược:
+- Phải scan toàn bộ thư viện.
+- Chậm khi n lớn.
+
+Category Hash + String Matching:
+
+Ưu:
+- Tận dụng index RQ1.
+- Thu hẹp phạm vi tìm kiếm.
+- Không tạo Title Hash thứ ba.
+- Ít rủi ro đồng bộ hơn.
+- Hỗ trợ partial keyword tốt hơn exact-title hash.
+
+Nhược:
+- Vẫn phải scan các Book trong category.
+- Phụ thuộc Category Hash.
+- Nếu category quá lớn, lợi ích giảm.
+- Cần giữ Category Index đồng bộ.
+
+
+XIII. MODE 2 - NORMAL MODE
+--------------------------
+Input:
+category
+keyword
+
+Chỉ dùng:
+CategoryTitleSearch
+
+Luồng:
+
+category
+  ->
+keyword
+  ->
+Category Hash
+  ->
+local string matching
+  ->
+vector<Book*>
+  ->
+display
+
+Không chạy Baseline.
+Không benchmark.
+Không validation.
+Không trade-off.
+
+
+XIV. OOP RQ3
+------------
+Book
+- Model.
+
+TitleSearchResult
+- Result benchmark.
+
+LinearTitleScan
+- Baseline.
+
+CategoryTitleSearch
+- Final Solution logic.
+
+RQ3
+- class điều phối.
+
+CategoryHashTable
+- dùng chung với RQ1.
+
+
+XV. TITLESEARCHRESULT
+---------------------
+
+struct TitleSearchResult {
+    vector<Book*> books;
+    long long executionTime;
+    long long booksChecked;
+    string method;
+    string bigO;
+};
+
+
+XVI. CÂY THƯ MỤC RQ3
+---------------------
+
+include/
+└── core/
+    └── rq3/
+        ├── RQ3.h
+        ├── LinearTitleScan.h
+        ├── CategoryTitleSearch.h
+        └── TitleSearchResult.h
+
+src/
+└── core/
+    └── rq3/
+        ├── RQ3.cpp
+        ├── LinearTitleScan.cpp
+        └── CategoryTitleSearch.cpp
+
+
+XVII. OUTPUT BENCHMARK RQ3
+--------------------------
+
+========================================
+          RQ3 BENCHMARK RESULT
+========================================
+
+Category      : CNTT
+Keyword       : data
+Dataset Size  : 10000
+
+[BASELINE]
+Method        : Full Linear Title Scan
+Result Count  : 15
+Books Checked : 10000
+Time          : ... ns
+Big-O         : O(n) + string matching
+
+[FINAL SOLUTION]
+Method        : Category Hash + String Matching
+Result Count  : 15
+Books Checked : 1200
+Time          : ... ns
+Big-O         : O(1 + k) average + string matching
+
+[VALIDATION]
+Same Count      : PASS
+Same Result Set : PASS
+
+[TRADE-OFF]
+
+Linear Scan:
++ Simple
+- Scans entire library
+
+Category Hash + String Matching:
++ Reuses RQ1 index
++ Searches smaller group
++ No third title hash
+- Still scans books inside category
+
+========================================
+
+
+XVIII. OUTPUT NORMAL MODE RQ3
+-----------------------------
+
+========================================
+        SEARCH BOOK BY TITLE
+========================================
+
+Category     : CNTT
+Keyword      : data
+Result Count : 2
+
+[1]
+Book ID : B001
+Title   : Data Structures
+
+[2]
+Book ID : B014
+Title   : Database Systems
+
+========================================
+
+
+XIX. TEST TỐI THIỂU RQ3
+-----------------------
+1. Dataset rỗng.
+2. Category không tồn tại.
+3. Keyword không match.
+4. Exact title.
+5. Partial title.
+6. Upper/lower case.
+7. Một result.
+8. Nhiều result.
+9. Same Result Set.
+10. Category rất nhỏ.
+11. Category rất lớn.
+12. Dataset 1k / 10k / 100k.
+
+
+============================================================
+PHẦN D - CÂY THƯ MỤC TỔNG HỢP RQ1, RQ2, RQ3
+============================================================
+
+DSA_Project_final/
+│
+├── include/
+│   └── core/
+│       ├── rq1/
+│       │   ├── RQ1.h
+│       │   ├── LinearCategoryScan.h
+│       │   ├── CategoryHashTable.h
+│       │   └── CategoryResult.h
+│       │
+│       ├── rq2/
+│       │   ├── RQ2.h
+│       │   ├── LinearOverdueScan.h
+│       │   ├── AVLTree.h
+│       │   └── OverdueResult.h
+│       │
+│       └── rq3/
+│           ├── RQ3.h
+│           ├── LinearTitleScan.h
+│           ├── CategoryTitleSearch.h
+│           └── TitleSearchResult.h
+│
+├── src/
+│   └── core/
+│       ├── rq1/
+│       │   ├── RQ1.cpp
+│       │   ├── LinearCategoryScan.cpp
+│       │   └── CategoryHashTable.cpp
+│       │
+│       ├── rq2/
+│       │   ├── RQ2.cpp
+│       │   ├── LinearOverdueScan.cpp
+│       │   └── AVLTree.cpp
+│       │
+│       └── rq3/
+│           ├── RQ3.cpp
+│           ├── LinearTitleScan.cpp
+│           └── CategoryTitleSearch.cpp
+│
+├── src/models/
+│   ├── Book.h
+│   ├── Reader.h
+│   ├── BorrowRecord.h
+│   └── WaitlistEntry.h
+│
+├── src/persistence/
+│   ├── FileStore.h
+│   └── FileStore.cpp
+│
+└── main.cpp
+
+
+============================================================
+PHẦN E - MỤC TIÊU CUỐI CÙNG
+============================================================
+
+RQ1
+---
+Baseline:
+Linear Scan
+O(n)
+
+Final:
+Category Hash
+O(1 + k) average
+
+So sánh:
+- Same Count
+- Same Result Set
+- Time
+- Comparisons
+- Big-O
+- Trade-off
+
+
+RQ2
+---
+Baseline:
+Linear Scan
+O(n)
+
+Final:
+AVL Tree
+O(log n + k)
+
+So sánh:
+- Same Count
+- Same Result Set
+- Time
+- Checks / Nodes Visited
+- Big-O
+- Trade-off
+
+
+RQ3
+---
+Baseline:
+Full Linear Title Scan
+
+Final:
+Category Hash + String Matching
+
+So sánh:
+- Same Count
+- Same Result Set
+- Time
+- Books Checked
+- Big-O
+- Trade-off
+
+RQ3 theo báo cáo hiện tại KHÔNG phải Queue/Waitlist.
+RQ3 là tìm kiếm tài liệu theo tên sách / từ khóa.
+
+Nếu nhóm muốn thay đổi RQ3 thành chức năng khác,
+phải cập nhật lại báo cáo và kiến trúc để tránh lệch giữa code và tài liệu.

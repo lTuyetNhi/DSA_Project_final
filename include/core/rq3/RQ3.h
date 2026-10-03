@@ -9,22 +9,27 @@
 
 using namespace std;
 
+// Điều phối tìm sách theo tên/từ khóa (không dùng con trỏ)
 class RQ3 {
 private:
-    vector<Book>& books;
-    LinearTitleScan baseline;
-    CategoryTitleSearch finalSolution;
+    vector<Book>& books;               // Danh mục sách gốc
+    LinearTitleScan baseline;          // Quét chuỗi tuyến tính O(n*m)
+    CategoryTitleSearch finalSolution; // Chỉ mục ngược Inverted Index O(1+k)
 
 public:
-    RQ3(vector<Book>& bookList);
+    explicit RQ3(vector<Book>& bookList);
 
     void build();
     void comparisonMode(const string& keyword);
     void normalMode(const string& keyword);
 
+    LinearTitleScan& getBaseline() { return baseline; }
+    CategoryTitleSearch& getFinalSolution() { return finalSolution; }
+    vector<Book>& getBooks() { return books; }
+
     static bool sameResultSet(const TitleSearchResult& baselineRes, const TitleSearchResult& finalSolRes);
     static void printComparison(size_t datasetSize, const string& keyword, const TitleSearchResult& baselineRes, const TitleSearchResult& finalSolRes);
-    static void printBooks(const vector<Book*>& books);
+    static void printBooks(const vector<Book>& books);
 };
 
 #endif // RQ3_H

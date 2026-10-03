@@ -2,3 +2,8 @@
 *.o
 *.obj
 .vscode/
+*.aux
+*.log
+*.out
+*.toc
+*.xdv

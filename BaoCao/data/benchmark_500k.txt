@@ -1,0 +1,5 @@
+MC1|Tra cuu Ma Sach|0.5|0.2362|2.11685|O(N) -> O(1)
+MC2|Top Sach Muon Nhieu|0|0.0958|0|O(N) -> O(1)
+RQ1|Loc theo The loai|22407|11482.8|1.95135|O(N) -> O(1+K)
+RQ2|Truy vet Muon Qua han|31554|2306.77|13.6789|O(N) -> O(log N+K)
+RQ3|Tim kiem Tu khoa|15148|17255.6|0.877861|O(NM) -> O(1+K)

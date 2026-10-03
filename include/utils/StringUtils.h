@@ -4,10 +4,12 @@
 #include <string>
 #include <cctype>
 
+using namespace std;
+
 class StringUtils {
 public:
-    // Chuyen chuoi sang chu thuong (ho tro tim kiem khong phan biet hoa thuong)
-    static std::string toLower(std::string s) {
+    // Chuyển chuỗi sang chữ thường (hỗ trợ tìm kiếm không phân biệt hoa thường)
+    static string toLower(string s) {
         for (char& c : s) {
             c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
         }
@@ -16,3 +18,4 @@ public:
 };
 
 #endif // STRING_UTILS_H
+

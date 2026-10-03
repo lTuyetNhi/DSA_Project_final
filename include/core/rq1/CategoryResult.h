@@ -7,18 +7,20 @@
 
 using namespace std;
 
+// Kết quả lọc danh mục sách theo thể loại (không dùng con trỏ)
 struct CategoryResult {
-    vector<Book*> books;
-    long long executionTime; // nanoseconds
-    long long comparisons;   // số lần so sánh key/category
-    string method;           // "Linear Scan" hoặc "Category Hash"
-    string bigO;             // "O(n)" hoặc "O(1 + k) average"
+    vector<Book> books;      // Danh sách sách thuộc thể loại
+    bool found;              // Có tìm thấy sách nào không
+    long long executionTime; // Thời gian chạy (nanoseconds)
+    long long comparisons;   // Số lần so sánh tên thể loại
+    string method;           // Tên giải thuật
+    string bigO;             // Độ phức tạp lý thuyết
 
     CategoryResult()
-        : executionTime(0), comparisons(0), method(""), bigO("") {}
+        : found(false), executionTime(0), comparisons(0), method(""), bigO("") {}
 
-    CategoryResult(const vector<Book*>& bList, long long timeNs, long long comp, const string& m, const string& bo)
-        : books(bList), executionTime(timeNs), comparisons(comp), method(m), bigO(bo) {}
+    CategoryResult(const vector<Book>& bList, bool isFound, long long timeNs, long long comp, const string& m, const string& bo)
+        : books(bList), found(isFound), executionTime(timeNs), comparisons(comp), method(m), bigO(bo) {}
 };
 
 #endif // CATEGORY_RESULT_H

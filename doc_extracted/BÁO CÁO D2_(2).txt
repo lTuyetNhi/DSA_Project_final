@@ -1,0 +1,71 @@
+﻿
+
+w14:paraId="53106594" w14:textId="7C630D73" w:rsidR="00CF6E3B" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">BÁO CÁO D2 – CẤU TRÚC DỮ LIỆU VÀ GIẢI THUẬT
+w14:paraId="1A5B06AE" w14:textId="498AE148" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">NHÓM
+w14:paraId="311C0B51" w14:textId="77777777" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">
+w14:paraId="1ECE860B" w14:textId="2342F13C" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">MÃ LỚP HỌC PHẦN
+w14:paraId="73F92045" w14:textId="2D1B7AF8" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">261DASA230179_06
+w14:paraId="4431A9C3" w14:textId="40C065DB" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">LĨNH VỰC
+w14:paraId="404A7BF3" w14:textId="4DA3E7AB" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">Hệ thống quản lý thư việc/ mượn sách, tài liệu
+w14:paraId="09278E43" w14:textId="083DE760" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">THÀNH VIÊN
+w14:paraId="4D895D8E" w14:textId="3D7811F2" w:rsidR="00C547B3" w:rsidRPr="00C6424C" w:rsidRDefault="00C547B3" w:rsidP="00F20865">
+w14:paraId="701D099E" w14:textId="77777777" w:rsidR="00C547B3" w:rsidRPr="00286880" w:rsidRDefault="00C547B3" w:rsidP="00F20865">
+w14:paraId="2F0553E0" w14:textId="77777777" w:rsidR="0058265F" w:rsidRPr="00286880" w:rsidRDefault="0058265F" w:rsidP="0058265F">ĐỀ TÀI: HỆ THỐNG QUẢN LÝ THƯ VIỆN VÀ MƯỢN – TRẢ SÁCH
+w14:paraId="4A370B4A" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">1. Lĩnh vực & bối cảnh
+w14:paraId="3CB8FC4F" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Mô tả hệ thống thư viện, đối tượng quản lý và các dữ liệu chính:
+w14:paraId="1FB44828" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Sách: mã sách, tên, tác giả, thể loại, số lượng... 
+w14:paraId="6240D7C2" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Độc giả: mã độc giả, họ tên... 
+w14:paraId="6CA21447" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Phiếu mượn: mã phiếu, mã sách, mã độc giả, ngày mượn, hạn trả, trạng thái... 
+w14:paraId="20F0C9BA" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Danh sách chờ mượn và lịch sử mượn. 
+w14:paraId="6AB44EB4" w14:textId="32F13509" w:rsidR="009F5414" w:rsidRDefault="00F20865" w:rsidP="009F5414">2. MC1 – Tra cứu sách chính xác theo mã sách- Người dùng nhập mã sách để tìm chính xác thông tin của một cuốn sách -> Hệ thống trả về tên sách, tác giả, thể loại, tình trạng và số lượng còn lại
+w14:paraId="0CE4CDBA" w14:textId="0E67C33A" w:rsidR="00BE0DE2" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Đầu vào (Input)
+w14:paraId="40B51423" w14:textId="675D7CCB" w:rsidR="00BE0DE2" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Mã sách cần tra cứu (Chuỗi kí tự, ví dụ: “B01243” ).
+w14:paraId="0C888A7E" w14:textId="6958F686" w:rsidR="00BE0DE2" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Đầu ra (Output)
+w14:paraId="6D35ADCE" w14:textId="6D454C9D" w:rsidR="00BE0DE2" w:rsidRPr="005E48DB" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Bản ghi thông tin sách: Tên sách, Tác giả, Thể loại, Số lượng tồn kho. Nếu không tìm thấy, hệ thống trả về lỗi BookNotFound.
+w14:paraId="6F638FE6" w14:textId="3AD7AE4A" w:rsidR="00BE0DE2" w:rsidRPr="00893214" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Ràng buộc 
+w14:paraId="5994564D" w14:textId="38C1C982" w:rsidR="00BE0DE2" w:rsidRPr="005E48DB" w:rsidRDefault="005338D8" w:rsidP="005338D8">Độ phức tạp truy xuất đạt O(1) hoặc O(log N). Đảm bảo thời gian phản hồi tức thời ở quy mô tối thiểu 10,000+ bản ghi sách.
+w14:paraId="15DA6CCA" w14:textId="2EA5E44B" w:rsidR="00BE0DE2" w:rsidRPr="00893214" w:rsidRDefault="00BE0DE2" w:rsidP="009F5414">Trường hợp 
+w14:paraId="5330E600" w14:textId="6D793531" w:rsidR="005338D8" w:rsidRPr="009F5414" w:rsidRDefault="005338D8" w:rsidP="005338D8">1. Nhập mã sách có khoảng trắng thừa hoặc định dạng chữ hoa/thường lẫn lộn (Hệ thống chuẩn hóa tự động).
+w14:paraId="778C2DD0" w14:textId="394C75D4" w:rsidR="00BE0DE2" w:rsidRPr="005E48DB" w:rsidRDefault="005338D8" w:rsidP="009F5414">2. Cuốn sách đã xóa vật lý khỏi kho nhưng vẫn tồn tại lịch sử mượn trả trong quá khứ.
+w14:paraId="4E11F984" w14:textId="14399CE5" w:rsidR="00333855" w:rsidRDefault="00F20865" w:rsidP="00F20865">3. MC2 – Truy xuất sách được mượn nhiều nhất- Hệ thống thống kê số lần mượn của từng cuốn sách và cho phép xác định cuốn sách có lượt mượn cao nhất. Thông tin này có thể hỗ trợ thư viện xác định những đầu sách được độc giả quan tâm nhiều.
+w14:paraId="13C51CCB" w14:textId="58DBA415" w:rsidR="00066D03" w:rsidRDefault="0073490E" w:rsidP="00F20865">Đầu vào (Input)
+w14:paraId="0BEE636D" w14:textId="4F25F02A" w:rsidR="00066D03" w:rsidRDefault="00B9752C" w:rsidP="00F20865">Yêu cầu hệ thống truy xuất (Kích hoạt không tham số).
+w14:paraId="00D54C51" w14:textId="4B5132AF" w:rsidR="00066D03" w:rsidRDefault="0073490E" w:rsidP="00F20865">Đầu ra (Output)
+w14:paraId="11DD6D36" w14:textId="323DBC86" w:rsidR="00066D03" w:rsidRDefault="00B9752C" w:rsidP="00B9752C">Thông tin của cuốn sách có lượt mượn lớn nhất (Mã sách, Tên sách, Số lượt mượn).
+w14:paraId="5AF9EB0E" w14:textId="16F50DA7" w:rsidR="00066D03" w:rsidRDefault="0073490E" w:rsidP="00F20865">Ràng buộc
+w14:paraId="7867940A" w14:textId="77777777" w:rsidR="00B9752C" w:rsidRPr="00B9752C" w:rsidRDefault="00B9752C" w:rsidP="00B9752C">Tải mượn sách thay đổi liên tục. Thao tác lấy phần tử cực trị này
+w14:paraId="40BB5EF6" w14:textId="27B58AFC" w:rsidR="00066D03" w:rsidRDefault="00B9752C" w:rsidP="00B9752C">phải đạt độ phức tạp O(1) hoặc O(log N), tránh duyệt mảng sắp xếp lại.
+w14:paraId="2912D1EF" w14:textId="75DF149D" w:rsidR="00066D03" w:rsidRDefault="0073490E" w:rsidP="00F20865">Trường hợp
+w14:paraId="15857B67" w14:textId="7E781E24" w:rsidR="00E37A9F" w:rsidRPr="00E37A9F" w:rsidRDefault="00E37A9F" w:rsidP="00E37A9F">1. Đồng hạng: Nhiều sách có số lượt mượn bằng nhau (Trả về cuốn sách mượn sớm nhất hoặc danh sách rút gọn).
+w14:paraId="520C8096" w14:textId="36BDABA9" w:rsidR="00066D03" w:rsidRDefault="00E37A9F" w:rsidP="00E37A9F">2. Thư viện mới thành lập, lượt mượn của tất cả sách đều bằng 0 (Trả về lỗi danh sách trống).
+w14:paraId="0D3BF69A" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">4. RQ1 – Truy xuất sách theo thể loại
+w14:paraId="50703BD3" w14:textId="7AAE743D" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">- Nhận thấy trong thực tế, người dùng không phải lúc nào cũng biết mã sách. Họ có thể chỉ biết mình muốn tìm sách thuộc một thể loại nhất định, chẳng hạn Công nghệ thông tin, Văn học hoặc Kinh tế.
+w14:paraId="5905EBAE" w14:textId="46211436" w:rsidR="00F20865" w:rsidRDefault="00F20865" w:rsidP="00F20865">Hệ thống vì vậy cần cho phép người dùng chọn một thể loại và trả về toàn bộ sách thuộc thể loại đó. Ví dụ sách thể loại Công nghệ Thông tin( mã sách gồm 01, 02, 03..)
+w14:paraId="25805B61" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Đầu vào (Input)
+w14:paraId="483E52FB" w14:textId="0B53F0C6" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Tên thể loại cần lọc (Chuỗi kí tự, ví dụ: “Văn học”).
+w14:paraId="65DB39F3" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Đầu ra (Output)
+w14:paraId="264B11D8" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Danh sách toàn bộ các cuốn sách thuộc thể loại đó (Mã sách, Tên sách, Tác giả, Số lượng tồn).
+w14:paraId="5AC3CB59" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Ràng buộc
+w14:paraId="245CEC1A" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Truy xuất danh sách theo thể loại nhanh chóng, loại bỏ duyệt tuần tự toàn bộ thư viện.
+w14:paraId="23ECDCE8" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">Trường hợp
+w14:paraId="50E36F25" w14:textId="77777777" w:rsidR="00333855" w:rsidRPr="00E27478" w:rsidRDefault="00333855" w:rsidP="004D3EC3">1. Thể loại hợp lệ chưa có sách gán (Trả về thông báo “Chưa có sách thuộc thể loại này”)
+w14:paraId="402BC77E" w14:textId="77777777" w:rsidR="00333855" w:rsidRDefault="00333855" w:rsidP="004D3EC3">2. Nhập thể loại không chuẩn (ví dụ “cntt”; thay vì “Công nghệ thông tin”; - hệ thống cần tự động ánh xạ gần đúng).
+w14:paraId="1CED178C" w14:textId="67E5EC7D" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">5. RQ2 – Truy xuất sách đang được mượn / quá hạn- Hệ thống cần theo dõi những sách hiện đang được độc giả mượn và xác định những trường hợp đã quá hạn trả. Mỗi phiếu mượn được lưu các thông tin như mã độc giả, mã sách, ngày mượn, hạn trả và trạng thái.
+w14:paraId="4EAD0909" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Hệ thống có thể phân loại thành:
+w14:paraId="5F407A6E" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Đang mượn: chưa đến hạn trả. 
+w14:paraId="47A5B7D6" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Quá hạn: đã vượt quá ngày hạn trả nhưng chưa được trả. 
+w14:paraId="3B8A5978" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">Thông tin này giúp thư viện dễ dàng theo dõi sách đang lưu thông và phát hiện các trường hợp cần nhắc trả.
+w14:paraId="6D009A2A" w14:textId="77777777" w:rsidR="000C3131" w:rsidRDefault="000C3131" w:rsidP="004D3EC3">Đầu vào (Input)
+w14:paraId="4B2725C8" w14:textId="3F8AB4F3" w:rsidR="000C3131" w:rsidRDefault="004618CA" w:rsidP="004D3EC3">Ngày kiểm tra hiện hành (Ví dụ: “2026-09-02”).
+w14:paraId="5A2616F1" w14:textId="77777777" w:rsidR="000C3131" w:rsidRDefault="000C3131" w:rsidP="004D3EC3">Đầu ra (Output)
+w14:paraId="037BC7E6" w14:textId="22F65E48" w:rsidR="004618CA" w:rsidRPr="004618CA" w:rsidRDefault="004618CA" w:rsidP="004618CA">Hai danh sách phân loại rõ ràng:
+w14:paraId="15396539" w14:textId="17A9EAF4" w:rsidR="004618CA" w:rsidRPr="004618CA" w:rsidRDefault="004618CA" w:rsidP="004618CA">1. Phiếu “Đang mượn”; (Hạn trả =>Ngày kiểm tra), xếp theo hạn trả tăng dần.
+w14:paraId="024B08BA" w14:textId="15D89309" w:rsidR="000C3131" w:rsidRDefault="004618CA" w:rsidP="004618CA">2. Phiếu “Quá hạn”; (Hạn trả <Ngày kiểm tra), xếp theo số ngày quá hạn giảm dần.
+w14:paraId="266CC42F" w14:textId="77777777" w:rsidR="000C3131" w:rsidRDefault="000C3131" w:rsidP="004D3EC3">Ràng buộc
+w14:paraId="0548C6F5" w14:textId="77777777" w:rsidR="005E48DB" w:rsidRPr="005E48DB" w:rsidRDefault="005E48DB" w:rsidP="005E48DB">Việc phân loại phải lọc tách biệt luồng phiếu đang hoạt động với lịch
+w14:paraId="35AF11DF" w14:textId="540559CA" w:rsidR="000C3131" w:rsidRDefault="005E48DB" w:rsidP="005E48DB">sử lưu trữ hàng chục nghìn phiếu đã trả nhằm tối ưu hóa bộ nhớ.
+w14:paraId="6C6EFCE0" w14:textId="77777777" w:rsidR="000C3131" w:rsidRDefault="000C3131" w:rsidP="004D3EC3">Trường hợp
+w14:paraId="3C5F87FC" w14:textId="509A614E" w:rsidR="005E48DB" w:rsidRPr="005E48DB" w:rsidRDefault="005E48DB" w:rsidP="005E48DB">1. Định dạng ngày nhập vào không hợp lệ hoặc là ngày trong quá khứ so với ngày mượn.
+w14:paraId="37F091FC" w14:textId="7F582E5A" w:rsidR="005E48DB" w:rsidRPr="005E48DB" w:rsidRDefault="005E48DB" w:rsidP="005E48DB">2. Độc giả báo mất sách (Cần trạng thái đặc biệt “Chờ xử lý mất
+w14:paraId="7A7EB733" w14:textId="47EE8679" w:rsidR="000C3131" w:rsidRDefault="005E48DB" w:rsidP="005E48DB">Sách”; để tránh đưa vào nhóm quá hạn thông thường).
+w14:paraId="5AD8659F" w14:textId="77777777" w:rsidR="00F20865" w:rsidRPr="00286880" w:rsidRDefault="00F20865" w:rsidP="00F20865">

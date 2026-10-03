@@ -9,18 +9,18 @@ TitleSearchResult LinearTitleScan::search(vector<Book>& books, const string& key
     auto start = chrono::high_resolution_clock::now();
 
     string targetKw = StringUtils::toLower(keyword);
-    vector<Book*> foundBooks;
+    vector<Book> foundBooks;
 
     // Duyet tuan tu qua tat ca sach trong he thong va kiem tra tieu de
     for (size_t i = 0; i < books.size(); ++i) {
         booksChecked++;
         if (StringUtils::toLower(books[i].title).find(targetKw) != string::npos) {
-            foundBooks.push_back(&books[i]);
+            foundBooks.push_back(books[i]);
         }
     }
 
     auto end = chrono::high_resolution_clock::now();
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
-    return TitleSearchResult(foundBooks, durationNs, booksChecked, "Full Linear Title Scan", "O(n) + string matching");
+    return TitleSearchResult(foundBooks, !foundBooks.empty(), durationNs, booksChecked, "Full Linear Title Scan", "O(n) + string matching");
 }

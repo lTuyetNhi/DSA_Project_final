@@ -9,18 +9,18 @@ CategoryResult LinearCategoryScan::search(vector<Book>& books, const string& cat
     auto start = chrono::high_resolution_clock::now();
 
     string target = StringUtils::toLower(category);
-    vector<Book*> foundBooks;
+    vector<Book> foundBooks;
 
     // Duyet tuan tu toan bo sach de tim sach co the loai khop
     for (size_t i = 0; i < books.size(); ++i) {
         comparisons++;
         if (StringUtils::toLower(books[i].category) == target) {
-            foundBooks.push_back(&books[i]);
+            foundBooks.push_back(books[i]);
         }
     }
 
     auto end = chrono::high_resolution_clock::now();
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
-    return CategoryResult(foundBooks, durationNs, comparisons, "Linear Category Scan", "O(n)");
+    return CategoryResult(foundBooks, !foundBooks.empty(), durationNs, comparisons, "Linear Category Scan", "O(n)");
 }

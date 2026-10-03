@@ -1,0 +1,485 @@
+﻿
+
+w14:paraId="7AADC61E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">YÊU CẦU ĐỒ ÁN NHÓM (GROUP PROJECT) — BẢN CHÍNH THỨC
+w14:paraId="779662D5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Học phần: Cấu trúc Dữ liệu và Giải thuật — Data Structures and Algorithms (DASA230179)
+w14:paraId="5F5A81FC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thông tin
+w14:paraId="2E397D16" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nội dung
+w14:paraId="51149FAB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trọng số
+w14:paraId="1F3E3EE9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">50% điểm học phần
+w14:paraId="4D64C92E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Số thành viên/nhóm
+w14:paraId="2E86C1AE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">4–5 sinh viên
+w14:paraId="3E55D851" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phạm vi kiến thức
+w14:paraId="7E586049" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chương 1–16 của giáo trình.
+w14:paraId="10067A41" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giảng viên
+w14:paraId="638CC975" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bao Vu Dinh (T-Bao)
+w14:paraId="09EBDDA4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày ban hành
+w14:paraId="38A2A449" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">27/08/2026
+w14:paraId="6087AC58" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đây là văn bản yêu cầu chính thức cho Đồ án nhóm — nhiệm vụ đánh giá tích hợp (integrative performance task) quan trọng nhất của học phần. Hãy đọc kỹ toàn bộ tài liệu trước khi nhóm bắt đầu làm việc, đặc biệt là Mục 3 (chuẩn đầu ra), Mục 5–6 (yêu cầu kỹ thuật), Mục 11 (đánh giá cá nhân) và Mục 19 (checklist nộp bài).
+w14:paraId="4FEB929F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="1B64B1C2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">1. Mục đích của đồ án
+w14:paraId="01042AB5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trong suốt học phần, mỗi bài kiểm tra hay bài lab chỉ đánh giá một năng lực riêng lẻ: một quiz kiểm tra khả năng phân tích độ phức tạp, một lab kiểm tra một cách cài đặt cụ thể. Đồ án Nhóm làm điều ngược lại: đưa ra một bài toán chỉ có thể giải quyết được khi các em mô hình hóa nó, so sánh các lựa chọn thực sự khác nhau, cài đặt một giải pháp, đo lường hiệu năng của nó, và bảo vệ kết quả trước một người sẽ hỏi lại "tại sao không chọn cách khác?".
+w14:paraId="17E72352" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đây cũng chính là cấu trúc của CLO8 — chuẩn đầu ra "capstone" của học phần — và là lý do Đồ án Nhóm là minh chứng chính cho CLO8.
+w14:paraId="1942B1CC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đồ án không phải là bài tập "hãy cài đặt cấu trúc dữ liệu X". Không có cấu trúc dữ liệu nào được nêu tên trong đề bài. Nhiệm vụ của các em là đọc một mô tả bài toán, tự phân tích access pattern, so sánh các cấu trúc đã học, và chọn cùng với việc giải thích và bảo vệ lựa chọn đó.
+w14:paraId="2EAB9625" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="07ABE006" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">2. Đề bài / Kịch bản
+w14:paraId="67BE0874" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">2.1 Bối cảnh
+w14:paraId="00572A2A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm của các em là đội kỹ thuật cho một tổ chức (giả định) cần một "records-and-decision engine": một phần mềm lưu trữ một tập hợp bản ghi ngày càng lớn, và trả lời một số câu hỏi vận hành cố định về tập hợp đó, thật nhanh, ngay cả khi dữ liệu liên tục thay đổi.
+w14:paraId="2AF94B26" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khách hàng không biết hash table hay binary search tree là gì, và cũng không cần biết. Họ chỉ mô tả hệ thống phải làm gì. Có 2 yêu cầu giống nhau cho mọi nhóm (Mục 5.1) để đảm bảo có một nền tảng chung có thể so sánh được. Phần còn lại, các em phải tự tìm ra bằng cách phân tích lĩnh vực (domain) mà nhóm chọn (Mục 5.2), nghĩa là hai nhóm cùng chọn một lĩnh vực trong danh sách gợi ý vẫn có thể đưa ra các yêu cầu khác nhau, nếu đọc đề bài theo cách khác nhau.
+w14:paraId="38C4CBFF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có cấu trúc dữ liệu nào được nêu tên trong đề bài. Nêu tên một cấu trúc trước khi hoàn thành phân tích ở Mục 5–6 sẽ bị coi là đi tắt (shortcut), không phải là giải pháp (xem Mục 18).
+w14:paraId="70D2B9AB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">2.2 Danh sách lĩnh vực (domain menu)
+w14:paraId="5F29D2A0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mỗi nhóm chọn một lĩnh vực dưới đây, hoặc đề xuất lĩnh vực riêng (Mục 2.3).
+w14:paraId="6282278E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lĩnh vực
+w14:paraId="36344DD9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mô tả ngắn
+w14:paraId="56DDE361" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống thư viện / mượn tài liệu
+w14:paraId="1968D596" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thành viên mượn/trả tài liệu; nhân viên cần tra cứu nhanh, duyệt theo phạm vi, cơ chế đặt trước/xếp hàng chờ (hold/waitlist), khái niệm "gần đây" hoặc "đang được quan tâm".
+w14:paraId="7293B922" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống đăng ký học phần & waitlist
+w14:paraId="283251D4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sinh viên tìm kiếm và đăng ký lớp; phòng đào tạo cần tra cứu, duyệt theo mã ngành/khoa, danh sách chờ, và lịch sử thêm/hủy môn.
+w14:paraId="3934DB22" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống hàng đợi & hồ sơ bệnh nhân phòng khám
+w14:paraId="3BC78AEF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phòng khám theo dõi bệnh nhân và lượt khám; nhân viên cần tra cứu, duyệt lịch hẹn theo khoảng thời gian, cơ chế ưu tiên theo mức độ khẩn cấp (triage), và danh sách "vừa được khám".
+w14:paraId="682AEF21" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống quản lý kho & xử lý đơn hàng thương mại điện tử
+w14:paraId="5224C3FE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cửa hàng online quản lý danh mục sản phẩm và đơn hàng; nhân viên cần tra cứu, duyệt sản phẩm, cơ chế ưu tiên xử lý đơn gấp, và danh sách "vừa xem/vừa nhập kho".
+w14:paraId="2A70EF19" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống đặt vé sự kiện / địa điểm
+w14:paraId="49915A50" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nền tảng bán vé quản lý các lượt đặt chỗ; nhân viên cần tra cứu, duyệt theo khoảng (suất chiếu/ghế), danh sách chờ (standby), và lịch sử giao dịch gần đây.
+w14:paraId="5C2050DD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống quản lý ticket hỗ trợ khách hàng
+w14:paraId="5ECB178F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bộ phận hỗ trợ quản lý các ticket; nhân viên cần tra cứu, duyệt theo ngày/mức SLA, cơ chế leo thang ưu tiên (escalation), và danh sách "ticket vừa xử lý" khi chuyển đổi qua lại giữa các ticket.
+w14:paraId="14C6C37A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">2.3 Đề xuất lĩnh vực riêng
+w14:paraId="2845EDFF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm có thể đề xuất lĩnh vực khác, giảng viên duyệt đề xuất trước khi nhóm bước vào giai đoạn Design.
+w14:paraId="1DC81ED7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="2153D15C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">3. Chuẩn đầu ra liên quan (CLO Alignment)
+w14:paraId="27937331" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đồ án là minh chứng chính (primary) cho các CLO sau:
+w14:paraId="5EB6DE30" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO
+w14:paraId="2876CAE7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nội dung (tóm tắt)
+w14:paraId="34F19F3A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO1
+w14:paraId="34764F69" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mô hình hóa bài toán qua input/output/ràng buộc; lập luận đúng đắn (correctness); xác định phản ví dụ (counterexample).
+w14:paraId="299403A1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO3
+w14:paraId="2E5C0D35" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt, kiểm thử, debug các cấu trúc dữ liệu cốt lõi; kết nối cài đặt với chi phí đã phân tích; chịu trách nhiệm cá nhân về tính đúng đắn.
+w14:paraId="15746BD8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO7
+w14:paraId="2E59F717" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt và phân tích các cấu trúc dữ liệu phân cấp (hierarchical); đánh giá điều kiện suy giảm hiệu năng (degradation).
+w14:paraId="72714FEA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO8 (capstone)
+w14:paraId="0013B0F5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đánh giá một bài toán mới; xác định access pattern và dominant operation; chọn và bảo vệ cấu trúc dữ liệu đã chọn — cả cá nhân lẫn theo nhóm.
+w14:paraId="3AD4EB1D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đồ án củng cố (reinforce), nhưng không phải là minh chứng chính, cho:
+w14:paraId="154C9DFC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO
+w14:paraId="375583C5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Vì sao
+w14:paraId="13B52E1F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO4 (tìm kiếm & sắp xếp cơ bản)
+w14:paraId="28B715DB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chỉ xuất hiện nếu lĩnh vực của nhóm thực sự cần nạp dữ liệu số lượng lớn (bulk load) và sắp xếp — không bị ép buộc vào mọi nhóm. Minh chứng chính cho CLO4 nằm ở Continuous Assessment.
+w14:paraId="0F94F3E2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO6 (divide-and-conquer)
+w14:paraId="605CF08D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tương tự — chỉ xuất hiện nơi thiết kế của nhóm thực sự cần đến.
+w14:paraId="5D103A16" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO2 (ký hiệu tiệm cận) và CLO5 (đệ quy, recurrence) không được đánh giá qua đồ án này — hai CLO này đã có minh chứng chính từ Continuous Assessment, nơi có thể kiểm tra dưới điều kiện cá nhân, có kiểm soát.
+w14:paraId="52915760" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="2CD1E19B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">4. Nhiệm vụ bắt buộc
+w14:paraId="0AC8C816" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chọn hoặc đề xuất một lĩnh vực (Mục 2).
+w14:paraId="53B0A020" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mỗi thành viên tự viết bài đọc-hiểu đề bài của riêng mình, trước khi cả nhóm thảo luận chung.
+w14:paraId="39FBC4F1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phân tích lĩnh vực để đáp ứng 2 yêu cầu bắt buộc chung (Mục 5.1) và tự phát hiện 2–3 yêu cầu riêng của lĩnh vực (Mục 5.2) — không được sao chép từ lĩnh vực của nhóm khác, kể cả khi tương tự.
+w14:paraId="0ABF18D0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xác định ít nhất một xung đột yêu cầu thực sự (Mục 5.4) và giải quyết nó — bằng cách kết hợp 2 cấu trúc, hoặc bằng một đánh đổi (trade-off) có chủ đích trên một cấu trúc duy nhất.
+w14:paraId="60278D12" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xây dựng bảng so sánh và áp dụng quy trình Q1–Q4 (Mục 6.1) cho mọi yêu cầu, cả bắt buộc lẫn tự phát hiện.
+w14:paraId="685BDD81" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thiết kế kiến trúc 3 tầng (Mục 7): presentation, DSA core, persistence.
+w14:paraId="274D8245" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt giải pháp, bao gồm ít nhất 2 cấu trúc dữ liệu tự cài đặt từ đầu (from scratch), thực sự trung tâm trong các quyết định thiết kế của nhóm (Mục 6.2).
+w14:paraId="638B53D3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cung cấp bằng chứng hiệu năng phù hợp với quy mô của lĩnh vực (Mục 5.3).
+w14:paraId="731BBFC8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiểm thử, debug, và viết tài liệu cho hệ thống.
+w14:paraId="0A995EB6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Quyết định mức độ đầu tư cho web visualization (Mục 8) — nếu làm rất ít hoặc không làm, phải giải thích ngắn gọn vì sao.
+w14:paraId="38D313C1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trình bày và bảo vệ cá nhân kết quả (Mục 14).
+w14:paraId="14A9B054" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="4CDE387E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">5. Yêu cầu chức năng và kỹ thuật
+w14:paraId="042A1989" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">5.1 Hai yêu cầu bắt buộc chung (giống nhau cho mọi nhóm)
+w14:paraId="5E22557D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mã
+w14:paraId="66368981" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Yêu cầu
+w14:paraId="554605AF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Vì sao bắt buộc chung
+w14:paraId="27FC0EF7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">MC1 — Tra cứu chính xác ở quy mô lớn
+w14:paraId="0BD6CEDC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Truy xuất một bản ghi duy nhất, tin cậy, theo định danh (identifier) của nó, ở quy mô dữ liệu mà việc quét tuyến tính (linear scan) rõ ràng chậm.
+w14:paraId="4ACA7915" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mọi hệ thống quản lý dữ liệu đều cần điều này; không ép sẵn một cấu trúc cụ thể — hash table hay một chỉ mục dạng cây đều có thể là câu trả lời đúng, tùy vào các yêu cầu khác.
+w14:paraId="48EE8A19" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">MC2 — Truy xuất theo thứ tự / khoảng / mức ưu tiên
+w14:paraId="0234AC17" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lĩnh vực phải có ít nhất một thao tác thường xuyên cần đến thứ tự: kết quả có sắp xếp, một khoảng giá trị (range), hoặc lấy ra phần tử cực trị (ưu tiên cao nhất/sớm nhất) một cách lặp lại.
+w14:paraId="39BA9B03" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đây là loại yêu cầu mà hash table không thể trả lời — biến câu hỏi Q1 của Chương 16 ("có cần thứ tự không?") thành một quyết định thực sự, không phải hình thức.
+w14:paraId="26BB5111" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">5.2 Yêu cầu do nhóm tự phát hiện (2–3 yêu cầu)
+w14:paraId="7B21C29A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trong giai đoạn hình thành ý tưởng, mỗi nhóm phải tự xác định 2–3 thao tác bổ sung riêng của lĩnh vực mình — thông qua phân tích yêu cầu của chính nhóm, không lấy từ danh sách có sẵn. Một yêu cầu tự phát hiện chỉ hợp lệ khi: là thao tác thật sự mà người dùng hệ thống cần, được diễn đạt mà không nêu tên cấu trúc, và đủ khác biệt để không chỉ là MC1/MC2 diễn đạt lại.
+w14:paraId="59338E72" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Một số ví dụ về dạng yêu cầu phù hợp (không phải danh sách để chọn): hoàn tác (undo) hành động gần nhất; xử lý theo nguyên tắc đến trước-phục vụ trước; tìm kiếm theo tiền tố (prefix/autocomplete); một danh sách "vừa được thao tác" luôn phải cập nhật; một bộ nhớ đệm (cache) có giới hạn dung lượng; một báo cáo tạo một lần và chỉ đọc nhiều lần sau đó.
+w14:paraId="29EC9909" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Vì đây là yêu cầu do từng nhóm tự khám phá, hai nhóm cùng lĩnh vực hoàn toàn có thể có các yêu cầu tự phát hiện khác nhau — và do đó chọn cấu trúc dữ liệu khác nhau. Đây là điều có chủ đích, không phải là sự thiếu nhất quán khi chấm điểm.
+w14:paraId="74B7BE24" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">5.3 Bằng chứng hiệu năng (điều chỉnh theo quy mô lĩnh vực)
+w14:paraId="48065D0B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mỗi nhóm phải cung cấp bằng chứng thực nghiệm cho thấy giải pháp cho MC1/MC2 hoạt động đúng như phân tích độ phức tạp dự đoán, ở quy mô đủ lớn để thấy rõ khác biệt so với cách tiếp cận tuyến tính (naive). Vì các lĩnh vực khác nhau có quy mô dữ liệu thực tế khác nhau (một hệ thống ticket hỗ trợ và một danh mục học phần của trường không cùng bậc độ lớn), nhóm tự đề xuất một mục tiêu quy mô hợp lý. Nếu chưa có cơ sở tốt hơn: tối thiểu 10.000 bản ghi giả lập, đo tại ít nhất 2 mốc quy mô cách nhau ít nhất một bậc độ lớn (order of magnitude).
+w14:paraId="372C537A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nơi hợp lý nhất để lấy bằng chứng này là bước nạp dữ liệu ban đầu (bulk load) của tầng persistence (Mục 7.3) — không cần tạo thêm một bài tập riêng.
+w14:paraId="3A8B390D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">5.4 Yêu cầu xung đột (bắt buộc, không quy định cơ chế giải quyết)
+w14:paraId="0A187760" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ít nhất một cặp yêu cầu trong thiết kế của nhóm — hai yêu cầu tự phát hiện, hoặc một yêu cầu tự phát hiện với một yêu cầu bắt buộc chung — phải thực sự xung đột với nhau: không có cấu trúc dữ liệu nào đã học đáp ứng tốt cả hai. Nhóm phải trình bày cách giải quyết, chọn một trong hai hướng:
+w14:paraId="67A85492" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kết hợp cấu trúc (composition) — kết hợp 2 cấu trúc, mỗi cấu trúc đảm nhận phần mà cấu trúc kia không làm được, và giữ đồng bộ (mô hình mà Chương 16 dùng cho LRU cache); hoặc
+w14:paraId="3FC155CE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đánh đổi có chủ đích trên một cấu trúc (trade-off) — chọn một cấu trúc duy nhất, và nêu rõ thao tác nào bị hy sinh, vì sao sự đánh đổi đó chấp nhận được với lĩnh vực này.
+w14:paraId="7705A7D5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chương 16 nêu rõ: kết hợp cấu trúc chỉ là một trong các cách giải quyết hợp lý, không phải cách duy nhất — phần được đánh giá là lập luận, không phải cơ chế cụ thể được chọn.
+w14:paraId="2F049B14" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="5EBE1C1D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">6. Kiến thức DSA bắt buộc sử dụng
+w14:paraId="3E497A2C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">6.1 Khung lựa chọn Chương 16 (phương pháp bắt buộc)
+w14:paraId="23E0CA92" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">7 tiêu chí so sánh (find-by-key, find-by-position, chi phí insert/delete, ordered traversal, range/neighbour query, extremes, worst-case vs. average-case) và quy trình quyết định Q1–Q4 (thứ tự → loại key/workload → chấp nhận worst-case hay không → các yếu tố phi tiệm cận) phải được áp dụng, thể hiện rõ ràng, cho mọi yêu cầu ở Mục 5 — cả bắt buộc lẫn tự phát hiện. Mỗi quyết định chọn cấu trúc phải nêu rõ đánh đổi (trade-off) đã chấp nhận và điều kiện sẽ làm lựa chọn đó không còn đúng.
+w14:paraId="01C7FBB0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">6.2 Cấu trúc dữ liệu trong phạm vi và yêu cầu tự cài đặt
+w14:paraId="700F4EB3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Các cấu trúc có thể dùng: dynamic array, sorted array, singly/doubly linked list, stack/queue/deque, hash table, balanced BST (chỉ cần hiểu khái niệm tự cân bằng, không bắt buộc tự cài đặt logic xoay AVL/red-black), binary heap/priority queue, trie và Union-Find (chỉ khi một yêu cầu tự phát hiện thực sự cần tìm kiếm theo tiền tố hoặc câu hỏi "cùng nhóm hay không").
+w14:paraId="164B18FA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ít nhất 2 cấu trúc dữ liệu quan trọng, thực sự trung tâm trong quyết định thiết kế của nhóm, phải được tự cài đặt từ đầu. Đây phải là các cấu trúc mà nhóm thực sự đã chọn thông qua lập luận Q1–Q4 ở Mục 6.1 — không phải hai cấu trúc dễ, trùng lặp chức năng, chỉ để "cho đủ số lượng".
+w14:paraId="5A09E13F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">6.3 Giải thuật — thường cần, nhưng không ép buộc
+w14:paraId="48131117" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Một giải thuật divide-and-conquer (merge sort hoặc quicksort) là cách tự nhiên nhất để chuẩn bị dữ liệu nạp hàng loạt (Mục 5.3, 7.3) cho MC1/MC2, và binary search (hoặc cơ chế tra cứu tương đương) là cách tự nhiên để truy vấn dữ liệu đó.
+w14:paraId="1E838C14" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nếu lĩnh vực và các yêu cầu cụ thể của nhóm thực sự không cần sắp xếp hàng loạt hay chia-để-trị ở bất kỳ đâu, nhóm không bắt buộc phải "gán" thêm một chỗ để dùng — nhưng báo cáo phải nói rõ điều này và giải thích vì sao. Việc nhận ra khi nào một kỹ thuật không áp dụng cũng là một phần của CLO8, không kém việc áp dụng nó.
+w14:paraId="37A1A43F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">6.4 Ngoài phạm vi
+w14:paraId="4F26DB94" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Biểu diễn và duyệt đồ thị (graph, BFS/DFS), thuật toán đường đi ngắn nhất/cây khung nhỏ nhất, thiết kế greedy, dynamic programming, backtracking, và lập luận P/NP/intractability — không nằm trong phạm vi đồ án. Nếu lĩnh vực của nhóm có xu hướng cần các nội dung này (ví dụ: "định tuyến tối ưu", "đường đi ngắn nhất"), phải điều chỉnh lại đề bài — được kiểm tra khi duyệt đề xuất (Mục 2.3) và tại checkpoint Ngày 12.
+w14:paraId="20C29CAD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="65015F81" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">7. Kiến trúc hệ thống: Presentation / DSA Core / Persistence
+w14:paraId="00B9BCB9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hệ thống phải được tổ chức thành 3 tầng rõ ràng. Báo cáo Design phải có một đoạn ngắn (hoặc sơ đồ đơn giản) chỉ rõ logic của từng yêu cầu nằm ở tầng nào.
+w14:paraId="7089A50D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">7.1 Tầng Presentation (giao diện) — Command-line, script demo, giao diện web tối giản (Mục 8), hoặc kết hợp. Tầng này chỉ nhận input và hiển thị output — không được chứa logic cấu trúc dữ liệu.
+w14:paraId="6B8DC521" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">7.2 Tầng DSA Core / logic ứng dụng (tầng được đánh giá chính) — Chứa các cấu trúc dữ liệu đã chọn và biện minh ở Mục 6, và là nơi mọi thao tác ở Mục 5 (MC1, MC2, các yêu cầu tự phát hiện) thực sự được thực thi.
+w14:paraId="38D06D76" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">7.3 Tầng Persistence (lưu trữ bền vững)
+w14:paraId="2F04260E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tối thiểu: file CSV hoặc JSON — nạp vào cấu trúc trong bộ nhớ khi khởi động, ghi ra khi lưu/tắt chương trình.
+w14:paraId="4D34A6ED" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nâng cao (tùy chọn): SQLite hoặc một cơ sở dữ liệu nhẹ khác.
+w14:paraId="77F4A2A4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhiệm vụ của tầng persistence là lưu trữ bền vững, không phải truy vấn. MC1, MC2, và mọi yêu cầu tự phát hiện phải được thực thi trên cấu trúc dữ liệu trong bộ nhớ của nhóm — không thông qua WHERE, ORDER BY, hay index xây sẵn trong SQLite. Nạp bảng dữ liệu rồi dùng SQL để trả lời trực tiếp yêu cầu mà đồ án đang đánh giá sẽ bị coi là lỗi thiết kế (Mục 15, tiêu chí Architecture), không được tính là một cách làm sáng tạo.
+w14:paraId="7F1077E4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không yêu cầu và không kỳ vọng: chuẩn hóa (normalization), quản lý transaction, kiến trúc ORM, cơ sở dữ liệu phân tán, hay bất kỳ chiến lược indexing đặc thù của database. Nếu dùng SQLite, một bảng phẳng (flat table) phản ánh cấu trúc bản ghi trong bộ nhớ là đủ.
+w14:paraId="35D47205" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="3226FDF6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">8. Web-based Visualization
+w14:paraId="1CE99F89" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mức yêu cầu: khuyến khích mạnh, không bắt buộc.
+w14:paraId="499A0417" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phát triển web không phải là một CLO của học phần này.
+w14:paraId="349BBE79" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Visualization có giá trị thực sự (nhưng thứ yếu) trong việc hỗ trợ CLO8 — một hình minh họa cho cấu trúc heap hay biểu đồ benchmark có thể giúp câu trả lời trong buổi bảo vệ rõ ràng và nhanh hơn.
+w14:paraId="55E6F2CF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Một giao diện đơn giản (in cây ra console, một trang HTML cơ bản hiển thị trạng thái cấu trúc, một biểu đồ benchmark) là hoàn toàn đủ — độ tinh xảo giao diện không được chấm điểm riêng (Mục 15).
+w14:paraId="17FDDAA6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm không làm visualization phải nêu rõ lý do ngắn gọn trong báo cáo Design, và không bị trừ điểm vì điều đó, miễn là phần demo (Mục 14) vẫn thể hiện rõ hành vi bắt buộc bằng cách khác (console output có chú thích, trace table, video ngắn).
+w14:paraId="00B9D7EB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chất lượng visualization chỉ ảnh hưởng đến tiêu chí Communication (Mục 15) khi nó thực sự giúp giải thích hành vi DSA rõ hơn — một giao diện đẹp trên nền lập luận yếu không được cộng điểm.
+w14:paraId="749CFC07" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="457D9872" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">9. Sản phẩm bàn giao (Deliverables)
+w14:paraId="7E4E3530" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">#
+w14:paraId="195B623C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sản phẩm
+w14:paraId="61D44B92" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cấp độ
+w14:paraId="28640D96" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hạn nộp
+w14:paraId="7A04A4C6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D1
+w14:paraId="1F324A53" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bài đọc-hiểu đề bài cá nhân (≤1 trang)
+w14:paraId="675A1882" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân
+w14:paraId="066B2293" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Conceive
+w14:paraId="1E2712D8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D2
+w14:paraId="5C0AAF20" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tài liệu Yêu cầu & Bài toán — lĩnh vực, xác nhận MC1/MC2, 2–3 yêu cầu tự phát hiện kèm lý do phát hiện
+w14:paraId="20ED437B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm
+w14:paraId="49428BE4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Conceive
+w14:paraId="51D35BBB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D3
+w14:paraId="3472F418" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Báo cáo Thiết kế & Biện minh Lựa chọn — bảng so sánh, quy trình Q1–Q4, giải pháp cho yêu cầu xung đột (Mục 5.4), phương án bị loại, sơ đồ kiến trúc (Mục 7)
+w14:paraId="390B0A6C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, với phần biện minh của từng cá nhân được ghi rõ
+w14:paraId="779B9292" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Design
+w14:paraId="5296A39E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D4
+w14:paraId="780FD889" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mã nguồn (3 tầng, ≥2 cấu trúc tự cài đặt, có test), lịch sử commit gắn với từng thành viên
+w14:paraId="12F2EE71" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, có thể truy vết cá nhân
+w14:paraId="0CB22378" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Implement
+w14:paraId="1DA6DDE9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D5
+w14:paraId="259BEBD8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bộ test tự động + nhật ký debug + bằng chứng hiệu năng (Mục 5.3)
+w14:paraId="69B379C9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, có phần do từng cá nhân viết
+w14:paraId="2553F654" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Implement
+w14:paraId="0B8E7842" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D6
+w14:paraId="73A827CF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Peer technical review — mỗi thành viên review một thành phần của một bạn cùng nhóm (≤nửa trang)
+w14:paraId="150C1402" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân
+w14:paraId="0B68421C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Implement
+w14:paraId="1C24E8C4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D7
+w14:paraId="4F026AF0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhật ký sử dụng AI & bài phản tư (reflection) cá nhân
+w14:paraId="2ACD5AD2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân
+w14:paraId="2321F7C4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Operate
+w14:paraId="2ED2E7D3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D8
+w14:paraId="6C1466C9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Demo nhóm + bảo vệ cá nhân
+w14:paraId="65B824C1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân + Nhóm
+w14:paraId="6466E424" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Defense
+w14:paraId="0FF31296" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D9
+w14:paraId="7B1CB8F0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Gói nộp bài cuối cùng (tổng hợp toàn bộ)
+w14:paraId="17EFD516" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm
+w14:paraId="66CE773E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Defense
+w14:paraId="303CA1DB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="211A1B96" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">10. Vai trò nhóm và hợp tác
+w14:paraId="01A118D8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Việc phân vai trò trong nhóm 4–5 người nhằm tổ chức quy trình làm việc, không phải để miễn trừ ai khỏi trách nhiệm kỹ thuật.
+w14:paraId="1C42D7A9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mỗi thành viên bắt buộc phải sở hữu ít nhất một đóng góp kỹ thuật thực chất (một thành phần đã cài đặt) và một đóng góp về lập luận/thiết kế (một yêu cầu đã phân tích và biện minh theo Mục 6.1). Một thành viên chỉ đóng góp tài liệu hoặc thuyết trình cuối cùng thì không đạt yêu cầu này.
+w14:paraId="4B5822EC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Dù đảm nhận vai trò nào, mỗi thành viên phải có khả năng giải thích thiết kế tổng thể của hệ thống trong buổi bảo vệ (Mục 14), không chỉ phần của riêng mình.
+w14:paraId="0F408361" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Các buổi họp nhóm định kỳ (ghi chép ngắn gọn) cùng với lịch sử version control là bằng chứng đóng góp.
+w14:paraId="38FCCE8B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="558C8E13" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">11. Cơ chế đánh giá cá nhân (Individual Accountability)
+w14:paraId="0C33581B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Vì một sản phẩm nhóm chung không thể tự nó chứng minh rằng từng thành viên đã đạt được các CLO ở Mục 3, các cơ chế sau đây tạo ra bằng chứng gắn với từng cá nhân:
+w14:paraId="28C7B82F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cơ chế
+w14:paraId="10F1BBA5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Minh chứng cho
+w14:paraId="4E039A75" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bài đọc-hiểu cá nhân (D1)
+w14:paraId="7B4968B8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khả năng mô hình hóa bài toán độc lập, trước khi thảo luận nhóm
+w14:paraId="16254061" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phần biện minh thiết kế do cá nhân viết (D3)
+w14:paraId="2E239837" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Áp dụng cá nhân khung Chương 16
+w14:paraId="793F616D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Quyền sở hữu thành phần (component ownership)
+w14:paraId="0F899D98" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trách nhiệm cài đặt cá nhân — dựa trên version control và tuyên bố sở hữu yêu cầu trong D3, không chỉ dựa vào số lượng commit
+w14:paraId="29CB98F5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Peer technical review (D6)
+w14:paraId="02B7C8B2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kỹ năng giao tiếp, lập luận dựa trên bằng chứng, cởi mở với phản hồi
+w14:paraId="5C03E2B0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bài phản tư cá nhân (phần của D7)
+w14:paraId="1C1C5E6B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sự kiên trì (persistence), trách nhiệm
+w14:paraId="6173FB98" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhật ký sử dụng AI (phần của D7)
+w14:paraId="3987D348" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sử dụng AI có trách nhiệm, liêm chính học thuật
+w14:paraId="5216C4F3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đánh giá đóng góp chéo (peer rating), bảo mật
+w14:paraId="4E8E7C9D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cơ chế điều chỉnh chống "ăn theo" — chỉ điều chỉnh, không thay thế các minh chứng khác
+w14:paraId="3F41D3DE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bảo vệ cá nhân, gồm 1 câu hỏi về thành phần của bạn cùng nhóm (Mục 14)
+w14:paraId="5B69D05A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khả năng bảo vệ phần việc của chính mình, hiểu toàn bộ hệ thống
+w14:paraId="71D2DF29" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nếu một thành viên không thể giải thích, trace, hoặc chỉnh sửa đoạn code được ghi nhận là của mình trong buổi bảo vệ, phần điểm cá nhân tương ứng sẽ bị ảnh hưởng trực tiếp — hệ thống hoạt động tốt của cả nhóm không thể thay thế cho điều này.
+w14:paraId="41C82C71" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="375DD154" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">12. Quy định sử dụng AI
+w14:paraId="25345B09" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">12.1 Tầng Presentation / Web — cho phép sử dụng rộng rãi
+w14:paraId="649521BD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sinh viên có thể dùng AI nhiều cho HTML/CSS, framework frontend, UI component, biểu đồ, hiệu ứng, code visualization, boilerplate, và tích hợp API giữa tầng presentation và tầng DSA core. Vì tầng này không được đánh giá năng lực DSA, chỉ cần ghi chú ngắn gọn trong nhật ký sử dụng AI.
+w14:paraId="483C35B6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">12.2 Tầng DSA core / logic ứng dụng — có trách nhiệm giải trình
+w14:paraId="48E57017" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">AI có thể dùng để khám phá ý tưởng, viết bản nháp đầu tiên, hoặc kiểm tra lại lập luận, nhưng với mọi thứ thuộc tầng core, sinh viên phải: hiểu, kiểm chứng, kiểm thử, có thể chỉnh sửa, và giải thích được trong buổi bảo vệ. Mỗi nhóm phải có ít nhất một AI-audit đã ghi lại: một gợi ý thiết kế hoặc đoạn code do AI tạo ra mà nhóm đã kiểm tra, lỗi hoặc giả định ẩn phát hiện được (hoặc xác nhận không có, kèm lý do), và những gì đã thay đổi.
+w14:paraId="250A0E8E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">12.3 Công bố và buổi bảo vệ
+w14:paraId="0DDD1C28" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mỗi sinh viên duy trì nhật ký sử dụng AI cá nhân (một phần của D7): công cụ dùng, mục đích, phần công việc bị ảnh hưởng, và cách đã kiểm chứng. Buổi bảo vệ cá nhân diễn ra không có quyền truy cập AI, không dùng tài liệu ngoài những gì nhóm đã nộp, và không được bạn cùng nhóm hỗ trợ trong lượt trả lời của mình. Sử dụng sản phẩm AI mà không công bố, trình bày như là của riêng mình, bị coi là vi phạm liêm chính học thuật.
+w14:paraId="768DD157" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="39A4FA41" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">13. Mốc thời gian / quy trình làm việc
+w14:paraId="09216F00" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày (theo lịch học)
+w14:paraId="62AC0F3E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giai đoạn
+w14:paraId="7DD198DC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mốc
+w14:paraId="390753DB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 3
+w14:paraId="6928DC49" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Conceive bắt đầu
+w14:paraId="5F97D3A7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm được thành lập; chọn hoặc đề xuất lĩnh vực và được duyệt (Mục 2).
+w14:paraId="2DC4625C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 5
+w14:paraId="61FE2AAD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Conceive kết thúc
+w14:paraId="6EB82515" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nộp D1 và D2 — bao gồm 2–3 yêu cầu tự phát hiện kèm lý do.
+w14:paraId="504C13B2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 5 → Ngày 12
+w14:paraId="119C83C3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Design (liên tục)
+w14:paraId="3C777920" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đưa ra lựa chọn cấu trúc ban đầu, có lập luận, khi từng chương liên quan được học.
+w14:paraId="04A43358" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 7
+w14:paraId="2A52789C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Implement (giai đoạn đầu)
+w14:paraId="38E9B0A5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">MC1/MC2 hoạt động được; khung tầng persistence đã có.
+w14:paraId="103F9627" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 12
+w14:paraId="72701495" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Implement (giai đoạn cuối) + xác nhận quy mô
+w14:paraId="50D27DBB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt cơ bản hoàn tất, bao gồm giải pháp cho yêu cầu xung đột (Mục 5.4); nhóm xác nhận mục tiêu quy mô bằng chứng hiệu năng (Mục 5.3) với giảng viên.
+w14:paraId="2A6B116E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 13
+w14:paraId="68886547" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Design (chính thức)
+w14:paraId="53A23719" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nộp bản nháp Báo cáo Thiết kế & Biện minh Lựa chọn, áp dụng đầy đủ khung Chương 16 (đã học xong toàn bộ).
+w14:paraId="5E8B81B6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ngày 14–15
+w14:paraId="28FC1BAE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Operate / Evaluate / Defense
+w14:paraId="6ABE9FA6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Demo nhóm, trình bày bằng chứng hiệu năng, bảo vệ cá nhân, nộp bài cuối cùng (D9).
+w14:paraId="42E00785" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="278D5302" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">14. Yêu cầu trình bày / bảo vệ (vấn đáp)
+w14:paraId="73B63775" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cấu trúc cho mỗi nhóm (Ngày 14–15):
+w14:paraId="307A8B80" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Demo nhóm (≈3 phút): hệ thống đáp ứng MC1, MC2, và các yêu cầu tự phát hiện, kèm bằng chứng hiệu năng.
+w14:paraId="68467B0C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lượt bảo vệ cá nhân (≈2,5 phút/thành viên): từng thành viên, không có gợi ý từ bạn cùng nhóm:
+w14:paraId="72EB7B7C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">giải thích/trace/chỉnh sửa một đoạn code được ghi nhận là của mình;
+w14:paraId="4EED351D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">bảo vệ một quyết định thiết kế (đánh đổi + điều kiện làm nó không còn đúng);
+w14:paraId="7D1B771E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">trả lời một câu hỏi giả định "nếu yêu cầu này thay đổi thì sao";
+w14:paraId="21B5B515" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">trả lời một câu hỏi về thành phần của một bạn cùng nhóm;
+w14:paraId="52F0B1C8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">trả lời một câu hỏi từ nhật ký sử dụng AI của mình.
+w14:paraId="76E1269C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Câu hỏi của hội đồng cho cả nhóm (≈2 phút): về phương án bị loại, cách giải quyết yêu cầu xung đột, hoặc một tình huống giả định trực tiếp.
+w14:paraId="36933086" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Buổi bảo vệ diễn ra không có AI, không có ghi chú ngoài tài liệu nhóm đã nộp, và không có sự hỗ trợ từ bạn cùng nhóm trong lượt trả lời của từng cá nhân.
+w14:paraId="47B95647" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="2C2FB437" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">15. Tiêu chí đánh giá và Rubric
+w14:paraId="3D217454" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trọng số các thành phần, trong phạm vi 50% của đồ án:
+w14:paraId="477885E5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thành phần
+w14:paraId="75B571B0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trọng số
+w14:paraId="4CD7626D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cấp độ
+w14:paraId="3F13ABC6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">A. Conceive & Phân tích lĩnh vực (D1, D2)
+w14:paraId="70B1B074" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">15%
+w14:paraId="6BCB5710" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân + Nhóm
+w14:paraId="5F44FAE5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">B. Thiết kế & Biện minh Lựa chọn (D3)
+w14:paraId="745A07D1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">20%
+w14:paraId="3CEADAF5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, có phần cá nhân
+w14:paraId="322849B3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">C. Cài đặt, Kiến trúc & Kiểm thử (D4, D5)
+w14:paraId="4EA01325" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">30%
+w14:paraId="6E0B5857" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân + Nhóm
+w14:paraId="400531E1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D. Bảo vệ cá nhân (D8, lượt cá nhân)
+w14:paraId="22574986" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">25%
+w14:paraId="09AC69C8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cá nhân
+w14:paraId="08FDAB84" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">E. Demo nhóm & Giao tiếp (D8, lượt nhóm)
+w14:paraId="06A9AAD8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">10%
+w14:paraId="360BC350" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm
+w14:paraId="3B15CC28" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">15.1 Mức đánh giá
+w14:paraId="4E45E263" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">4 mức: Xuất sắc (4) / Đạt tốt (3) / Cần cải thiện (2) / Chưa đạt (1).
+w14:paraId="6A0AD138" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">A. Conceive & Phân tích lĩnh vực (15%)
+w14:paraId="3C0948B5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tiêu chí
+w14:paraId="4B3708CB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xuất sắc
+w14:paraId="195920B3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đạt tốt
+w14:paraId="0B483B69" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cần cải thiện
+w14:paraId="6D1BF073" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chưa đạt
+w14:paraId="4D292CB1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mô hình hóa bài toán (D1+D2)
+w14:paraId="3FA45CF7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Input/output/ràng buộc chính xác; edge case được tìm ra trước khi bàn đến bất kỳ cấu trúc nào
+w14:paraId="1F8F4154" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khá chính xác; thiếu vài chi tiết nhỏ
+w14:paraId="55CA05F0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Diễn đạt theo hướng "cấu trúc trước"; thiếu nhiều yêu cầu
+w14:paraId="42529A89" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sao chép mô tả lĩnh vực, không có phân tích riêng
+w14:paraId="5D0C924D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phát hiện yêu cầu riêng của lĩnh vực
+w14:paraId="46558989" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">2–3 thao tác thực sự, khác biệt rõ, có lý do phát hiện thuyết phục
+w14:paraId="5A8A2662" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có yêu cầu nhưng lý do còn mỏng
+w14:paraId="00EF60BC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Yêu cầu gần như lặp lại MC1/MC2
+w14:paraId="7A5ECBAF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có yêu cầu tự phát hiện thực sự
+w14:paraId="4E441D90" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">B. Thiết kế & Biện minh Lựa chọn (20%)
+w14:paraId="262F06AA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tiêu chí
+w14:paraId="751F6A11" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xuất sắc
+w14:paraId="513504DD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đạt tốt
+w14:paraId="7A086155" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cần cải thiện
+w14:paraId="2E8AEBEC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chưa đạt
+w14:paraId="1048FAC5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bảng so sánh & quy trình Q1–Q4
+w14:paraId="5AC92378" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đúng, đầy đủ, cụ thể theo lĩnh vực cho mọi yêu cầu
+w14:paraId="71628C81" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đúng cho hầu hết; sai sót nhỏ
+w14:paraId="6CB52FDD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chung chung hoặc chưa đầy đủ
+w14:paraId="7DFA2CFD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chỉ có khẳng định, không có lập luận
+w14:paraId="7A93BF85" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải quyết yêu cầu xung đột (Mục 5.4)
+w14:paraId="112758A4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xung đột thật sự, giải quyết hợp lý (kết hợp hoặc đánh đổi), lập luận rõ ràng
+w14:paraId="2D804C3E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải quyết đúng; lập luận còn mỏng
+w14:paraId="2DF9B6FF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xung đột gượng ép hoặc giải quyết hời hợt
+w14:paraId="5FEE319F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có xung đột thực sự
+w14:paraId="26BA7C13" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phương án bị loại
+w14:paraId="5B369C7F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lý do cụ thể, chính xác
+w14:paraId="591EABCC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lý do đúng một phần
+w14:paraId="08B18E06" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lý do hời hợt ("vì nó chậm hơn")
+w14:paraId="1EA238A6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không đề cập
+w14:paraId="27B4A2A9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">C. Cài đặt, Kiến trúc & Kiểm thử (30%)
+w14:paraId="57D10236" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tiêu chí
+w14:paraId="084EC323" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xuất sắc
+w14:paraId="50A0D04F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đạt tốt
+w14:paraId="44644230" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cần cải thiện
+w14:paraId="554BFCF5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chưa đạt
+w14:paraId="70DB32C1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tính đúng đắn của MC1/MC2 + yêu cầu tự phát hiện
+w14:paraId="2437077B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mọi thao tác đúng, kể cả edge case
+w14:paraId="6E26CCC7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đúng với trường hợp thông thường; vài lỗi edge case
+w14:paraId="618AD8FD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thao tác cơ bản hoạt động, nhiều edge case lỗi
+w14:paraId="26B354ED" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không đáp ứng được yêu cầu do chính nhóm đề ra
+w14:paraId="1C5631E4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cấu trúc tự cài đặt (Mục 6.2)
+w14:paraId="31C4AA7B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">≥2 cấu trúc, trung tâm cho quyết định thật, được test tốt, gắn với chi phí đã phân tích
+w14:paraId="60CD026E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">≥2 cấu trúc, có test; liên kết chi phí còn mỏng
+w14:paraId="33E31652" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chỉ 1, hoặc cấu trúc tầm thường/trùng lặp để đối phó
+w14:paraId="29DC11E5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có
+w14:paraId="7EDAF43E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiểm thử & debug
+w14:paraId="30D8E13D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Test tự động phủ mọi yêu cầu; nhật ký debug cho thấy quá trình lặp thật sự
+w14:paraId="0B45BE99" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phủ hầu hết; nhật ký còn sơ sài
+w14:paraId="0DADBA78" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Test thủ công, ít bằng chứng debug
+w14:paraId="5CD73AA0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có bộ test có ý nghĩa
+w14:paraId="00A75B6A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiến trúc & tách tầng persistence (Mục 7)
+w14:paraId="2F6A9F84" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tách 3 tầng rõ ràng; persistence chỉ load/save
+w14:paraId="287652AA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khá rõ ràng; một lỗi nhỏ để lộ logic sang persistence
+w14:paraId="5E4DFC37" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Persistence thực hiện một phần thao tác chính (vd. ORDER BY thay cho MC2)
+w14:paraId="70D1B1DE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Persistence gần như thay thế hoàn toàn tầng DSA core
+w14:paraId="48A23531" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bằng chứng hiệu năng (Mục 5.3)
+w14:paraId="11DF71AB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Minh chứng thực nghiệm rõ ràng, ở quy mô đã xác nhận, diễn giải đúng
+w14:paraId="441870EE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có, diễn giải đúng một phần
+w14:paraId="78B1430F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có nhưng không gắn với lập luận độ phức tạp
+w14:paraId="4366862B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không có, hoặc số liệu không đáng tin
+w14:paraId="63B300EB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D. Bảo vệ cá nhân (25%)
+w14:paraId="65372224" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tiêu chí
+w14:paraId="0F25B911" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xuất sắc
+w14:paraId="35396990" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đạt tốt
+w14:paraId="76938F7A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cần cải thiện
+w14:paraId="15F4372E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chưa đạt
+w14:paraId="6D92194B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích/trace code của chính mình
+w14:paraId="18E1535A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trôi chảy, không cần gợi ý, chính xác
+w14:paraId="174755FA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đúng, cần gợi ý nhỏ
+w14:paraId="26BA06BA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Khó giải thích nếu không được gợi ý nhiều
+w14:paraId="49A0DC2B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không thể giải thích được code của mình
+w14:paraId="0717B7B8" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bảo vệ quyết định thiết kế
+w14:paraId="33EFCA3D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nêu chính xác đánh đổi + điều kiện thay đổi; xử lý đúng câu hỏi giả định
+w14:paraId="112E4913" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đúng; thiếu sót nhỏ
+w14:paraId="37B6193F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lập luận chung chung; trả lời sai câu hỏi giả định
+w14:paraId="5FF35A54" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không bảo vệ được quyết định
+w14:paraId="638F3FC9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hiểu toàn bộ hệ thống / thành phần bạn cùng nhóm
+w14:paraId="098EDBA3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích đúng về mặt khái niệm
+w14:paraId="488CB8FB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có sai sót nhỏ
+w14:paraId="59A15AEF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chỉ hiểu sơ sài
+w14:paraId="1E2A764B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không hiểu gì ngoài phần của mình
+w14:paraId="126846F6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trách nhiệm giải trình về AI
+w14:paraId="45770044" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Công bố chính xác; giải thích rõ đã kiểm chứng gì và vì sao
+w14:paraId="015213B0" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có công bố; phần kiểm chứng còn mỏng
+w14:paraId="44C9F864" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Công bố mơ hồ
+w14:paraId="134AE9AD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không công bố, hoặc trình bày sản phẩm AI như của mình
+w14:paraId="7FCB4668" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">E. Demo nhóm & Giao tiếp (10%)
+w14:paraId="3458F78C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tiêu chí
+w14:paraId="541D81C3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Xuất sắc
+w14:paraId="0B07EFC2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đạt tốt
+w14:paraId="4A8597C1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cần cải thiện
+w14:paraId="021B9C63" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chưa đạt
+w14:paraId="769ED51F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sự rõ ràng & đầy đủ của demo
+w14:paraId="4662FB13" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Mọi yêu cầu được minh họa rõ; bằng chứng hiệu năng trình bày và diễn giải đúng
+w14:paraId="5E46E8A2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Có minh họa; diễn giải còn mỏng
+w14:paraId="61577BCC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Demo một phần; yêu cầu chưa rõ
+w14:paraId="74351EFE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Không cho thấy hệ thống đáp ứng đúng yêu cầu đã đề ra
+w14:paraId="659372C3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giao tiếp (visualization chỉ được cộng ở đây, có giới hạn)
+w14:paraId="64A6854B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích rõ ràng, có hỗ trợ tốt — visualization (nếu có) chỉ được tính khi thực sự làm rõ hành vi DSA
+w14:paraId="63548202" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích rõ; visualization (nếu có) chỉ là hỗ trợ nhỏ
+w14:paraId="3C0C78EB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích còn lộn xộn dù có hỗ trợ hình ảnh
+w14:paraId="4587A251" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Dựa vào hình thức đẹp thay cho lập luận thực chất
+w14:paraId="41413855" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="7E1AE712" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">16. Bảng ánh xạ CLO — minh chứng đánh giá
+w14:paraId="691FA7B4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO
+w14:paraId="7E71A27E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Vai trò
+w14:paraId="6873B082" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thành phần cung cấp minh chứng
+w14:paraId="39476B6E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm / Cá nhân
+w14:paraId="564A1C3D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO1
+w14:paraId="742A44BF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chính
+w14:paraId="149C4581" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">A (mô hình hóa); C (đúng đắn/edge case); D (bảo vệ)
+w14:paraId="4A2331EA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D1/D2, bảo vệ = Cá nhân; kiểm thử = Nhóm
+w14:paraId="5A395952" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO3
+w14:paraId="652474CE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chính
+w14:paraId="42A1F0C2" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">C (cấu trúc tự cài đặt, test); D (giải thích code của mình)
+w14:paraId="599E07DC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sở hữu thành phần + bảo vệ = Cá nhân; hệ thống = Nhóm
+w14:paraId="0A38A953" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO4
+w14:paraId="3AC489D4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Củng cố
+w14:paraId="20E85818" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">C (bằng chứng hiệu năng, nếu bulk load của lĩnh vực cần sắp xếp)
+w14:paraId="0C884E8A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, giải thích cá nhân khi xuất hiện
+w14:paraId="146E170C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO6
+w14:paraId="5E76DC8F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Củng cố
+w14:paraId="10F83271" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">B/C (lựa chọn sort-and-search, nếu có)
+w14:paraId="1CB3E063" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhóm, giải thích cá nhân khi xuất hiện
+w14:paraId="7F9C6AE4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO7
+w14:paraId="2EBDB7F9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chính
+w14:paraId="3F478AC6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">C (cài đặt cấu trúc phân cấp, xử lý suy giảm hiệu năng); D (bảo vệ về điều kiện suy giảm)
+w14:paraId="36A39410" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt = Nhóm có sở hữu cá nhân; bảo vệ = Cá nhân
+w14:paraId="49D3EE4E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO8
+w14:paraId="626A051E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chính (capstone)
+w14:paraId="1853477D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">B (quy trình Q1–Q4, giải quyết xung đột, phương án bị loại); D (bảo vệ quyết định thiết kế, hiểu toàn hệ thống); E (demo nhóm)
+w14:paraId="4DEA35FD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">B = Nhóm có phần cá nhân; D = Cá nhân; E = Nhóm
+w14:paraId="288814CB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">CLO2 và CLO5 không xuất hiện trong bảng: đồ án không phải là nguồn minh chứng cho hai CLO này (Mục 3).
+w14:paraId="07926A7E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="170C26D6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">17. Bảng minh chứng Kiến thức – Kỹ năng – Thái độ
+w14:paraId="483AA906" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiến thức (qua các CLO đánh dấu "Chính" ở trên)
+w14:paraId="0D731763" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thể hiện qua: phân tích yêu cầu (D2), bảng so sánh và quy trình Q1–Q4 (D3), cài đặt và kết nối với chi phí đã phân tích (D4/D5), và câu trả lời trong buổi bảo vệ (D8).
+w14:paraId="1354DA07" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kỹ năng
+w14:paraId="393D06B3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kỹ năng kỹ thuật / lập trình
+w14:paraId="7536D7CB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt từ một đặc tả do chính nhóm xây dựng (D4).
+w14:paraId="54016D9F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Debug và kiểm thử có hệ thống (D5).
+w14:paraId="55D755BC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phân tích độ phức tạp gắn với hành vi đo được thực tế (D5, Mục 5.3).
+w14:paraId="4100F97E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tách biệt kiến trúc — presentation, logic, persistence (Mục 7) — và phát triển theo thành phần, có version control.
+w14:paraId="5D703BB3" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kỹ năng chuyên môn / mềm
+w14:paraId="35AF3591" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Làm việc nhóm và hợp tác (Mục 10).
+w14:paraId="1DA6D8F7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giao tiếp kỹ thuật (báo cáo D3, demo và bảo vệ D8).
+w14:paraId="24DE34AE" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Giải thích và bảo vệ quyết định kỹ thuật khi bị chất vấn (D8) — cơ chế trung tâm cho CLO liên quan đến giao tiếp kỹ thuật.
+w14:paraId="7B97AC7B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Peer technical review (D6) — đưa ra và tiếp nhận phản hồi cụ thể, thực chất về phần việc của bạn cùng nhóm.
+w14:paraId="04C0F082" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tự học độc lập — tìm hiểu cách một thư viện cài đặt cấu trúc dữ liệu, một phương pháp kiểm thử, hay (với nhóm làm visualization) một kỹ thuật chưa được dạy trực tiếp trên lớp.
+w14:paraId="78D76E95" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thái độ (chỉ dựa trên bằng chứng quan sát được)
+w14:paraId="7BBA55A4" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thái độ
+w14:paraId="36747D2C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bằng chứng quan sát được trong đồ án
+w14:paraId="59851987" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chính xác (Precision)
+w14:paraId="6231441B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Thuật ngữ/ký hiệu đúng trong D3; code làm đúng những gì interface công bố.
+w14:paraId="283D0F0E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Lập luận dựa trên bằng chứng (Evidence-based reasoning)
+w14:paraId="497743FB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bảng so sánh được hoàn thành với lập luận cụ thể theo lĩnh vực; bằng chứng hiệu năng (Mục 5.3) được trích dẫn để hỗ trợ lựa chọn.
+w14:paraId="350D2C7D" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trách nhiệm với phần việc của mình
+w14:paraId="55707560" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tuyên bố sở hữu yêu cầu trong D3 cùng lịch sử version control; khả năng giải thích/chỉnh sửa code của mình không cần gợi ý trong buổi bảo vệ.
+w14:paraId="66E0F8CC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiên trì giải quyết vấn đề
+w14:paraId="5FB5866B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhật ký debug cho thấy một điểm bế tắc thực sự và cách vượt qua; bài phản tư cá nhân (D7) nêu rõ một khó khăn cụ thể.
+w14:paraId="6624340F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cởi mở với giải pháp khác
+w14:paraId="15EDFE0A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phần phương án bị loại trong D3, được bảo vệ cụ thể trong D8; peer technical review (D6) đòi hỏi tiếp cận cách làm khác của bạn cùng nhóm.
+w14:paraId="7CA630E1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Liêm chính học thuật
+w14:paraId="0EAE2014" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Trích dẫn code bên ngoài hoặc sản phẩm AI; quyền tác giả có thể kiểm chứng qua tuyên bố sở hữu yêu cầu; đề xuất lĩnh vực không sao chép nguyên văn.
+w14:paraId="37022752" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sử dụng AI có trách nhiệm
+w14:paraId="68AB39CC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nhật ký sử dụng AI (D7); AI-audit (Mục 12.2); giải thích những gì đã kiểm chứng hoặc thay đổi; bảo vệ không có AI.
+w14:paraId="0C0A28AF" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="7CC7745F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">18. Những sai lầm / lối tắt thường gặp, không được chấp nhận
+w14:paraId="0AC86690" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Nêu tên cấu trúc trước khi hoàn thành phân tích — cách trực tiếp nhất làm mất ý nghĩa của đồ án; bị trừ điểm ở Thành phần B bất kể code cuối cùng chạy tốt đến đâu.
+w14:paraId="45135424" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Yêu cầu tự phát hiện chỉ là MC1/MC2 diễn đạt lại bằng từ khác — phần khám phá phải thực sự mang lại điều mới.
+w14:paraId="118FBAE7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Logic persistence làm luôn công việc của tầng DSA core — dùng SELECT ... ORDER BY hay index của SQLite thay cho quyết định cấu trúc dữ liệu. Đây là lỗi kiến trúc (Thành phần C), không phải một cách làm khôn khéo.
+w14:paraId="5201F0E1" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Hai cấu trúc "tự cài đặt" tầm thường hoặc trùng lặp chức năng, chỉ để đối phó với yêu cầu ở Mục 6.2, thay vì các cấu trúc mà phân tích của nhóm thực sự dẫn tới.
+w14:paraId="2F82D416" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Yêu cầu xung đột gượng ép hoặc giả tạo, chỉ để có cho đủ Mục 5.4.
+w14:paraId="490F1C7E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Số liệu benchmark giả hoặc chưa từng chạy thật cho Mục 5.3.
+w14:paraId="63C4F912" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Web visualization thay thế cho lập luận DSA yếu — một giao diện đẹp được trình bày như thể đó là bằng chứng của phân tích bên dưới; rubric (Mục 15, Thành phần E) được thiết kế riêng để phát hiện điều này.
+w14:paraId="16940594" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đóng góp không đồng đều mà không có minh chứng cá nhân — được kiểm tra qua các cơ chế mở rộng ở Mục 11, không chỉ dựa vào lịch sử Git.
+w14:paraId="47A6B0AB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Biện minh thiết kế do AI tạo ra, trình bày mà không thực sự hiểu — báo cáo đọc có vẻ đúng nhưng tác giả không thể bảo vệ, kiểm chứng, hay biến đổi nó khi bị hỏi trong D8.
+w14:paraId="60D468E9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Sao chép nguyên văn ví dụ LRU cache ở Chương 16 làm giải pháp cho yêu cầu xung đột, mà không điều chỉnh theo lĩnh vực và lập luận riêng của nhóm.
+w14:paraId="4FC995D9" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Chọn hoặc trôi dần vào một yêu cầu mang tính đồ thị (graph) ("đường đi ngắn nhất", "thứ tự giao hàng tối ưu") — nằm ngoài phạm vi Chương 1–16; sẽ bị phát hiện khi duyệt đề xuất hoặc tại checkpoint Ngày 12.
+w14:paraId="0386928F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">
+w14:paraId="5CB11A91" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">19. Checklist nộp bài cho sinh viên
+w14:paraId="1155035F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đến Ngày 5 (Conceive kết thúc):
+w14:paraId="056F0D10" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D1 — bài đọc-hiểu đề bài cá nhân, nộp trước buổi thảo luận thiết kế đầu tiên của nhóm
+w14:paraId="1054BF1C" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D2 — tài liệu yêu cầu & bài toán: xác nhận lĩnh vực, đáp ứng MC1/MC2, 2–3 yêu cầu tự phát hiện kèm lý do
+w14:paraId="1E3453AA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đến Ngày 12 (Implement — checkpoint cuối):
+w14:paraId="587A66F7" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Cài đặt hoạt động cho MC1, MC2, và mọi yêu cầu tự phát hiện
+w14:paraId="6ACCF323" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Ít nhất 2 cấu trúc tự cài đặt, trung tâm cho quyết định thiết kế thật, có unit test
+w14:paraId="539864A6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Kiến trúc 3 tầng đã có, persistence chỉ giới hạn ở load/save
+w14:paraId="185A138B" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đã cài đặt giải pháp cho yêu cầu xung đột (Mục 5.4)
+w14:paraId="52AC69CD" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đã xác nhận với giảng viên mục tiêu quy mô cho bằng chứng hiệu năng
+w14:paraId="3B63C10E" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bộ test tự động và nhật ký debug
+w14:paraId="7CF1F8EB" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đóng góp cá nhân của tôi thể hiện rõ trong version control
+w14:paraId="69E75078" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đến Ngày 13 (Design — biện minh chính thức theo Chương 16):
+w14:paraId="6A070A98" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D3 — bảng so sánh và quy trình Q1–Q4 cho mọi yêu cầu, giải pháp cho yêu cầu xung đột, phương án bị loại, sơ đồ kiến trúc
+w14:paraId="2B2E64DA" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Phần biện minh do chính tôi viết trong D3
+w14:paraId="2DDFCDCC" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đến Ngày 14–15 (Operate / Evaluate / Defense):
+w14:paraId="7DE6D356" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Bằng chứng hiệu năng (Mục 5.3), kèm diễn giải bằng văn bản
+w14:paraId="1B468E58" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D6 — peer technical review của tôi cho một bạn cùng nhóm
+w14:paraId="7CCF826F" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D7 — nhật ký sử dụng AI và bài phản tư cá nhân của tôi
+w14:paraId="3FCBCC91" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Đã nộp đánh giá đóng góp chéo (bảo mật)
+w14:paraId="0873B46A" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tôi có thể giải thích, trace, và chỉnh sửa bất kỳ đoạn code nào được ghi nhận là của mình, không cần xem tài liệu
+w14:paraId="59DD02E6" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">Tôi có thể giải thích, ở mức khái niệm, ít nhất một thành phần của một bạn cùng nhóm
+w14:paraId="0EC51AD5" w14:textId="77777777" w:rsidR="00297C03" w:rsidRPr="00297C03" w:rsidRDefault="00297C03" w:rsidP="00297C03">D9 — gói nộp bài cuối cùng đã hoàn chỉnh
+w14:paraId="05E00145" w14:textId="77777777" w:rsidR="00297C03" w:rsidRDefault="00297C03"/>

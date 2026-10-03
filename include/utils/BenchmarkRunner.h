@@ -1,0 +1,64 @@
+#pragma once
+
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <vector>
+#include <chrono>
+#include <numeric>
+#include <algorithm>
+#include <fstream>
+#include "BenchmarkResult.h"
+
+using namespace std;
+
+// Bộ công cụ đo đạc hiệu năng và so sánh giải thuật
+class BenchmarkRunner {
+public:
+    // Chạy benchmark đo thời gian thực thi của một thao tác qua nhiều lần lặp
+    template <typename Func>
+    static BenchmarkMetric run(const string& name, long long ops, bool found, Func&& func, int iterations = 100, int warmup = 5) {
+        // 1. Warm-up CPU cache
+        for (int i = 0; i < warmup; ++i) {
+            func();
+        }
+
+        vector<double> durations;
+        durations.reserve(iterations);
+
+        // 2. Chạy đo đạc thực tế
+        for (int i = 0; i < iterations; ++i) {
+            auto start = chrono::high_resolution_clock::now();
+            func();
+            auto end = chrono::high_resolution_clock::now();
+
+            double duration = chrono::duration_cast<chrono::nanoseconds>(end - start).count() / 1000.0;
+            durations.push_back(duration);
+        }
+
+        // 3. Tính toán các chỉ số thống kê
+        double sum = accumulate(durations.begin(), durations.end(), 0.0);
+        double avg = sum / iterations;
+        double minTime = *min_element(durations.begin(), durations.end());
+        double maxTime = *max_element(durations.begin(), durations.end());
+
+        BenchmarkMetric metric;
+        metric.algorithmName = name;
+        metric.avgTimeUs = avg;
+        metric.minTimeUs = minTime;
+        metric.maxTimeUs = maxTime;
+        metric.operationsCount = ops;
+        metric.isFound = found;
+
+        return metric;
+    }
+
+    // In bảng so sánh trực quan ra màn hình Console
+    static void printComparisonTable(const vector<ModuleBenchmarkResult>& results);
+
+    // Xuất kết quả đo ra file CSV
+    static void exportToCSV(const string& filePath, const vector<ModuleBenchmarkResult>& results);
+
+    // Xuất kết quả ra file LaTeX để đưa vào báo cáo
+    static void exportToLaTeX(const string& filePath, const vector<ModuleBenchmarkResult>& results);
+};

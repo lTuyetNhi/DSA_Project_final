@@ -8,17 +8,17 @@ MC1::MC1(vector<Book>& bookList) : books(bookList), finalSolution(10007) {}
 
 void MC1::build() {
     finalSolution.clear();
-    for (auto& b : books) {
-        finalSolution.insert(b.book_id, &b);
+    for (const auto& b : books) {
+        finalSolution.insert(b);
     }
 }
 
 bool MC1::sameResult(const SearchResult& baselineRes, const SearchResult& finalSolRes) {
-    if (baselineRes.book == nullptr && finalSolRes.book == nullptr) {
+    if (!baselineRes.found && !finalSolRes.found) {
         return true;
     }
-    if (baselineRes.book != nullptr && finalSolRes.book != nullptr) {
-        return baselineRes.book->book_id == finalSolRes.book->book_id;
+    if (baselineRes.found && finalSolRes.found) {
+        return baselineRes.book.book_id == finalSolRes.book.book_id;
     }
     return false;
 }
@@ -41,8 +41,8 @@ void MC1::printComparison(size_t datasetSize, const string& bookId, const Search
 
     // Hang 1: Ket qua
     cout << "| " << left << setw(24) << "Ket qua tim kiem" 
-         << " | " << left << setw(28) << (baselineRes.book ? "FOUND" : "NOT FOUND")
-         << " | " << left << setw(32) << (finalSolRes.book ? "FOUND" : "NOT FOUND") << " |\n";
+         << " | " << left << setw(28) << (baselineRes.found ? "FOUND" : "NOT FOUND")
+         << " | " << left << setw(32) << (finalSolRes.found ? "FOUND" : "NOT FOUND") << " |\n";
 
     // Hang 2: Thoi gian
     string baseTime = to_string(baselineRes.executionTime) + " ns";
@@ -70,21 +70,17 @@ void MC1::printComparison(size_t datasetSize, const string& bookId, const Search
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void MC1::printBook(const Book* book) {
-    if (!book) {
-        cout << "  [!] Khong tim thay sach trong he thong.\n";
-        return;
-    }
+void MC1::printBook(const Book& book) {
     cout << "+--------------------------------------------------------------------------------------------+\n";
     cout << "|                              THONG TIN TAI LIEU TIM THAY                                   |\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
-    cout << "  [+] Ma sach        : " << book->book_id << "\n";
-    cout << "  [+] Ten sach       : " << book->title << "\n";
-    cout << "  [+] Tac gia        : " << book->author << "\n";
-    cout << "  [+] The loai       : " << book->category << "\n";
-    cout << "  [+] Nam xuat ban   : " << book->published_year << "\n";
-    cout << "  [+] So luong       : " << book->available_quantity << " / " << book->total_quantity << " (San co / Tong)\n";
-    cout << "  [+] Luot da muon   : " << book->borrow_count << "\n";
+    cout << "  [+] Ma sach        : " << book.book_id << "\n";
+    cout << "  [+] Ten sach       : " << book.title << "\n";
+    cout << "  [+] Tac gia        : " << book.author << "\n";
+    cout << "  [+] The loai       : " << book.category << "\n";
+    cout << "  [+] Nam xuat ban   : " << book.published_year << "\n";
+    cout << "  [+] So luong       : " << book.available_quantity << " / " << book.total_quantity << " (San co / Tong)\n";
+    cout << "  [+] Luot da muon   : " << book.borrow_count << "\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
 }
 
@@ -94,7 +90,7 @@ void MC1::comparisonMode(const string& bookId) {
     printComparison(books.size(), bookId, baselineRes, finalSolRes);
 
     cout << "\n";
-    if (finalSolRes.book) {
+    if (finalSolRes.found) {
         printBook(finalSolRes.book);
     } else {
         cout << "  [!] Ket qua: Khong tim thay tai lieu voi Ma sach '" << bookId << "' trong he thong.\n";
@@ -110,7 +106,7 @@ void MC1::normalMode(const string& bookId) {
     cout << "  * Ma sach can tim : " << bookId << "\n";
     cout << "  * Thoi gian tim   : " << finalSolRes.executionTime << " ns (So phep so sanh: " << finalSolRes.comparisons << ")\n\n";
 
-    if (finalSolRes.book) {
+    if (finalSolRes.found) {
         printBook(finalSolRes.book);
     } else {
         cout << "  [!] Ket qua: Khong tim thay tai lieu voi Ma sach '" << bookId << "' trong he thong.\n";

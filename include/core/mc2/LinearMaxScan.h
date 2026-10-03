@@ -6,9 +6,13 @@
 
 using namespace std;
 
+// Quét toàn bộ danh sách để tìm cuốn sách có lượt mượn cao nhất (O(n))
 class LinearMaxScan {
 public:
     static MaxResult findMax(vector<Book>& books);
 };
 
 #endif // LINEAR_MAX_SCAN_H
+
+
+

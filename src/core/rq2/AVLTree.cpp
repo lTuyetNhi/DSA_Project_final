@@ -11,24 +11,12 @@ AVLTree::~AVLTree() {
     clear();
 }
 
-void AVLTree::destroy(AVLNode* node) {
-    if (!node) return;
-    destroy(node->left);
-    destroy(node->right);
-    delete node;
-}
-
-void AVLTree::clear() {
-    destroy(root);
-    root = nullptr;
-}
-
 int AVLTree::getHeight(AVLNode* node) const {
     return node ? node->height : 0;
 }
 
 int AVLTree::getBalance(AVLNode* node) const {
-    return node ? (getHeight(node->left) - getHeight(node->right)) : 0;
+    return node ? getHeight(node->left) - getHeight(node->right) : 0;
 }
 
 void AVLTree::updateHeight(AVLNode* node) {
@@ -37,6 +25,7 @@ void AVLTree::updateHeight(AVLNode* node) {
     }
 }
 
+// Xoay phải (Right Rotation - LL Case)
 AVLNode* AVLTree::rotateRight(AVLNode* y) {
     AVLNode* x = y->left;
     AVLNode* T2 = x->right;
@@ -50,6 +39,7 @@ AVLNode* AVLTree::rotateRight(AVLNode* y) {
     return x;
 }
 
+// Xoay trái (Left Rotation - RR Case)
 AVLNode* AVLTree::rotateLeft(AVLNode* x) {
     AVLNode* y = x->right;
     AVLNode* T2 = y->left;
@@ -63,41 +53,43 @@ AVLNode* AVLTree::rotateLeft(AVLNode* x) {
     return y;
 }
 
-AVLNode* AVLTree::insert(AVLNode* node, BorrowRecord* record) {
+// Chèn phiếu mượn vào cây AVL theo ngày hẹn trả (dueDate)
+AVLNode* AVLTree::insert(AVLNode* node, const BorrowRecord& record) {
     if (!node) {
-        AVLNode* newNode = new AVLNode(record->due_date);
+        AVLNode* newNode = new AVLNode(record.due_date);
         newNode->records.push_back(record);
         return newNode;
     }
 
-    if (record->due_date == node->dueDate) {
+    if (record.due_date < node->dueDate) {
+        node->left = insert(node->left, record);
+    } else if (record.due_date > node->dueDate) {
+        node->right = insert(node->right, record);
+    } else {
+        // Trùng ngày hẹn trả -> gom chung vào vector của node hiện tại
         node->records.push_back(record);
         return node;
-    } else if (record->due_date < node->dueDate) {
-        node->left = insert(node->left, record);
-    } else {
-        node->right = insert(node->right, record);
     }
 
+    // Cập nhật chiều cao và tự cân bằng 4 trường hợp (LL, RR, LR, RL)
     updateHeight(node);
     int balance = getBalance(node);
 
-    // 4 truong hop mat can bang cua AVL
-    // Left Left
-    if (balance > 1 && record->due_date < node->left->dueDate) {
+    // 1. LL
+    if (balance > 1 && record.due_date < node->left->dueDate) {
         return rotateRight(node);
     }
-    // Right Right
-    if (balance < -1 && record->due_date > node->right->dueDate) {
+    // 2. RR
+    if (balance < -1 && record.due_date > node->right->dueDate) {
         return rotateLeft(node);
     }
-    // Left Right
-    if (balance > 1 && record->due_date > node->left->dueDate) {
+    // 3. LR
+    if (balance > 1 && record.due_date > node->left->dueDate) {
         node->left = rotateLeft(node->left);
         return rotateRight(node);
     }
-    // Right Left
-    if (balance < -1 && record->due_date < node->right->dueDate) {
+    // 4. RL
+    if (balance < -1 && record.due_date < node->right->dueDate) {
         node->right = rotateRight(node->right);
         return rotateLeft(node);
     }
@@ -105,48 +97,46 @@ AVLNode* AVLTree::insert(AVLNode* node, BorrowRecord* record) {
     return node;
 }
 
-void AVLTree::build(vector<BorrowRecord>& records) {
-    clear();
-    for (auto& r : records) {
-        if (r.status == "BORROWING" && DateUtils::isValidDate(r.due_date)) {
-            insert(&r);
-        }
-    }
-}
-
-void AVLTree::insert(BorrowRecord* record) {
-    if (!record) return;
-    root = insert(root, record);
-}
-
-void AVLTree::rangeQueryOverdue(AVLNode* node, const string& currentDate, vector<BorrowRecord*>& result, long long& nodesVisited) const {
+// Cắt tỉa nhánh thông minh: chỉ duyệt nhánh trái nếu ngày hẹn trả < currentDate
+void AVLTree::rangeQueryOverdue(AVLNode* node, const string& currentDate, vector<BorrowRecord>& result, long long& nodesVisited) const {
     if (!node) return;
+
     nodesVisited++;
 
-    if (DateUtils::daysBetween(node->dueDate, currentDate) > 0) {
-        // Duyet nhanh trai vi toan bo nhanh trai deu co dueDate < node->dueDate < currentDate
-        rangeQueryOverdue(node->left, currentDate, result, nodesVisited);
+    // Nhánh trái luôn có dueDate nhỏ hơn node hiện tại
+    rangeQueryOverdue(node->left, currentDate, result, nodesVisited);
 
-        // Lay cac record hop le o node hien tai
-        for (auto* r : node->records) {
-            if (r && r->status == "BORROWING") {
-                result.push_back(r);
+    // Kiểm tra node hiện tại có quá hạn so với ngày kiểm tra không
+    if (DateUtils::daysBetween(node->dueDate, currentDate) > 0) {
+        for (const auto& rec : node->records) {
+            if (rec.status == "BORROWING") {
+                result.push_back(rec);
             }
         }
-
-        // Kiem tra tiep nhanh phai
+        // Tiếp tục xét nhánh phải
         rangeQueryOverdue(node->right, currentDate, result, nodesVisited);
-    } else {
-        // node->dueDate >= currentDate: Toan bo cay con phai chac chan >= currentDate => Cat tia hoan toan!
-        rangeQueryOverdue(node->left, currentDate, result, nodesVisited);
     }
+    // Nếu node->dueDate >= currentDate thì toàn bộ cây con bên phải cũng >= currentDate -> CẮT TỈA (Prune)
+}
+
+void AVLTree::build(const vector<BorrowRecord>& records) {
+    clear();
+    for (const auto& rec : records) {
+        if (rec.status == "BORROWING" && DateUtils::isValidDate(rec.due_date)) {
+            insert(rec);
+        }
+    }
+}
+
+void AVLTree::insert(const BorrowRecord& record) {
+    root = insert(root, record);
 }
 
 OverdueResult AVLTree::findOverdue(const string& currentDate) const {
     long long nodesVisited = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    vector<BorrowRecord*> overdueList;
+    vector<BorrowRecord> overdueList;
     if (DateUtils::isValidDate(currentDate)) {
         rangeQueryOverdue(root, currentDate, overdueList, nodesVisited);
     }
@@ -154,5 +144,18 @@ OverdueResult AVLTree::findOverdue(const string& currentDate) const {
     auto end = chrono::high_resolution_clock::now();
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
-    return OverdueResult(overdueList, durationNs, nodesVisited, "AVL Tree", "O(log n + k)");
+    return OverdueResult(overdueList, !overdueList.empty(), durationNs, nodesVisited, "AVL Tree Range Query", "O(log n + k)");
+}
+
+void AVLTree::destroy(AVLNode* node) {
+    if (node) {
+        destroy(node->left);
+        destroy(node->right);
+        delete node;
+    }
+}
+
+void AVLTree::clear() {
+    destroy(root);
+    root = nullptr;
 }

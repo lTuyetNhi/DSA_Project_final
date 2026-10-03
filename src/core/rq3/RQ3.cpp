@@ -20,11 +20,11 @@ bool RQ3::sameResultSet(const TitleSearchResult& baselineRes, const TitleSearchR
     vector<string> baseIds;
     vector<string> finalIds;
 
-    for (const auto* b : baselineRes.books) {
-        if (b) baseIds.push_back(b->book_id);
+    for (const auto& b : baselineRes.books) {
+        baseIds.push_back(b.book_id);
     }
-    for (const auto* b : finalSolRes.books) {
-        if (b) finalIds.push_back(b->book_id);
+    for (const auto& b : finalSolRes.books) {
+        finalIds.push_back(b.book_id);
     }
 
     sort(baseIds.begin(), baseIds.end());
@@ -80,7 +80,7 @@ void RQ3::printComparison(size_t datasetSize, const string& keyword, const Title
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void RQ3::printBooks(const vector<Book*>& bookList) {
+void RQ3::printBooks(const vector<Book>& bookList) {
     if (bookList.empty()) {
         cout << "  [!] Khong tim thay cuon sach nao khop voi tu khoa.\n";
         return;
@@ -90,12 +90,12 @@ void RQ3::printBooks(const vector<Book*>& bookList) {
     cout << "|                    DANH SACH TAI LIEU TIM THAY (" << left << setw(3) << bookList.size() << " cuon sach)                                |\n";
     cout << "+--------------------------------------------------------------------------------------------+\n";
     for (size_t i = 0; i < bookList.size(); ++i) {
-        const auto* b = bookList[i];
-        cout << "  [" << (i + 1) << "] [" << b->book_id << "] " << b->title 
-             << " | TG: " << b->author 
-             << " | The loai: " << b->category 
-             << " | Nam: " << b->published_year
-             << " | San co: " << b->available_quantity << "/" << b->total_quantity << "\n";
+        const auto& b = bookList[i];
+        cout << "  [" << (i + 1) << "] [" << b.book_id << "] " << b.title 
+             << " | TG: " << b.author 
+             << " | The loai: " << b.category 
+             << " | Nam: " << b.published_year
+             << " | San co: " << b.available_quantity << "/" << b.total_quantity << "\n";
     }
     cout << "+--------------------------------------------------------------------------------------------+\n";
 }

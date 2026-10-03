@@ -1,145 +1,92 @@
 #include "../../../include/core/rq3/CategoryTitleSearch.h"
 #include "../../../include/utils/StringUtils.h"
 #include <chrono>
-#include <algorithm>
-#include <cctype>
 #include <sstream>
-#include <unordered_set>
 
 using namespace std;
 
 CategoryTitleSearch::CategoryTitleSearch() {
-    table.resize(TABLE_SIZE, nullptr);
+    table.resize(TABLE_SIZE);
 }
 
-CategoryTitleSearch::~CategoryTitleSearch() {
-    clear();
+size_t CategoryTitleSearch::hashFunction(const string& key) const {
+    size_t hash = 5381;
+    for (char c : key) {
+        hash = ((hash << 5) + hash) + static_cast<unsigned char>(c);
+    }
+    return hash % TABLE_SIZE;
+}
+
+void CategoryTitleSearch::insertWord(const string& word, const Book& book) {
+    string normWord = StringUtils::toLower(word);
+    if (normWord.empty()) return;
+
+    size_t index = hashFunction(normWord);
+
+    // Kiểm tra xem từ khóa đã có trong bucket chưa
+    for (auto& entry : table[index]) {
+        if (entry.word == normWord) {
+            // Tránh trùng sách trong cùng một từ khóa
+            for (const auto& b : entry.books) {
+                if (b.book_id == book.book_id) return;
+            }
+            entry.books.push_back(book);
+            return;
+        }
+    }
+
+    // Nếu chưa có từ khóa này thì tạo mục mới
+    TitleEntry newEntry;
+    newEntry.word = normWord;
+    newEntry.books.push_back(book);
+    table[index].push_back(newEntry);
 }
 
 void CategoryTitleSearch::clear() {
-    for (size_t i = 0; i < table.size(); ++i) {
-        TitleHashNode* curr = table[i];
-        while (curr != nullptr) {
-            TitleHashNode* temp = curr;
-            curr = curr->next;
-            delete temp;
-        }
-        table[i] = nullptr;
+    for (auto& bucket : table) {
+        bucket.clear();
     }
 }
 
-// Ham bam DJB2 cho cac tu trong tieu de sach
-size_t CategoryTitleSearch::hashFunction(const string& key) const {
-    unsigned long hashVal = 5381;
-    for (char c : key) {
-        hashVal = ((hashVal << 5) + hashVal) + static_cast<unsigned char>(c);
-    }
-    return hashVal % TABLE_SIZE;
-}
-
-// Chen tu khoa (word) va con tro sach vao Bang bam
-void CategoryTitleSearch::insertWord(const string& word, Book* book) {
-    if (word.empty() || !book) return;
-    size_t index = hashFunction(word);
-    TitleHashNode* curr = table[index];
-
-    while (curr != nullptr) {
-        if (curr->word == word) {
-            // Tranh trung lap sach trong cung mot token
-            for (auto* b : curr->books) {
-                if (b && b->book_id == book->book_id) return;
-            }
-            curr->books.push_back(book);
-            return;
-        }
-        curr = curr->next;
-    }
-
-    TitleHashNode* newNode = new TitleHashNode(word);
-    newNode->books.push_back(book);
-    newNode->next = table[index];
-    table[index] = newNode;
-}
-
-// Xay dung chi muc nguoc (Inverted Index) tu tieu de cua toan bo danh muc sach
-void CategoryTitleSearch::build(vector<Book>& books) {
+// Tách tiêu đề từng cuốn sách thành các từ đơn và lập chỉ mục ngược
+void CategoryTitleSearch::build(const vector<Book>& books) {
     clear();
-    for (auto& book : books) {
-        // Chuyen ky tu dac biet thanh khoang trang de tach tu sach
-        string cleanTitle;
-        for (char c : book.title) {
-            if (isalnum(static_cast<unsigned char>(c)) || c == ' ') {
-                cleanTitle += static_cast<char>(tolower(static_cast<unsigned char>(c)));
-            } else {
-                cleanTitle += ' ';
-            }
-        }
-
-        stringstream ss(cleanTitle);
+    for (const auto& b : books) {
+        stringstream ss(b.title);
         string word;
         while (ss >> word) {
-            insertWord(word, &book);
+            // Loại bỏ dấu câu cơ bản
+            string cleanWord = "";
+            for (char c : word) {
+                if (isalnum(static_cast<unsigned char>(c))) {
+                    cleanWord += c;
+                }
+            }
+            if (!cleanWord.empty()) {
+                insertWord(cleanWord, b);
+            }
         }
     }
 }
 
-// Tra cuu tu khoa trong tieu de sach qua Inverted Hash Index
 TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
+    long long booksChecked = 0;
     auto start = chrono::high_resolution_clock::now();
-    long long checks = 0;
 
-    string targetKw = StringUtils::toLower(keyword);
-    // Trim khoang trang
-    size_t first = targetKw.find_first_not_of(" \t\r\n");
-    size_t last = targetKw.find_last_not_of(" \t\r\n");
-    if (first != string::npos && last != string::npos) {
-        targetKw = targetKw.substr(first, (last - first + 1));
-    }
+    string normKw = StringUtils::toLower(keyword);
+    size_t index = hashFunction(normKw);
 
-    vector<Book*> matchedBooks;
-    unordered_set<string> seenBookIds;
-
-    // 1. Tra cuu truc tiep theo Hash neu keyword la 1 tu don
-    bool isSingleWord = (targetKw.find(' ') == string::npos);
-    if (isSingleWord && !targetKw.empty()) {
-        size_t index = hashFunction(targetKw);
-        TitleHashNode* curr = table[index];
-        while (curr != nullptr) {
-            checks++;
-            if (curr->word == targetKw) {
-                for (auto* b : curr->books) {
-                    if (b && seenBookIds.find(b->book_id) == seenBookIds.end()) {
-                        seenBookIds.insert(b->book_id);
-                        matchedBooks.push_back(b);
-                    }
-                }
-                break;
-            }
-            curr = curr->next;
-        }
-    }
-
-    // 2. Neu la chuoi con hoac chua tim thay qua tu don, quet tren tap cac token da danh chi muc
-    if (matchedBooks.empty() && !targetKw.empty()) {
-        for (size_t i = 0; i < table.size(); ++i) {
-            TitleHashNode* curr = table[i];
-            while (curr != nullptr) {
-                checks++;
-                if (curr->word.find(targetKw) != string::npos) {
-                    for (auto* b : curr->books) {
-                        if (b && seenBookIds.find(b->book_id) == seenBookIds.end()) {
-                            seenBookIds.insert(b->book_id);
-                            matchedBooks.push_back(b);
-                        }
-                    }
-                }
-                curr = curr->next;
-            }
+    vector<Book> foundBooks;
+    for (const auto& entry : table[index]) {
+        booksChecked++;
+        if (entry.word == normKw) {
+            foundBooks = entry.books;
+            break;
         }
     }
 
     auto end = chrono::high_resolution_clock::now();
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
-    return TitleSearchResult(matchedBooks, durationNs, checks, "Title Inverted Hash Index", "O(1 + k) average");
+    return TitleSearchResult(foundBooks, !foundBooks.empty(), durationNs, booksChecked, "Title Inverted Hash Index", "O(1 + k)");
 }

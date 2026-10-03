@@ -1,0 +1,1390 @@
+PROMPT TỔNG HỢP TRIỂN KHAI DỰ ÁN DSA
+GIAO DIỆN MODE + 5 MODULE + TRIỂN KHAI CHI TIẾT MC2
+====================================================
+
+Tài liệu này gộp hai yêu cầu:
+1. Thiết kế luồng giao diện toàn chương trình: chọn Benchmark/Normal Mode, sau đó chọn MC1, MC2, RQ1, RQ2, RQ3.
+2. Đặc tả triển khai chi tiết module MC2: Linear Max Scan vs Max-Heap.
+
+NGUYÊN TẮC ƯU TIÊN KHI TRIỂN KHAI
+----------------------------------
+- Giữ kiến trúc OOP và dùng using namespace std;.
+- Persistence/FileStore đã hoàn thành; các module không tự đọc JSON.
+- Chỉ có một thư mục src ở root project.
+- Header nằm dưới include/, source .cpp nằm dưới src/.
+- Khi Benchmark Mode chạy MC2, áp dụng đặc tả MC2 chi tiết ở Phần B.
+- Format benchmark dùng dạng dọc, KHÔNG dùng bảng ASCII nhiều cột để tránh lỗi căn chỉnh.
+- Baseline và Final Solution phải dùng cùng dữ liệu/trạng thái và cùng comparator/tie-break.
+- Build Final DSA một lần; không cộng build time vào query time khi so sánh thao tác truy vấn.
+
+
+
+PHẦN A - GIAO DIỆN CHÍNH VÀ LUỒNG 5 MODULE
+====================================================
+
+PROMPT TRIỂN KHAI GIAO DIỆN CHÍNH - DỰ ÁN DSA QUẢN LÝ THƯ VIỆN
+================================================================
+
+1. YÊU CẦU CHUNG
+----------------
+- Ngôn ngữ: C++.
+- Tổ chức theo OOP.
+- Dùng using namespace std; trong toàn bộ code.
+- Persistence đã hoàn thành và FileStore chịu trách nhiệm load/save dữ liệu.
+- Giao diện không đọc JSON trực tiếp.
+- main.cpp chỉ khởi tạo dữ liệu, các module và AppMenu.
+- MC1, MC2, RQ1, RQ2, RQ3 được triển khai độc lập.
+- Khi khởi động, load dữ liệu một lần và build các Final Solution một lần.
+
+
+2. FLOW CHƯƠNG TRÌNH
+--------------------
+START
+  |
+  v
+Load Persistence
+  |
+  v
+Build Final DSA
+  |
+  v
+Choose Mode
+  |
+  +-- 1. Benchmark Mode
+  |
+  +-- 2. Normal Mode
+  |
+  `-- 0. Exit
+
+Sau khi chọn Mode:
+
+Module Menu
+  |
+  +-- 1. MC1 - Search Book By ID
+  +-- 2. MC2 - Most Borrowed Book
+  +-- 3. RQ1 - Search Books By Category
+  +-- 4. RQ2 - Find Overdue Borrow Records
+  +-- 5. RQ3 - Borrow Waitlist FIFO
+  +-- 9. Change Mode
+  `-- 0. Exit
+
+
+3. MENU CHỌN MODE
+-----------------
+========================================
+        LIBRARY MANAGEMENT SYSTEM
+========================================
+
+Choose Mode:
+
+1. Benchmark Mode
+2. Normal Mode
+0. Exit
+
+Choice:
+
+
+Benchmark Mode:
+- Chạy Baseline và Final Solution.
+- Dùng cùng dữ liệu/input.
+- Kiểm tra kết quả.
+- Đo thời gian.
+- Đếm comparisons/operations.
+- Hiển thị Big-O.
+- Hiển thị trade-off tốc độ và bộ nhớ.
+
+Normal Mode:
+- Chỉ chạy Final Solution.
+- Không chạy Baseline.
+- Không benchmark.
+- Không hiển thị bảng so sánh.
+
+
+4. MENU 5 MODULE
+----------------
+========================================
+              MODULE MENU
+========================================
+
+Current Mode: BENCHMARK
+
+1. MC1 - Search Book By ID
+2. MC2 - Most Borrowed Book
+3. RQ1 - Search Books By Category
+4. RQ2 - Find Overdue Borrow Records
+5. RQ3 - Borrow Waitlist FIFO
+
+9. Change Mode
+0. Exit
+
+Choice:
+
+Nếu đang ở Normal Mode:
+Current Mode: NORMAL
+
+
+5. MC1 - SEARCH BOOK BY ID
+--------------------------
+Baseline:
+Linear Search
+
+Final Solution:
+Hash Table
+
+Input:
+book_id
+
+BENCHMARK MODE:
+- Baseline và Final nhận cùng book_id.
+- So sánh kết quả.
+- So sánh execution time.
+- So sánh số lần kiểm tra/so sánh.
+- Hiển thị Big-O.
+- Hiển thị trade-off tốc độ và bộ nhớ.
+
+FORMAT OUTPUT:
+
+========================================
+          MC1 BENCHMARK RESULT
+========================================
+
+Input Book ID : B009999
+Dataset Size  : 10000
+
+[BASELINE]
+Method        : Linear Search
+Result        : B009999
+Time          : ... ns
+Comparisons   : ...
+Big-O         : O(n)
+
+[FINAL SOLUTION]
+Method        : Hash Table
+Result        : B009999
+Time          : ... ns
+Comparisons   : ...
+Big-O         : O(1) average
+
+[VALIDATION]
+Same Result   : PASS
+
+[TRADE-OFF]
+
+Linear Search:
++ Less additional memory
+- Slower when dataset grows
+
+Hash Table:
++ Faster average lookup
+- Requires additional memory for buckets and HashNodes
+
+========================================
+
+NORMAL MODE:
+- Chỉ dùng HashTable.search(bookId).
+- Nếu tìm thấy, hiển thị Book.
+- Nếu không tìm thấy, hiển thị "Book not found".
+
+
+6. MC2 - MOST BORROWED BOOK
+---------------------------
+Baseline:
+Linear Max Scan
+
+Final Solution:
+Max-Heap
+
+BENCHMARK MODE:
+- Cả hai chạy trên cùng dataset.
+- So sánh Book max.
+- So sánh borrowCount.
+- So sánh execution time.
+- So sánh comparisons/steps.
+- Hiển thị Big-O.
+- Hiển thị trade-off.
+
+FORMAT OUTPUT:
+
+========================================
+          MC2 BENCHMARK RESULT
+========================================
+
+Dataset Size : 10000
+
+[BASELINE]
+Method        : Linear Max Scan
+Result        : B000004
+Borrow Count  : 200
+Time          : ... ns
+Comparisons   : ...
+Big-O         : O(n)
+
+[FINAL SOLUTION]
+Method        : Max-Heap
+Result        : B000004
+Borrow Count  : 200
+Time          : ... ns
+Comparisons   : 1
+Big-O         : O(1) getMax
+
+[VALIDATION]
+Same Result   : PASS
+
+[TRADE-OFF]
+
+Linear Max Scan:
++ Less additional memory
+- Must scan all books for every max query
+
+Max-Heap:
++ getMax O(1)
++ update O(log n)
+- Requires additional memory
+- Heap structure must be maintained
+
+========================================
+
+NORMAL MODE:
+- Chỉ chạy MaxHeap.getMax().
+- Hiển thị Book có borrowCount cao nhất.
+
+
+7. RQ1 - SEARCH BOOKS BY CATEGORY
+---------------------------------
+Baseline:
+Linear Scan
+
+Final Solution:
+Hash Table theo Category
+
+Mapping:
+category -> List<BookID>
+
+Input:
+category
+
+BENCHMARK MODE:
+- Cùng category cho cả hai phương án.
+- So sánh toàn bộ tập bookId trả về.
+- Không chỉ so số lượng kết quả.
+- Đo execution time.
+- Đếm comparisons/checks.
+- Hiển thị Big-O.
+- Hiển thị trade-off.
+
+FORMAT OUTPUT:
+
+========================================
+          RQ1 BENCHMARK RESULT
+========================================
+
+Input Category : CNTT
+Dataset Size   : 10000
+
+[BASELINE]
+Method         : Linear Scan
+Result Count   : ...
+Time           : ... ns
+Comparisons    : ...
+Big-O          : O(n)
+
+[FINAL SOLUTION]
+Method         : Category Hash
+Result Count   : ...
+Time           : ... ns
+Comparisons    : ...
+Big-O          : O(1 + k) average
+
+[VALIDATION]
+Same Result Set: PASS
+
+[TRADE-OFF]
+
+Linear Scan:
++ No additional category index
+- Must scan all books for every query
+
+Category Hash:
++ Faster category lookup
+- Requires additional memory
+- Index must be updated when category changes
+
+========================================
+
+NORMAL MODE:
+- Chỉ dùng Category Hash.
+- Hiển thị các Book thuộc category.
+
+
+8. RQ2 - FIND OVERDUE BORROW RECORDS
+------------------------------------
+Baseline:
+Linear Scan
+
+Final Solution:
+Balanced BST / AVL Tree theo dueDate
+
+Input:
+currentDate theo YYYY-MM-DD
+
+Điều kiện quá hạn:
+status == BORROWING
+AND
+dueDate < currentDate
+
+BENCHMARK MODE:
+- Cùng currentDate cho cả hai phương án.
+- So sánh tập BorrowRecord trả về.
+- So sánh result count.
+- Đo execution time.
+- Đếm checks/nodes.
+- Hiển thị Big-O.
+- Hiển thị trade-off.
+
+FORMAT OUTPUT:
+
+========================================
+          RQ2 BENCHMARK RESULT
+========================================
+
+Current Date : 2026-10-02
+Dataset Size : 10000
+
+[BASELINE]
+Method       : Linear Scan
+Result Count : ...
+Time         : ... ns
+Checks       : ...
+Big-O        : O(n)
+
+[FINAL SOLUTION]
+Method       : AVL / Balanced BST
+Result Count : ...
+Time         : ... ns
+Nodes Visited: ...
+Big-O        : O(log n + k)
+
+[VALIDATION]
+Same Result Set: PASS
+
+[TRADE-OFF]
+
+Linear Scan:
++ Simple
++ Less index memory
+- Must scan all records
+
+AVL / Balanced BST:
++ Efficient range query
+- Requires additional tree-node memory
+- Tree must remain balanced
+
+========================================
+
+NORMAL MODE:
+- Chỉ dùng AVL/BST.
+- Hiển thị danh sách BorrowRecord quá hạn.
+
+
+9. RQ3 - BORROW WAITLIST FIFO
+-----------------------------
+Baseline:
+Array / Vector
+
+Final Solution:
+Queue FIFO
+
+Runtime Final đề xuất:
+Hash<BookID, Queue>
+
+BENCHMARK MODE:
+- Benchmark cùng dữ liệu chờ.
+- Baseline dùng Vector/Array.
+- Final dùng Queue.
+- Kiểm tra Reader được lấy ra có giống nhau không.
+- Đo execution time.
+- Đếm operations.
+- Hiển thị Big-O.
+- Kiểm tra FIFO.
+- Hiển thị trade-off.
+
+FORMAT OUTPUT:
+
+========================================
+          RQ3 BENCHMARK RESULT
+========================================
+
+Book ID      : B000003
+Waitlist Size: 10000
+
+[BASELINE]
+Method       : Vector / Array
+First Reader : R000001
+Time         : ... ns
+Operations   : ...
+Big-O        : O(n) dequeue
+
+[FINAL SOLUTION]
+Method       : Queue FIFO
+First Reader : R000001
+Time         : ... ns
+Operations   : ...
+Big-O        : O(1) dequeue
+
+[VALIDATION]
+Same Reader  : PASS
+FIFO Result  : PASS
+
+[TRADE-OFF]
+
+Vector / Array:
++ Simple storage
+- Removing the first element may shift remaining elements
+
+Queue FIFO:
++ enqueue O(1)
++ dequeue O(1)
+- Requires a dedicated Queue structure
+
+========================================
+
+NORMAL MODE:
+1. Join Waitlist
+2. Show Next Reader
+3. Process Next Reader
+4. Show Queue
+0. Back
+
+
+10. MENU SAU KHI CHẠY MODULE
+----------------------------
+Sau khi chạy xong một module:
+
+----------------------------------------
+1. Run This Module Again
+2. Back To Module Menu
+3. Change Mode
+0. Exit
+----------------------------------------
+
+Choice:
+
+1:
+Chạy lại module hiện tại.
+
+2:
+Quay lại menu 5 module.
+
+3:
+Quay lại menu chọn Mode.
+
+0:
+Thoát chương trình.
+
+
+11. APPMENU
+-----------
+Tạo class:
+AppMenu
+
+File:
+include/app/AppMenu.h
+src/app/AppMenu.cpp
+
+AppMenu chỉ chịu trách nhiệm điều khiển giao diện.
+
+Không chứa thuật toán DSA.
+
+AppMenu cần quản lý:
+- MC1
+- MC2
+- RQ1
+- RQ2
+- RQ3
+- currentMode
+
+Các hàm đề xuất:
+
+showModeMenu()
+showModuleMenu()
+runMC1()
+runMC2()
+runRQ1()
+runRQ2()
+runRQ3()
+showAfterModuleMenu()
+run()
+
+
+12. QUY ƯỚC MODE
+----------------
+Nên dùng enum:
+
+enum AppMode {
+    BENCHMARK_MODE = 1,
+    NORMAL_MODE = 2
+};
+
+AppMenu giữ:
+AppMode currentMode;
+
+
+13. MAIN.CPP
+------------
+main.cpp phải gọn.
+
+Luồng:
+
+1. Tạo FileStore.
+2. Load books.
+3. Load readers.
+4. Load borrowRecords.
+5. Load waitlist.
+
+6. Tạo:
+MC1 mc1(books);
+MC2 mc2(books);
+RQ1 rq1(books);
+RQ2 rq2(borrowRecords);
+RQ3 rq3(waitlist);
+
+7. Build Final DSA một lần:
+mc1.build();
+mc2.build();
+rq1.build();
+rq2.build();
+rq3.build();
+
+8. Tạo:
+AppMenu app(mc1, mc2, rq1, rq2, rq3);
+
+9. Chạy:
+app.run();
+
+main.cpp KHÔNG chứa:
+- Linear Search algorithm.
+- Hash algorithm.
+- Heap algorithm.
+- AVL/BST algorithm.
+- Queue algorithm.
+- Benchmark logic.
+
+
+14. CÂY THƯ MỤC
+---------------
+
+DSA_Project_final/
+│
+├── include/
+│   │
+│   ├── app/
+│   │   └── AppMenu.h
+│   │
+│   └── core/
+│       │
+│       ├── mc1/
+│       │   ├── MC1.h
+│       │   ├── LinearSearch.h
+│       │   ├── HashTable.h
+│       │   └── SearchResult.h
+│       │
+│       ├── mc2/
+│       │   ├── MC2.h
+│       │   ├── LinearMaxScan.h
+│       │   ├── MaxHeap.h
+│       │   └── MaxResult.h
+│       │
+│       ├── rq1/
+│       │   └── ...
+│       │
+│       ├── rq2/
+│       │   └── ...
+│       │
+│       └── rq3/
+│           └── ...
+│
+├── src/
+│   │
+│   ├── app/
+│   │   └── AppMenu.cpp
+│   │
+│   ├── core/
+│   │   │
+│   │   ├── mc1/
+│   │   │   ├── MC1.cpp
+│   │   │   ├── LinearSearch.cpp
+│   │   │   └── HashTable.cpp
+│   │   │
+│   │   ├── mc2/
+│   │   │   ├── MC2.cpp
+│   │   │   ├── LinearMaxScan.cpp
+│   │   │   └── MaxHeap.cpp
+│   │   │
+│   │   ├── rq1/
+│   │   │   └── ...
+│   │   ├── rq2/
+│   │   │   └── ...
+│   │   └── rq3/
+│   │       └── ...
+│   │
+│   ├── models/
+│   │   ├── Book.h
+│   │   ├── Reader.h
+│   │   ├── BorrowRecord.h
+│   │   └── WaitlistEntry.h
+│   │
+│   └── persistence/
+│       ├── FileStore.h
+│       └── FileStore.cpp
+│
+└── main.cpp
+
+
+15. NGUYÊN TẮC BENCHMARK
+------------------------
+- Baseline và Final dùng cùng dữ liệu.
+- Cùng input nếu module yêu cầu input.
+- Không thay đổi dataset giữa hai lần test.
+- Kiểm tra correctness.
+- Không cộng build time của Final DSA vào query time.
+- Có thể đo build time riêng nếu cần.
+- Không hard-code kết quả benchmark.
+- Các số đo phải lấy từ chương trình thực tế.
+
+
+16. FORMAT OUTPUT CHUNG
+-----------------------
+KHÔNG dùng bảng ASCII nhiều cột vì dễ bị lệch khi font hoặc nội dung có độ dài khác nhau.
+
+Dùng format dọc:
+
+========================================
+          MODULE BENCHMARK RESULT
+========================================
+
+[BASELINE]
+Method       : ...
+Result       : ...
+Time         : ... ns
+Comparisons  : ...
+Big-O        : ...
+
+[FINAL SOLUTION]
+Method       : ...
+Result       : ...
+Time         : ... ns
+Comparisons  : ...
+Big-O        : ...
+
+[VALIDATION]
+Same Result  : PASS / FAIL
+
+[TRADE-OFF]
+
+Baseline:
+...
+
+Final Solution:
+...
+
+========================================
+
+
+17. MỤC TIÊU CUỐI CÙNG
+----------------------
+BENCHMARK MODE trả lời:
+"Tại sao nhóm chọn Final Solution thay vì Baseline?"
+
+NORMAL MODE trả lời:
+"Final Solution hoạt động như thế nào trong hệ thống thực tế?"
+
+Flow cuối:
+
+Khởi động
+-> Load data
+-> Build Final DSA
+-> Chọn Mode
+-> Chọn Module
+-> Nhập input nếu cần
+-> Chạy module
+-> Hiển thị benchmark hoặc kết quả
+-> Chọn chạy lại / quay về module / đổi mode / thoát
+
+Không yêu cầu người dùng restart chương trình sau mỗi lần chạy.
+
+
+
+PHẦN B - TRIỂN KHAI CHI TIẾT MODULE MC2
+====================================================
+
+PROMPT TRIỂN KHAI MODULE MC2 - DỰ ÁN DSA QUẢN LÝ THƯ VIỆN
+==========================================================
+
+I. BỐI CẢNH DỰ ÁN
+-----------------
+Dự án: Hệ thống quản lý thư viện và mượn - trả tài liệu.
+Ngôn ngữ: C++.
+Phong cách code: OOP, sử dụng "using namespace std;" trong toàn bộ code C++.
+Persistence đã hoàn thành trước đó, vì vậy module MC2 KHÔNG tự đọc file JSON trực tiếp.
+Dữ liệu sách sau khi load từ Persistence được cung cấp dưới dạng vector<Book> hoặc cấu trúc tương đương.
+
+MC2 là chức năng:
+"Tìm tài liệu có borrowCount cao nhất."
+
+MC2 có:
+- Baseline: Linear Scan tìm max.
+- Final Solution: Max-Heap.
+- Mode 1: So sánh Baseline và Final Solution trên CÙNG MỘT DATASET.
+- Mode 2: Chỉ sử dụng Final Solution (Max-Heap) để lấy và hiển thị kết quả.
+
+
+II. YÊU CẦU CHÍNH CỦA MC2
+--------------------------
+Input chính:
+- vector<Book>
+
+Mỗi Book tối thiểu có:
+- string bookId
+- string title
+- int borrowCount
+
+Output:
+- Book có borrowCount lớn nhất.
+
+Ví dụ:
+B001 -> 50
+B002 -> 120
+B003 -> 80
+
+Kết quả:
+B002 -> 120
+
+
+III. QUY TẮC TIE-BREAK
+----------------------
+Nếu nhiều Book có cùng borrowCount cao nhất thì phải dùng cùng một quy tắc cho cả Baseline và Final Solution.
+
+Đề xuất:
+- borrowCount lớn hơn được ưu tiên.
+- Nếu borrowCount bằng nhau thì bookId nhỏ hơn được ưu tiên.
+
+Ví dụ:
+B001 -> 100
+B002 -> 100
+
+Kết quả:
+B001 được ưu tiên.
+
+Comparator của Linear Scan và Max-Heap phải giống nhau để đảm bảo kết quả so sánh là hợp lệ.
+
+
+IV. BASELINE - LINEAR MAX SCAN
+------------------------------
+Baseline của MC2 là Linear Scan tìm max.
+
+Cách hoạt động:
+- Nếu vector<Book> rỗng: trả nullptr.
+- Chọn Book đầu tiên làm max hiện tại.
+- Duyệt toàn bộ Book.
+- So sánh borrowCount với max hiện tại.
+- Nếu lớn hơn thì cập nhật max.
+- Nếu bằng nhau thì áp dụng tie-break bằng bookId.
+
+Yêu cầu Baseline phải thu thập:
+1. Book* kết quả.
+2. Thời gian thực thi.
+3. Số lần so sánh.
+4. Tên phương pháp: "Linear Max Scan".
+5. Big-O: O(n).
+
+Độ phức tạp:
+- Get max: O(n).
+
+Lý do:
+Muốn chắc chắn Book nào có borrowCount lớn nhất thì phải duyệt toàn bộ dataset.
+
+
+V. FINAL SOLUTION - MAX-HEAP
+----------------------------
+Final Solution của MC2 là Max-Heap.
+
+Mục tiêu:
+- Root luôn là Book có borrowCount cao nhất.
+
+Max-Heap phải:
+- Tự cài đặt.
+- Không dùng priority_queue của STL để thay thế logic Heap.
+- Có comparator riêng.
+- Có build().
+- Có insert().
+- Có getMax().
+- Có heapifyUp().
+- Có heapifyDown().
+- Có updateBorrowCount() nếu module hỗ trợ update.
+
+Heap nên lưu:
+- Book*
+hoặc reference tương đương để tránh copy dữ liệu Book không cần thiết.
+
+Comparator:
+1. borrowCount cao hơn -> ưu tiên cao hơn.
+2. Nếu bằng nhau -> bookId nhỏ hơn -> ưu tiên cao hơn.
+
+Độ phức tạp:
+- build heap bottom-up: O(n).
+- getMax(): O(1).
+- insert(): O(log n).
+- update borrowCount: O(log n) khi cần heapifyUp/heapifyDown.
+
+
+VI. MODE 1 - COMPARISON MODE
+----------------------------
+Mode 1 dùng để so sánh:
+- Baseline: Linear Max Scan
+- Final Solution: Max-Heap
+
+Hai phương án bắt buộc:
+- Chạy trên cùng vector<Book>.
+- Chạy trên cùng trạng thái dữ liệu.
+- Dùng cùng comparator và tie-break.
+
+Các tiêu chí cần so sánh:
+
+1. KẾT QUẢ TRẢ VỀ CÓ GIỐNG NHAU KHÔNG
+- So sánh bookId.
+- So sánh borrowCount.
+- Nếu cả hai nullptr => PASS.
+- Nếu cả hai có Book và cùng bookId + borrowCount => PASS.
+- Trường hợp khác => FAIL.
+
+2. THỜI GIAN THỰC THI
+- Dùng chrono.
+- Đơn vị khuyến nghị: nanoseconds.
+- Baseline đo thời gian findMax().
+- Final Solution đo thời gian getMax().
+- KHÔNG cộng thời gian build Heap vào getMax time khi benchmark trực tiếp thao tác lấy max.
+
+3. SỐ LẦN SO SÁNH / SỐ BƯỚC
+- Baseline:
+  đếm số lần so sánh Book với max hiện tại.
+- Max-Heap getMax:
+  root đã là max, có thể xem là 1 bước truy xuất.
+- Nếu benchmark update:
+  đếm comparison hoặc số bước trong heapifyUp/heapifyDown.
+
+4. ĐỘ PHỨC TẠP THUẬT TOÁN
+- Linear Max Scan: O(n).
+- MaxHeap getMax: O(1).
+- MaxHeap update: O(log n).
+- MaxHeap build: O(n).
+
+5. BIG-O
+Có thể gộp cùng phần độ phức tạp khi hiển thị:
+- Baseline: O(n).
+- Final getMax: O(1).
+- Final update: O(log n).
+
+6. TRADE-OFF TỐC ĐỘ VÀ BỘ NHỚ
+Không cần đo RAM chính xác.
+Chỉ cần giải thích:
+
+Linear Scan:
++ Không cần cấu trúc phụ để tìm max.
++ Ít bộ nhớ phụ.
+- Mỗi lần tìm max phải quét toàn bộ dataset.
+- Get max O(n).
+
+Max-Heap:
++ getMax O(1).
++ update O(log n).
+- Cần thêm bộ nhớ để lưu Heap.
+- Phải duy trì Heap đồng bộ với dữ liệu Book.
+- Code phức tạp hơn Linear Scan.
+
+
+VII. TEST A - GET MAX
+---------------------
+Đây là benchmark bắt buộc của MC2.
+
+Baseline:
+LinearMaxScan.findMax()
+
+Final:
+MaxHeap.getMax()
+
+So sánh:
+- Same result?
+- Execution time.
+- Comparisons/steps.
+- Big-O.
+- Trade-off.
+
+
+VIII. TEST B - UPDATE + GET MAX
+-------------------------------
+Khuyến nghị có thêm vì borrowCount thay đổi khi sách được mượn.
+
+Ví dụ:
+B005: 90 -> 220
+
+Baseline:
+1. Update Book.borrowCount.
+2. Linear Scan lại toàn bộ dataset để tìm max.
+3. Tổng truy vấn max vẫn O(n).
+
+Final:
+1. Update borrowCount.
+2. heapifyUp hoặc heapifyDown.
+3. getMax().
+4. Update O(log n), getMax O(1).
+
+Sau update:
+- Baseline và Final phải trả cùng Book max.
+- Nếu khác => FAIL.
+
+
+IX. MODE 2 - NORMAL MODE
+------------------------
+Mode 2 chỉ sử dụng Final Solution.
+
+Luồng:
+MaxHeap.getMax()
+-> Book*
+-> Hiển thị Book
+
+Mode 2 KHÔNG:
+- Chạy Linear Max Scan.
+- Benchmark.
+- So sánh.
+- In trade-off.
+
+Output ví dụ:
+
+=================================
+      MOST BORROWED BOOK
+=================================
+
+Book ID      : B004
+Title        : Data Structures
+Borrow Count : 200
+
+
+X. YÊU CẦU OOP
+--------------
+Tổ chức class theo Single Responsibility ở mức đơn giản:
+
+1. Book
+- Model dùng chung toàn hệ thống.
+
+2. MaxResult
+- Chứa kết quả của một lần tìm max.
+- Dùng chung cho Baseline và Final Solution.
+
+3. LinearMaxScan
+- Chỉ triển khai Baseline.
+
+4. MaxHeap
+- Chỉ triển khai Final Solution.
+- Quản lý Heap và các thuật toán Heap.
+
+5. MC2
+- Điều phối Mode 1 và Mode 2.
+- So sánh kết quả.
+- Hiển thị benchmark.
+- Không tự cài Linear Scan hoặc Heap trực tiếp trong MC2.cpp.
+
+
+XI. CẤU TRÚC THƯ MỤC CHI TIẾT
+------------------------------
+
+DSA_Project_final/
+│
+├── include/
+│   └── core/
+│       ├── mc1/
+│       │   ├── MC1.h
+│       │   ├── LinearSearch.h
+│       │   ├── HashTable.h
+│       │   └── SearchResult.h
+│       │
+│       └── mc2/
+│           ├── MC2.h
+│           ├── LinearMaxScan.h
+│           ├── MaxHeap.h
+│           └── MaxResult.h
+│
+├── src/
+│   ├── core/
+│   │   ├── mc1/
+│   │   │   ├── MC1.cpp
+│   │   │   ├── LinearSearch.cpp
+│   │   │   └── HashTable.cpp
+│   │   │
+│   │   └── mc2/
+│   │       ├── MC2.cpp
+│   │       ├── LinearMaxScan.cpp
+│   │       └── MaxHeap.cpp
+│   │
+│   ├── models/
+│   │   ├── Book.h
+│   │   ├── Reader.h
+│   │   ├── BorrowRecord.h
+│   │   └── WaitlistEntry.h
+│   │
+│   └── persistence/
+│       ├── FileStore.h
+│       └── FileStore.cpp
+│
+└── main.cpp
+
+
+XII. CẤU TRÚC RIÊNG CỦA MC2
+----------------------------
+
+include/
+└── core/
+    └── mc2/
+        ├── MC2.h
+        ├── LinearMaxScan.h
+        ├── MaxHeap.h
+        └── MaxResult.h
+
+src/
+└── core/
+    └── mc2/
+        ├── MC2.cpp
+        ├── LinearMaxScan.cpp
+        └── MaxHeap.cpp
+
+
+XIII. NHIỆM VỤ TỪNG FILE
+-------------------------
+
+1. include/core/mc2/MC2.h
+- Khai báo class MC2.
+- Giữ reference tới vector<Book>.
+- Chứa LinearMaxScan baseline.
+- Chứa MaxHeap finalSolution.
+- Khai báo:
+  - build()
+  - comparisonMode()
+  - normalMode()
+  - updateComparisonMode(...) nếu dùng
+  - sameResult(...)
+  - printComparison(...)
+  - printBook(...)
+
+2. src/core/mc2/MC2.cpp
+- Cài constructor.
+- Build Max-Heap một lần.
+- Triển khai Mode 1.
+- Triển khai Mode 2.
+- So sánh MaxResult.
+- Hiển thị benchmark.
+- Hiển thị trade-off.
+- Không tự cài thuật toán Heap.
+
+3. include/core/mc2/LinearMaxScan.h
+- Khai báo class LinearMaxScan.
+- Hàm chính:
+  MaxResult findMax(vector<Book>& books);
+
+4. src/core/mc2/LinearMaxScan.cpp
+- Cài Linear Scan tìm max.
+- Dùng comparator/tie-break thống nhất.
+- Đếm comparisons.
+- Đo executionTime.
+- Gán method và bigO.
+- Trả MaxResult.
+
+5. include/core/mc2/MaxHeap.h
+- Khai báo class MaxHeap.
+- Quản lý storage của Heap.
+- Hàm:
+  - build(vector<Book>&)
+  - insert(Book*)
+  - getMax()
+  - updateBorrowCount(...)
+  - heapifyUp(...)
+  - heapifyDown(...)
+  - higherPriority(...)
+
+6. src/core/mc2/MaxHeap.cpp
+- Cài comparator.
+- Cài build Heap.
+- Cài insert.
+- Cài getMax.
+- Cài update.
+- Cài heapifyUp/heapifyDown.
+- Đo executionTime cho getMax.
+- Đếm steps/comparisons khi cần.
+
+7. include/core/mc2/MaxResult.h
+- Chỉ cần header, không cần .cpp.
+- Struct:
+  - Book* book
+  - long long executionTime
+  - long long comparisons
+  - string method
+  - string bigO
+
+8. src/models/Book.h
+- Model Book dùng chung.
+- MC2 dùng borrowCount và bookId.
+- Không tạo Book riêng trong MC2.
+
+9. src/persistence/FileStore.h/.cpp
+- Persistence đã hoàn thành.
+- Chỉ load/save dữ liệu.
+- MC2 không đọc JSON trực tiếp.
+
+10. main.cpp
+- Load books bằng FileStore.
+- Tạo MC2.
+- Gọi mc2.build() một lần.
+- Cho người dùng chọn:
+  1. Comparison Mode
+  2. Normal Mode
+- Mode 1 không cần input bookId cho getMax.
+- Nếu test update, nhập bookId + newBorrowCount.
+
+
+XIV. MAXRESULT ĐỀ XUẤT
+----------------------
+Ví dụ:
+
+struct MaxResult {
+    Book* book;
+    long long executionTime;
+    long long comparisons;
+    string method;
+    string bigO;
+};
+
+Baseline có thể trả:
+- method = "Linear Max Scan"
+- bigO = "O(n)"
+
+Final có thể trả:
+- method = "Max-Heap"
+- bigO = "O(1) getMax"
+
+
+XV. OUTPUT MODE 1 ĐỀ XUẤT
+-------------------------
+
+=================================
+        MC2 COMPARISON
+=================================
+
+Dataset Size: 10000
+
+BASELINE
+---------------------------------
+Method      : Linear Max Scan
+Result      : B004
+BorrowCount : 200
+Time        : ... ns
+Comparisons : ...
+Big-O       : O(n)
+
+FINAL SOLUTION
+---------------------------------
+Method      : Max-Heap
+Result      : B004
+BorrowCount : 200
+Time        : ... ns
+Comparisons : 1
+Big-O       : O(1) getMax
+
+VALIDATION
+---------------------------------
+Same Result : PASS
+
+TRADE-OFF
+---------------------------------
+Linear Scan:
++ Less additional memory
+- Must scan all books for every max query
+
+Max-Heap:
++ getMax O(1)
++ update O(log n)
+- Uses additional memory
+- Must maintain heap structure
+
+
+XVI. LUỒNG CHẠY CHƯƠNG TRÌNH
+-----------------------------
+
+Khởi động:
+FileStore
+-> load books
+-> vector<Book>
+-> tạo MC2
+-> MC2.build()
+-> build Max-Heap một lần
+
+Mode 1:
+vector<Book>
+-> LinearMaxScan.findMax()
+-> MaxResult baseline
+
+MaxHeap
+-> getMax()
+-> MaxResult final
+
+Sau đó:
+-> so sánh bookId + borrowCount
+-> in time
+-> in comparisons/steps
+-> in Big-O
+-> in trade-off
+
+Mode 2:
+MaxHeap.getMax()
+-> Book*
+-> printBook()
+
+
+XVII. TEST TỐI THIỂU CHO MC2
+-----------------------------
+1. Dataset rỗng.
+2. Chỉ có 1 Book.
+3. Max nằm đầu vector.
+4. Max nằm giữa vector.
+5. Max nằm cuối vector.
+6. Nhiều Book có cùng borrowCount.
+7. Tie-break bằng bookId hoạt động giống nhau ở cả hai phương án.
+8. Update một Book bình thường.
+9. Update một Book khiến nó trở thành max.
+10. Sau update, Baseline và Heap vẫn trả cùng kết quả.
+11. Dataset benchmark:
+    - 1.000 Book
+    - 10.000 Book
+    - 100.000 Book
+
+
+XVIII. YÊU CẦU CODE STYLE
+-------------------------
+- C++.
+- Dùng using namespace std; trong toàn bộ code.
+- Tách .h và .cpp.
+- Toàn project chỉ có một thư mục src ở root.
+- Header MC2 nằm trong:
+  include/core/mc2/
+- Source MC2 nằm trong:
+  src/core/mc2/
+- Không dùng priority_queue của STL làm Final Solution.
+- Code rõ ràng, dễ giải thích khi bảo vệ.
+- Không tạo Service/Controller/Repository không cần thiết.
+- MC2 là class điều phối chính.
+- MaxHeap là class cấu trúc dữ liệu.
+- LinearMaxScan là class Baseline.
+- MaxResult là struct kết quả benchmark.
+
+
+XIX. MỤC TIÊU CUỐI CÙNG
+------------------------
+Sau khi triển khai xong, MC2 phải chứng minh được:
+
+Baseline:
+Linear Max Scan
+- Get max O(n).
+- Ít bộ nhớ phụ.
+- Mỗi lần hỏi max phải quét toàn bộ dataset.
+
+Final Solution:
+Max-Heap
+- getMax O(1).
+- update O(log n).
+- build O(n) nếu bottom-up.
+- Tốn thêm bộ nhớ và chi phí duy trì Heap.
+
+Mode 1:
+Dùng để chứng minh và so sánh hai phương án.
+
+Mode 2:
+Dùng như chức năng thật của hệ thống và chỉ sử dụng Max-Heap.
+
+
+
+PHẦN C - QUY TẮC TÍCH HỢP MC2 VÀO APPMENU
+====================================================
+
+1. Khi người dùng chọn Benchmark Mode -> MC2:
+   - AppMenu gọi MC2::comparisonMode().
+   - LinearMaxScan.findMax() và MaxHeap.getMax() chạy trên cùng trạng thái dữ liệu.
+   - MC2 kiểm tra bookId + borrowCount có giống nhau không.
+   - MC2 hiển thị theo format dọc:
+     [BASELINE], [FINAL SOLUTION], [VALIDATION], [TRADE-OFF].
+
+2. Khi người dùng chọn Normal Mode -> MC2:
+   - AppMenu gọi MC2::normalMode().
+   - Chỉ MaxHeap.getMax() được sử dụng.
+   - Không chạy LinearMaxScan.
+   - Không benchmark.
+
+3. Sau khi MC2 hoàn thành:
+   - 1. Run This Module Again
+   - 2. Back To Module Menu
+   - 3. Change Mode
+   - 0. Exit
+
+4. main.cpp:
+   - Load dữ liệu bằng FileStore.
+   - Tạo MC1, MC2, RQ1, RQ2, RQ3.
+   - Gọi build() của các Final DSA một lần.
+   - Tạo AppMenu và gọi app.run().
+   - Không chứa thuật toán DSA hay benchmark logic.
+
+5. Cây thư mục tích hợp trọng tâm:
+
+DSA_Project_final/
+│
+├── include/
+│   ├── app/
+│   │   └── AppMenu.h
+│   └── core/
+│       ├── mc1/
+│       │   ├── MC1.h
+│       │   ├── LinearSearch.h
+│       │   ├── HashTable.h
+│       │   └── SearchResult.h
+│       └── mc2/
+│           ├── MC2.h
+│           ├── LinearMaxScan.h
+│           ├── MaxHeap.h
+│           └── MaxResult.h
+│
+├── src/
+│   ├── app/
+│   │   └── AppMenu.cpp
+│   ├── core/
+│   │   ├── mc1/
+│   │   │   ├── MC1.cpp
+│   │   │   ├── LinearSearch.cpp
+│   │   │   └── HashTable.cpp
+│   │   └── mc2/
+│   │       ├── MC2.cpp
+│   │       ├── LinearMaxScan.cpp
+│   │       └── MaxHeap.cpp
+│   ├── models/
+│   │   ├── Book.h
+│   │   ├── Reader.h
+│   │   ├── BorrowRecord.h
+│   │   └── WaitlistEntry.h
+│   └── persistence/
+│       ├── FileStore.h
+│       └── FileStore.cpp
+│
+└── main.cpp
+
+KẾT QUẢ MONG MUỐN
+-----------------
+- Màn hình đầu tiên: chọn Benchmark Mode hoặc Normal Mode.
+- Màn hình thứ hai: chọn 1 trong 5 module.
+- Benchmark Mode: hiển thị Baseline vs Final Solution và validation.
+- Normal Mode: chỉ chạy Final Solution.
+- MC2 tuân thủ đầy đủ đặc tả Linear Max Scan vs Max-Heap ở Phần B.
+- Không dùng bảng ASCII nhiều cột trong output CLI.

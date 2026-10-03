@@ -20,11 +20,11 @@ bool RQ2::sameResultSet(const OverdueResult& baselineRes, const OverdueResult& f
     vector<string> baseIds;
     vector<string> finalIds;
 
-    for (const auto* r : baselineRes.records) {
-        if (r) baseIds.push_back(r->borrow_id);
+    for (const auto& r : baselineRes.records) {
+        baseIds.push_back(r.borrow_id);
     }
-    for (const auto* r : finalSolRes.records) {
-        if (r) finalIds.push_back(r->borrow_id);
+    for (const auto& r : finalSolRes.records) {
+        finalIds.push_back(r.borrow_id);
     }
 
     sort(baseIds.begin(), baseIds.end());
@@ -86,7 +86,7 @@ void RQ2::printComparison(size_t datasetSize, const string& currentDate, const O
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void RQ2::printRecords(const vector<BorrowRecord*>& recordList) {
+void RQ2::printRecords(const vector<BorrowRecord>& recordList) {
     if (recordList.empty()) {
         cout << "  [i] Khong co phieu muon nao bi qua han tai moc thoi gian nay.\n";
         return;
@@ -96,13 +96,13 @@ void RQ2::printRecords(const vector<BorrowRecord*>& recordList) {
     cout << "| STT | Ma phieu   | Doc gia   | Ma sach | Ngay muon  | Han tra    | Tinh trang              |\n";
     cout << "+-----+------------+-----------+---------+------------+------------+-------------------------+\n";
     for (size_t i = 0; i < recordList.size(); ++i) {
-        const auto* r = recordList[i];
+        const auto& r = recordList[i];
         cout << "| " << left << setw(3) << (i + 1)
-             << " | " << left << setw(10) << r->borrow_id
-             << " | " << left << setw(9) << r->reader_id
-             << " | " << left << setw(7) << r->book_id
-             << " | " << left << setw(10) << r->borrow_date
-             << " | " << left << setw(10) << r->due_date
+             << " | " << left << setw(10) << r.borrow_id
+             << " | " << left << setw(9) << r.reader_id
+             << " | " << left << setw(7) << r.book_id
+             << " | " << left << setw(10) << r.borrow_date
+             << " | " << left << setw(10) << r.due_date
              << " | " << left << setw(23) << "Qua han (BORROWING)" << " |\n";
     }
     cout << "+-----+------------+-----------+---------+------------+------------+-------------------------+\n";

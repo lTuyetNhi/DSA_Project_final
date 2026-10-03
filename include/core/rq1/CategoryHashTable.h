@@ -7,32 +7,27 @@
 
 using namespace std;
 
-struct CategoryHashNode {
-    string category;
-    vector<Book*> books;
-    CategoryHashNode* next;
-
-    CategoryHashNode(const string& cat) : category(cat), next(nullptr) {}
+// Mục lưu trữ gom nhóm sách theo thể loại
+struct CategoryEntry {
+    string category;    // Tên thể loại (đã chuẩn hóa)
+    vector<Book> books; // Danh sách các cuốn sách thuộc thể loại này
 };
 
+// Bảng băm đa trị gom nhóm sách theo thể loại (không dùng con trỏ)
 class CategoryHashTable {
 private:
-    CategoryHashNode** buckets;
-    int capacity;
+    vector<vector<CategoryEntry>> buckets; // Mảng các ô chứa danh sách thể loại
+    int capacity;                          // Kích thước bảng băm
 
     int hashFunction(const string& key) const;
 
 public:
-    CategoryHashTable(int cap = 1009);
-    ~CategoryHashTable();
+    explicit CategoryHashTable(int cap = 1009);
 
-    CategoryHashTable(const CategoryHashTable&) = delete;
-    CategoryHashTable& operator=(const CategoryHashTable&) = delete;
-
-    void build(vector<Book>& books);
-    void insert(Book* book);
+    void build(const vector<Book>& books);
+    void insert(const Book& book);
     CategoryResult search(const string& category) const;
-    vector<Book*> getBooksInCategory(const string& category) const;
+    vector<Book> getBooksInCategory(const string& category) const;
     void clear();
 };
 

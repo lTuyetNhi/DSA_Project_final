@@ -22,7 +22,8 @@ $srcFiles = @(
     "src/core/rq3/LinearTitleScan.cpp",
     "src/core/rq3/CategoryTitleSearch.cpp",
     "src/core/rq3/RQ3.cpp",
-    "src/presentation/AppMenu.cpp"
+    "src/presentation/AppMenu.cpp",
+    "src/presentation/BenchmarkRunner.cpp"
 )
 
 g++ -std=c++17 $srcFiles -o main.exe
