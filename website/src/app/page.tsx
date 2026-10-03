@@ -5,21 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBolt,
   faChartLine,
-  faDatabase,
   faSliders,
-  faRotateRight,
   faCheckCircle,
-  faCircleExclamation,
-  faTable,
-  faBook,
-  faBookmark,
-  faFire,
-  faArrowRight,
-  faLayerGroup,
-  faCodeBranch,
-  faFolderOpen,
+  faDownload,
 } from '@fortawesome/free-solid-svg-icons';
-import ModeSelector from '@/components/layout/ModeSelector';
 import HashPipeline from '@/components/visualizer/HashPipeline';
 import BucketVisualizer from '@/components/visualizer/BucketVisualizer';
 import HeapTreeVisualizer from '@/components/visualizer/HeapTreeVisualizer';
@@ -29,9 +18,11 @@ import InvertedIndexVisualizer from '@/components/visualizer/InvertedIndexVisual
 import BookCard from '@/components/ui/BookCard';
 import { Book, BorrowRecord, ModuleResponse } from '@/types/dsa';
 import { INITIAL_BOOKS, INITIAL_RECORDS } from '@/data/initialData';
+import { useRam } from '@/context/RamContext';
 
 export default function DashboardPage() {
-  const [activeMode, setActiveMode] = useState<1 | 2 | 3>(1);
+  const { ramBookCount, openModal } = useRam();
+  const [activeMode, setActiveMode] = useState<1 | 2>(1);
   const [selectedModule, setSelectedModule] = useState<'mc1' | 'mc2' | 'rq1' | 'rq2' | 'rq3'>('mc1');
   const [inputValue, setInputValue] = useState('B001');
   const [data, setData] = useState<ModuleResponse | null>(null);
@@ -52,13 +43,17 @@ export default function DashboardPage() {
       .catch((err) => console.error(err));
   }, []);
 
-  // Dynamic random select from loaded JSON books & data
+  // Dynamic random select from loaded JSON books & 500k RAM range
   const handleRandomSelect = () => {
     if (selectedModule === 'mc1') {
-      const booksToPick = rawBooks.length > 0 ? rawBooks : INITIAL_BOOKS;
-      const randIdx = Math.floor(Math.random() * booksToPick.length);
-      const chosen = booksToPick[randIdx].book_id;
-      setInputValue(chosen);
+      if (Math.random() < 0.4 && rawBooks.length > 0) {
+        const randIdx = Math.floor(Math.random() * rawBooks.length);
+        setInputValue(rawBooks[randIdx].book_id);
+      } else {
+        const padLen = Math.max(3, ramBookCount.toString().length);
+        const randNum = Math.floor(Math.random() * ramBookCount) + 1;
+        setInputValue(`B${randNum.toString().padStart(padLen, '0')}`);
+      }
     } else if (selectedModule === 'mc2') {
       const kList = ['1', '2', '3', '4', '5', '8', '10'];
       setInputValue(kList[Math.floor(Math.random() * kList.length)]);
@@ -122,9 +117,12 @@ export default function DashboardPage() {
     };
   };
 
+  const midBookId = `B${Math.floor(ramBookCount / 2).toString().padStart(Math.max(3, ramBookCount.toString().length), '0')}`;
+  const lastBookId = `B${ramBookCount.toString().padStart(Math.max(3, ramBookCount.toString().length), '0')}`;
+
   return (
     <div className="w-full space-y-5">
-      {/* 3 Mode Navigation Tabs */}
+      {/* 2 Mode Navigation Tabs */}
       <div className="flex items-center gap-2.5 border-b border-gray-200 pb-3 overflow-x-auto">
         <button
           type="button"
@@ -150,19 +148,6 @@ export default function DashboardPage() {
         >
           <FontAwesomeIcon icon={faBolt} className={activeMode === 2 ? 'text-white text-xs' : 'text-amber-600 text-xs'} />
           <span>Mode 2: Final Solution (Tối Ưu)</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveMode(3)}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer shadow-xs active:scale-95 ${
-            activeMode === 3
-              ? 'bg-emerald-600 text-white border border-emerald-700 shadow-sm'
-              : 'bg-white text-gray-700 hover:text-emerald-700 border border-gray-300 hover:border-emerald-400 hover:bg-emerald-50/50'
-          }`}
-        >
-          <FontAwesomeIcon icon={faDatabase} className={activeMode === 3 ? 'text-white text-xs' : 'text-emerald-600 text-xs'} />
-          <span>Mode 3: Quản Lý Thư Viện (CRUD)</span>
         </button>
       </div>
 
@@ -212,7 +197,7 @@ export default function DashboardPage() {
 
             {/* Input Parameter with Presets */}
             <div className="space-y-2.5">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-bold text-gray-800">
                   {selectedModule === 'mc1' && 'Mã Sách (Book ID):'}
                   {selectedModule === 'mc2' && 'Số Lượng Top Sách:'}
@@ -221,7 +206,7 @@ export default function DashboardPage() {
                   {selectedModule === 'rq3' && 'Từ Khóa Tiêu Đề:'}
                 </span>
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
-                  {selectedModule === 'mc1' && 'Dải hợp lệ: B001 -> B010'}
+                  {selectedModule === 'mc1' && `Dải hợp lệ: B001 -> ${lastBookId} (${ramBookCount.toLocaleString('vi-VN')} sách trong RAM)`}
                   {selectedModule === 'mc2' && 'Top K: 1 -> 10'}
                   {selectedModule === 'rq1' && 'Dải: Software Engineering, Computer Science...'}
                   {selectedModule === 'rq2' && 'Định dạng: YYYY-MM-DD'}
@@ -287,39 +272,39 @@ export default function DashboardPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B005')}
+                      onClick={() => handlePreset(midBookId)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B005'
+                        inputValue === midBookId
                           ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
                       }`}
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                      <span>Giữa dải (B005)</span>
+                      <span>Giữa dải ({midBookId})</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B010')}
+                      onClick={() => handlePreset(lastBookId)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B010'
+                        inputValue === lastBookId
                           ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
                       }`}
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                      <span>Cuối dải (B010)</span>
+                      <span>Cuối dải ({lastBookId})</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B999')}
+                      onClick={() => handlePreset('B999999')}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B999'
+                        inputValue === 'B999999'
                           ? 'border-rose-500 bg-rose-50 text-rose-700 ring-1 ring-rose-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-rose-50/60 hover:border-rose-300 text-gray-700'
                       }`}
                     >
                       <span className="text-rose-500 font-bold">⊘</span>
-                      <span>Không tồn tại (B999)</span>
+                      <span>Không tồn tại (B999999)</span>
                     </button>
                   </>
                 )}
@@ -816,39 +801,39 @@ export default function DashboardPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B005')}
+                      onClick={() => handlePreset(midBookId)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B005'
+                        inputValue === midBookId
                           ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
                       }`}
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                      <span>Giữa dải (B005)</span>
+                      <span>Giữa dải ({midBookId})</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B010')}
+                      onClick={() => handlePreset(lastBookId)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B010'
+                        inputValue === lastBookId
                           ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
                       }`}
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                      <span>Cuối dải (B010)</span>
+                      <span>Cuối dải ({lastBookId})</span>
                     </button>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B999')}
+                      onClick={() => handlePreset('B999999')}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B999'
+                        inputValue === 'B999999'
                           ? 'border-rose-500 bg-rose-50 text-rose-700 ring-1 ring-rose-400 font-bold'
                           : 'border-gray-300 bg-white hover:bg-rose-50/60 hover:border-rose-300 text-gray-700'
                       }`}
                     >
                       <span className="text-rose-500 font-bold">⊘</span>
-                      <span>Không tồn tại (B999)</span>
+                      <span>Không tồn tại (B999999)</span>
                     </button>
                   </>
                 )}
@@ -1038,32 +1023,6 @@ export default function DashboardPage() {
               )}
             </div>
           )}
-        </div>
-      )}
-
-      {/* ========================================================================= */}
-      {/* MODE 3: QUẢN LÝ THƯ VIỆN (CRUD) */}
-      {/* ========================================================================= */}
-      {activeMode === 3 && (
-        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-            <div>
-              <h2 className="text-sm sm:text-base font-bold text-gray-900 flex items-center gap-2">
-                <FontAwesomeIcon icon={faDatabase} className="text-emerald-600" />
-                Dữ Liệu Thư Viện Thực Tế Trong Bộ Nhớ RAM
-              </h2>
-              <p className="text-xs text-gray-500">Nạp từ data/books.json và borrow_records.json vào Native C++ Engine</p>
-            </div>
-            <span className="text-xs font-mono font-bold px-2.5 py-1 rounded bg-emerald-50 text-emerald-800 border border-emerald-200">
-              {rawBooks.length} Sách • {rawRecords.length} Phiếu Mượn
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-            {rawBooks.map((b) => (
-              <BookCard key={b.book_id} book={b} />
-            ))}
-          </div>
         </div>
       )}
     </div>
