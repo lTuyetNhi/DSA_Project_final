@@ -16,8 +16,9 @@ import CategoryIndexVisualizer from '@/components/visualizer/CategoryIndexVisual
 import AVLTreeVisualizer from '@/components/visualizer/AVLTreeVisualizer';
 import InvertedIndexVisualizer from '@/components/visualizer/InvertedIndexVisualizer';
 import BookCard from '@/components/ui/BookCard';
-import { Book, BorrowRecord, ModuleResponse } from '@/types/dsa';
-import { INITIAL_BOOKS, INITIAL_RECORDS } from '@/data/initialData';
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { ModuleResponse } from '@/types/dsa';
 import { useRam } from '@/context/RamContext';
 
 export default function DashboardPage() {
@@ -27,37 +28,8 @@ export default function DashboardPage() {
   const [inputValue, setInputValue] = useState('B001');
   const [data, setData] = useState<ModuleResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [loadingStage, setLoadingStage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rawBooks, setRawBooks] = useState<Book[]>(INITIAL_BOOKS);
-  const [rawRecords, setRawRecords] = useState<BorrowRecord[]>(INITIAL_RECORDS);
 
-  // Move the status message gently while the native bridge is loading/building
-  // the in-memory structures. This is visual feedback only; the C++ result is
-  // still the source of truth.
-  useEffect(() => {
-    if (!loading) {
-      setLoadingStage(0);
-      return;
-    }
-    const timer = window.setInterval(() => {
-      setLoadingStage((stage) => (stage + 1) % 4);
-    }, 700);
-    return () => window.clearInterval(timer);
-  }, [loading]);
-
-  // Load live data from C++ Engine / JSON
-  useEffect(() => {
-    fetch('/api/bridge?mode=data')
-      .then((res) => res.json())
-      .then((resData) => {
-        if (resData.status === 'success') {
-          if (resData.books && resData.books.length > 0) setRawBooks(resData.books);
-          if (resData.borrow_records && resData.borrow_records.length > 0) setRawRecords(resData.borrow_records);
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
 
   // Generate an ID from the active RAM range. The C++ bridge creates the same
   // deterministic records, so the random ID is guaranteed to exist.
@@ -83,7 +55,6 @@ export default function DashboardPage() {
   // Run benchmark / execution
   const executeDSA = (requestedPage = 1) => {
     setLoading(true);
-    setLoadingStage(0);
     setData(null);
     setCurrentPage(requestedPage);
     let url = `/api/bridge?mode=${selectedModule}&size=${ramBookCount}`;
@@ -214,7 +185,7 @@ export default function DashboardPage() {
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs transition-all duration-150 flex items-center gap-2 shadow-sm hover:shadow active:scale-95 cursor-pointer border border-blue-700 shrink-0"
                 >
                   <FontAwesomeIcon icon={faBolt} className="text-xs" />
-                  <span>{loading ? 'Đang chạy C++...' : 'Chạy Benchmark Đối Sánh (1000 Workload)'}</span>
+                  <span>{loading ? 'Đang chạy C++...' : 'Chạy Benchmark Đối Sánh'}</span>
                 </button>
               </div>
             </div>
@@ -459,171 +430,18 @@ export default function DashboardPage() {
           </div>
 
           {loading && (
-            <div className="space-y-4 animate-in fade-in duration-300">
-              {/* Pipeline Status Banner */}
-              <div className="relative overflow-hidden rounded-xl border border-blue-200/90 bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/80 p-5 shadow-xs">
-                {/* Top smooth animated laser bar */}
-                <div className="absolute inset-x-0 top-0 h-1 overflow-hidden bg-blue-100/60">
-                  <div className="benchmark-loading-bar h-full w-2/5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400" />
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="flex items-center gap-3.5">
-                    <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-sm shadow-blue-300/40">
-                      <div className="absolute inset-0 rounded-xl border-2 border-blue-300 border-t-white animate-spin" />
-                      <FontAwesomeIcon icon={faBolt} className="relative text-sm text-white" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-xs sm:text-sm font-bold text-gray-900">
-                          C++ Native Engine đang thực thi Benchmark
-                        </h3>
-                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-800 animate-pulse">
-                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping"></span>
-                          ĐANG ĐO ĐẠC
-                        </span>
-                      </div>
-                      <p className="mt-0.5 text-xs text-blue-900/80 font-medium">
-                        {loadingStage === 0 && `⚡ Nạp dữ liệu vào In-Memory RAM (${ramBookCount.toLocaleString('vi-VN')} bản ghi)...`}
-                        {loadingStage === 1 && `🔍 Thực thi Baseline O(N) Linear Scan (1.000 workload queries)...`}
-                        {loadingStage === 2 && `🚀 Thực thi Final Solution O(1) / O(log N) Hash & Trees (1.000 workload queries)...`}
-                        {loadingStage === 3 && `⏱️ Thu thập High-Resolution Stopwatch nanoseconds & tính Speedup...`}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-[11px] font-mono text-gray-500 bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200 self-start sm:self-center">
-                    RAM: <span className="font-bold text-blue-700">{ramBookCount.toLocaleString('vi-VN')}</span> records
-                  </div>
-                </div>
-
-                {/* 4-Step Pipeline Indicator */}
-                <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-blue-100/70">
-                  {[
-                    { label: '1. Nạp In-Memory RAM', desc: `${ramBookCount.toLocaleString('vi-VN')} records` },
-                    { label: '2. Baseline O(N)', desc: '1.000 queries' },
-                    { label: '3. Final Solution', desc: 'O(1) / O(log N)' },
-                    { label: '4. Đo High-Res Time', desc: 'Nanoseconds' },
-                  ].map((step, idx) => {
-                    const isDone = idx < loadingStage;
-                    const isCurrent = idx === loadingStage;
-                    return (
-                      <div
-                        key={step.label}
-                        className={`p-2 rounded-lg border transition-all duration-300 ${
-                          isCurrent
-                            ? 'bg-blue-600 text-white border-blue-700 shadow-xs'
-                            : isDone
-                            ? 'bg-blue-50 text-blue-900 border-blue-200'
-                            : 'bg-white/60 text-gray-400 border-gray-200/80'
-                        }`}
-                      >
-                        <div className="flex items-center gap-1.5 text-[11px] font-bold">
-                          <span
-                            className={`w-2 h-2 rounded-full ${
-                              isCurrent
-                                ? 'bg-white animate-glow-pulse'
-                                : isDone
-                                ? 'bg-blue-600'
-                                : 'bg-gray-300'
-                            }`}
-                          />
-                          <span>{step.label}</span>
-                        </div>
-                        <div
-                          className={`text-[10px] mt-0.5 pl-3.5 truncate ${
-                            isCurrent ? 'text-blue-100' : isDone ? 'text-blue-700' : 'text-gray-400'
-                          }`}
-                        >
-                          {step.desc}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Shimmering Benchmark Table Skeleton (Smooth academic preview, zero layout shift) */}
-              <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <FontAwesomeIcon icon={faChartLine} className="text-blue-600 text-xs" />
-                    <div className="h-4 w-64 rounded-md animate-soft-shimmer" />
-                  </div>
-                  <div className="h-5 w-24 rounded bg-blue-50 animate-soft-shimmer" />
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead>
-                      <tr className="border-b border-gray-200 text-gray-600 uppercase tracking-wider bg-gray-50/70">
-                        <th className="py-2.5 px-3 w-1/3">Chỉ số đánh giá thuật toán</th>
-                        <th className="py-2.5 px-3 font-semibold w-1/3">Baseline (Giải thuật gốc)</th>
-                        <th className="py-2.5 px-3 font-semibold w-1/3">Final Solution (Giải thuật tối ưu)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                      {/* Skeleton Row 1: Complexity */}
-                      <tr>
-                        <td className="py-3 px-3">
-                          <div className="h-3.5 w-48 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3">
-                          <div className="h-6 w-20 rounded-md animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3">
-                          <div className="h-6 w-24 rounded-md animate-soft-shimmer" />
-                        </td>
-                      </tr>
-
-                      {/* Skeleton Row 2: Single Query Time */}
-                      <tr>
-                        <td className="py-3 px-3">
-                          <div className="h-3.5 w-56 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3 space-y-1.5">
-                          <div className="h-4 w-32 rounded animate-soft-shimmer" />
-                          <div className="h-3 w-40 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3 space-y-1.5">
-                          <div className="h-4 w-32 rounded animate-soft-shimmer" />
-                          <div className="h-3 w-40 rounded animate-soft-shimmer" />
-                        </td>
-                      </tr>
-
-                      {/* Skeleton Row 3: Workload Queries */}
-                      <tr>
-                        <td className="py-3 px-3">
-                          <div className="h-3.5 w-60 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3 space-y-1.5">
-                          <div className="h-4 w-36 rounded animate-soft-shimmer" />
-                          <div className="h-3 w-44 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3 space-y-1.5">
-                          <div className="h-4 w-36 rounded animate-soft-shimmer" />
-                          <div className="h-3 w-44 rounded animate-soft-shimmer" />
-                        </td>
-                      </tr>
-
-                      {/* Skeleton Row 4: Speedup Ratio */}
-                      <tr className="bg-amber-50/30">
-                        <td className="py-3 px-3">
-                          <div className="h-3.5 w-44 rounded animate-soft-shimmer" />
-                        </td>
-                        <td className="py-3 px-3" colSpan={2}>
-                          <div className="h-6 w-48 rounded-lg animate-soft-shimmer" />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Skeleton Data Preview Card */}
-                <div className="p-3.5 rounded-lg border border-gray-200 bg-gray-50/50 space-y-2">
-                  <div className="h-3.5 w-40 rounded animate-soft-shimmer" />
-                  <div className="h-10 w-full rounded-md animate-soft-shimmer" />
-                </div>
+            <div className="flex flex-col items-center justify-center py-16 px-6 bg-white rounded-xl border border-gray-200 shadow-xs space-y-4 animate-in fade-in duration-200">
+              <Spin
+                indicator={<LoadingOutlined style={{ fontSize: 44, color: '#2563eb' }} spin />}
+                size="large"
+              />
+              <div className="text-center space-y-1.5 max-w-md">
+                <h3 className="text-sm sm:text-base font-bold text-gray-900">
+                  Đang chạy Benchmark đối sánh C++ Native Engine...
+                </h3>
+                <p className="text-xs text-gray-500 font-medium">
+                  Đang xử lý {ramBookCount.toLocaleString('vi-VN')} bản ghi RAM và đo đạc 1.000 workload queries. Vui lòng đợi trong giây lát...
+                </p>
               </div>
             </div>
           )}
@@ -1182,6 +1000,23 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
+
+          {loading && (
+            <div className="flex flex-col items-center justify-center py-14 px-6 bg-white rounded-xl border border-gray-200 shadow-xs space-y-4 animate-in fade-in duration-200">
+              <Spin
+                indicator={<LoadingOutlined style={{ fontSize: 40, color: '#d97706' }} spin />}
+                size="large"
+              />
+              <div className="text-center space-y-1.5 max-w-md">
+                <h3 className="text-sm font-bold text-gray-900">
+                  Đang thực thi giải thuật tối ưu C++...
+                </h3>
+                <p className="text-xs text-gray-500 font-medium">
+                  Truy vấn dữ liệu trên {ramBookCount.toLocaleString('vi-VN')} bản ghi RAM...
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Detailed Internal Visualizers */}
           {data && selectedModule === 'mc1' && (
