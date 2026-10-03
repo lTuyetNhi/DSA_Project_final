@@ -27,8 +27,24 @@ export default function DashboardPage() {
   const [inputValue, setInputValue] = useState('B001');
   const [data, setData] = useState<ModuleResponse | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingStage, setLoadingStage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [rawBooks, setRawBooks] = useState<Book[]>(INITIAL_BOOKS);
   const [rawRecords, setRawRecords] = useState<BorrowRecord[]>(INITIAL_RECORDS);
+
+  // Move the status message gently while the native bridge is loading/building
+  // the in-memory structures. This is visual feedback only; the C++ result is
+  // still the source of truth.
+  useEffect(() => {
+    if (!loading) {
+      setLoadingStage(0);
+      return;
+    }
+    const timer = window.setInterval(() => {
+      setLoadingStage((stage) => (stage + 1) % 4);
+    }, 700);
+    return () => window.clearInterval(timer);
+  }, [loading]);
 
   // Load live data from C++ Engine / JSON
   useEffect(() => {
@@ -43,20 +59,15 @@ export default function DashboardPage() {
       .catch((err) => console.error(err));
   }, []);
 
-  // Dynamic random select from loaded JSON books & 500k RAM range
+  // Generate an ID from the active RAM range. The C++ bridge creates the same
+  // deterministic records, so the random ID is guaranteed to exist.
   const handleRandomSelect = () => {
     if (selectedModule === 'mc1') {
-      if (Math.random() < 0.4 && rawBooks.length > 0) {
-        const randIdx = Math.floor(Math.random() * rawBooks.length);
-        setInputValue(rawBooks[randIdx].book_id);
-      } else {
-        const padLen = Math.max(3, ramBookCount.toString().length);
-        const randNum = Math.floor(Math.random() * ramBookCount) + 1;
-        setInputValue(`B${randNum.toString().padStart(padLen, '0')}`);
-      }
+      const padLen = Math.max(3, ramBookCount.toString().length);
+      const randNum = Math.floor(Math.random() * ramBookCount) + 1;
+      setInputValue(`B${randNum.toString().padStart(padLen, '0')}`);
     } else if (selectedModule === 'mc2') {
-      const kList = ['1', '2', '3', '4', '5', '8', '10'];
-      setInputValue(kList[Math.floor(Math.random() * kList.length)]);
+      setInputValue('');
     } else if (selectedModule === 'rq1') {
       const categories = ['Software Engineering', 'Computer Science', 'Database', 'Networking', 'Operating System', 'Mathematics'];
       setInputValue(categories[Math.floor(Math.random() * categories.length)]);
@@ -70,21 +81,33 @@ export default function DashboardPage() {
   };
 
   // Run benchmark / execution
-  const executeDSA = () => {
+  const executeDSA = (requestedPage = 1) => {
     setLoading(true);
-    let url = `/api/bridge?mode=${selectedModule}`;
+    setLoadingStage(0);
+    setData(null);
+    setCurrentPage(requestedPage);
+    let url = `/api/bridge?mode=${selectedModule}&size=${ramBookCount}`;
+    if (selectedModule === 'rq1') url += `&page=${requestedPage}&page_size=25`;
     if (selectedModule === 'mc1') url += `&id=${encodeURIComponent(inputValue)}`;
-    else if (selectedModule === 'mc2') url += `&top=5`;
     else if (selectedModule === 'rq1') url += `&category=${encodeURIComponent(inputValue)}`;
     else if (selectedModule === 'rq2') url += `&date=${encodeURIComponent(inputValue)}`;
     else if (selectedModule === 'rq3') url += `&keyword=${encodeURIComponent(inputValue)}`;
 
     fetch(url)
-      .then((res) => res.json())
+      .then(async (res) => {
+        const payload = await res.json();
+        if (!res.ok || payload.status !== 'success') {
+          throw new Error(payload.message || `Bridge request failed (${res.status})`);
+        }
+        return payload;
+      })
       .then((resData: ModuleResponse) => {
         setData(resData);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error(err);
+        setData(null);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -92,8 +115,9 @@ export default function DashboardPage() {
   const handleModuleChange = (mod: 'mc1' | 'mc2' | 'rq1' | 'rq2' | 'rq3') => {
     setSelectedModule(mod);
     setData(null);
+    setCurrentPage(1);
     if (mod === 'mc1') setInputValue('B001');
-    else if (mod === 'mc2') setInputValue('5');
+    else if (mod === 'mc2') setInputValue('');
     else if (mod === 'rq1') setInputValue('Software Engineering');
     else if (mod === 'rq2') setInputValue('2026-10-02');
     else if (mod === 'rq3') setInputValue('Code');
@@ -185,7 +209,7 @@ export default function DashboardPage() {
 
                 <button
                   type="button"
-                  onClick={executeDSA}
+                  onClick={() => executeDSA(1)}
                   disabled={loading}
                   className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs transition-all duration-150 flex items-center gap-2 shadow-sm hover:shadow active:scale-95 cursor-pointer border border-blue-700 shrink-0"
                 >
@@ -200,21 +224,25 @@ export default function DashboardPage() {
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-xs font-bold text-gray-800">
                   {selectedModule === 'mc1' && 'Mã Sách (Book ID):'}
-                  {selectedModule === 'mc2' && 'Số Lượng Top Sách:'}
+                  {selectedModule === 'mc2' && 'Sách Mượn Nhiều Nhất:'}
                   {selectedModule === 'rq1' && 'Thể Loại Sách:'}
                   {selectedModule === 'rq2' && 'Mốc Ngày Kiểm Tra:'}
                   {selectedModule === 'rq3' && 'Từ Khóa Tiêu Đề:'}
                 </span>
                 <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200">
                   {selectedModule === 'mc1' && `Dải hợp lệ: B001 -> ${lastBookId} (${ramBookCount.toLocaleString('vi-VN')} sách trong RAM)`}
-                  {selectedModule === 'mc2' && 'Top K: 1 -> 10'}
+                  {selectedModule === 'mc2' && 'Tìm 1 sách có lượt mượn cao nhất trong toàn bộ RAM'}
                   {selectedModule === 'rq1' && 'Dải: Software Engineering, Computer Science...'}
                   {selectedModule === 'rq2' && 'Định dạng: YYYY-MM-DD'}
                   {selectedModule === 'rq3' && 'Từ khóa mẫu: Code, Algorithms, System...'}
                 </span>
               </div>
 
-              {selectedModule === 'rq1' ? (
+              {selectedModule === 'mc2' ? (
+                <div className="w-full px-3 py-2 rounded-lg border border-amber-200 bg-amber-50 text-amber-900 text-xs font-semibold">
+                  C++ sẽ lấy đúng 1 sách có lượt mượn cao nhất trong toàn bộ {ramBookCount.toLocaleString('vi-VN')} sách RAM.
+                </div>
+              ) : selectedModule === 'rq1' ? (
                 <select
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -226,6 +254,7 @@ export default function DashboardPage() {
                   <option value="Networking">Networking</option>
                   <option value="Operating System">Operating System</option>
                   <option value="Mathematics">Mathematics</option>
+                  <option value="__NOT_FOUND_CATEGORY__">Không tồn tại (0 kết quả)</option>
                 </select>
               ) : selectedModule === 'rq2' ? (
                 <input
@@ -314,13 +343,13 @@ export default function DashboardPage() {
                     <button
                       type="button"
                       onClick={handleRandomSelect}
-                      title="Chọn ngẫu nhiên Top K"
+                      title="Lấy sách mượn nhiều nhất"
                       className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-amber-50/80 hover:border-amber-400 hover:text-amber-800 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
                     >
                       <span>🎲</span>
                       <span>Ngẫu Nhiên</span>
                     </button>
-                    {['1', '3', '5', '10'].map((k) => (
+                    {[].map((k) => (
                       <button
                         key={k}
                         type="button"
@@ -348,7 +377,7 @@ export default function DashboardPage() {
                       <span>🎲</span>
                       <span>Ngẫu Nhiên</span>
                     </button>
-                    {['Software Engineering', 'Computer Science', 'Database', 'Operating System'].map((cat) => (
+                    {['Software Engineering', 'Computer Science', 'Database', 'Operating System', '__NOT_FOUND_CATEGORY__'].map((cat) => (
                       <button
                         key={cat}
                         type="button"
@@ -359,7 +388,7 @@ export default function DashboardPage() {
                             : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
                         }`}
                       >
-                        <span>{cat}</span>
+                        <span>{cat === '__NOT_FOUND_CATEGORY__' ? 'Không tồn tại (0 kết quả)' : cat}</span>
                       </button>
                     ))}
                   </>
@@ -429,6 +458,176 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {loading && (
+            <div className="space-y-4 animate-in fade-in duration-300">
+              {/* Pipeline Status Banner */}
+              <div className="relative overflow-hidden rounded-xl border border-blue-200/90 bg-gradient-to-r from-blue-50/80 via-white to-indigo-50/80 p-5 shadow-xs">
+                {/* Top smooth animated laser bar */}
+                <div className="absolute inset-x-0 top-0 h-1 overflow-hidden bg-blue-100/60">
+                  <div className="benchmark-loading-bar h-full w-2/5 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400" />
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white shadow-sm shadow-blue-300/40">
+                      <div className="absolute inset-0 rounded-xl border-2 border-blue-300 border-t-white animate-spin" />
+                      <FontAwesomeIcon icon={faBolt} className="relative text-sm text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xs sm:text-sm font-bold text-gray-900">
+                          C++ Native Engine đang thực thi Benchmark
+                        </h3>
+                        <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-800 animate-pulse">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-ping"></span>
+                          ĐANG ĐO ĐẠC
+                        </span>
+                      </div>
+                      <p className="mt-0.5 text-xs text-blue-900/80 font-medium">
+                        {loadingStage === 0 && `⚡ Nạp dữ liệu vào In-Memory RAM (${ramBookCount.toLocaleString('vi-VN')} bản ghi)...`}
+                        {loadingStage === 1 && `🔍 Thực thi Baseline O(N) Linear Scan (1.000 workload queries)...`}
+                        {loadingStage === 2 && `🚀 Thực thi Final Solution O(1) / O(log N) Hash & Trees (1.000 workload queries)...`}
+                        {loadingStage === 3 && `⏱️ Thu thập High-Resolution Stopwatch nanoseconds & tính Speedup...`}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="text-[11px] font-mono text-gray-500 bg-white/80 px-2.5 py-1 rounded-lg border border-gray-200 self-start sm:self-center">
+                    RAM: <span className="font-bold text-blue-700">{ramBookCount.toLocaleString('vi-VN')}</span> records
+                  </div>
+                </div>
+
+                {/* 4-Step Pipeline Indicator */}
+                <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-blue-100/70">
+                  {[
+                    { label: '1. Nạp In-Memory RAM', desc: `${ramBookCount.toLocaleString('vi-VN')} records` },
+                    { label: '2. Baseline O(N)', desc: '1.000 queries' },
+                    { label: '3. Final Solution', desc: 'O(1) / O(log N)' },
+                    { label: '4. Đo High-Res Time', desc: 'Nanoseconds' },
+                  ].map((step, idx) => {
+                    const isDone = idx < loadingStage;
+                    const isCurrent = idx === loadingStage;
+                    return (
+                      <div
+                        key={step.label}
+                        className={`p-2 rounded-lg border transition-all duration-300 ${
+                          isCurrent
+                            ? 'bg-blue-600 text-white border-blue-700 shadow-xs'
+                            : isDone
+                            ? 'bg-blue-50 text-blue-900 border-blue-200'
+                            : 'bg-white/60 text-gray-400 border-gray-200/80'
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold">
+                          <span
+                            className={`w-2 h-2 rounded-full ${
+                              isCurrent
+                                ? 'bg-white animate-glow-pulse'
+                                : isDone
+                                ? 'bg-blue-600'
+                                : 'bg-gray-300'
+                            }`}
+                          />
+                          <span>{step.label}</span>
+                        </div>
+                        <div
+                          className={`text-[10px] mt-0.5 pl-3.5 truncate ${
+                            isCurrent ? 'text-blue-100' : isDone ? 'text-blue-700' : 'text-gray-400'
+                          }`}
+                        >
+                          {step.desc}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Shimmering Benchmark Table Skeleton (Smooth academic preview, zero layout shift) */}
+              <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
+                <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <FontAwesomeIcon icon={faChartLine} className="text-blue-600 text-xs" />
+                    <div className="h-4 w-64 rounded-md animate-soft-shimmer" />
+                  </div>
+                  <div className="h-5 w-24 rounded bg-blue-50 animate-soft-shimmer" />
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="border-b border-gray-200 text-gray-600 uppercase tracking-wider bg-gray-50/70">
+                        <th className="py-2.5 px-3 w-1/3">Chỉ số đánh giá thuật toán</th>
+                        <th className="py-2.5 px-3 font-semibold w-1/3">Baseline (Giải thuật gốc)</th>
+                        <th className="py-2.5 px-3 font-semibold w-1/3">Final Solution (Giải thuật tối ưu)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {/* Skeleton Row 1: Complexity */}
+                      <tr>
+                        <td className="py-3 px-3">
+                          <div className="h-3.5 w-48 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="h-6 w-20 rounded-md animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3">
+                          <div className="h-6 w-24 rounded-md animate-soft-shimmer" />
+                        </td>
+                      </tr>
+
+                      {/* Skeleton Row 2: Single Query Time */}
+                      <tr>
+                        <td className="py-3 px-3">
+                          <div className="h-3.5 w-56 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3 space-y-1.5">
+                          <div className="h-4 w-32 rounded animate-soft-shimmer" />
+                          <div className="h-3 w-40 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3 space-y-1.5">
+                          <div className="h-4 w-32 rounded animate-soft-shimmer" />
+                          <div className="h-3 w-40 rounded animate-soft-shimmer" />
+                        </td>
+                      </tr>
+
+                      {/* Skeleton Row 3: Workload Queries */}
+                      <tr>
+                        <td className="py-3 px-3">
+                          <div className="h-3.5 w-60 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3 space-y-1.5">
+                          <div className="h-4 w-36 rounded animate-soft-shimmer" />
+                          <div className="h-3 w-44 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3 space-y-1.5">
+                          <div className="h-4 w-36 rounded animate-soft-shimmer" />
+                          <div className="h-3 w-44 rounded animate-soft-shimmer" />
+                        </td>
+                      </tr>
+
+                      {/* Skeleton Row 4: Speedup Ratio */}
+                      <tr className="bg-amber-50/30">
+                        <td className="py-3 px-3">
+                          <div className="h-3.5 w-44 rounded animate-soft-shimmer" />
+                        </td>
+                        <td className="py-3 px-3" colSpan={2}>
+                          <div className="h-6 w-48 rounded-lg animate-soft-shimmer" />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Skeleton Data Preview Card */}
+                <div className="p-3.5 rounded-lg border border-gray-200 bg-gray-50/50 space-y-2">
+                  <div className="h-3.5 w-40 rounded animate-soft-shimmer" />
+                  <div className="h-10 w-full rounded-md animate-soft-shimmer" />
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Card 2: Bảng Thống Kê & Đối Sánh Hiệu Năng Chi Tiết (Appears after executing) */}
           {data && (
             <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
@@ -488,10 +687,10 @@ export default function DashboardPage() {
                       </td>
                     </tr>
 
-                    {/* Row 3: Workload (1000 queries) */}
+                    {/* Row 3: Workload (adaptive for large RAM datasets) */}
                     <tr className="hover:bg-gray-50/50">
                       <td className="py-2.5 px-3 font-medium text-gray-800">
-                        Tổng thời gian Workload (1000 queries - Giây)
+                        Tổng thời gian Workload ({data.baseline.workload_queries || 1000} queries - Giây)
                       </td>
                       <td className="py-2.5 px-3 font-mono text-rose-700">
                         <div className="font-bold text-xs">{formatTimeSeconds(data.baseline.workload_1000_ns || data.baseline.execution_time_ns * 1000).sec}</div>
@@ -590,6 +789,10 @@ export default function DashboardPage() {
                     <BookCard key={b.book_id} book={b} highlight={true} />
                   ))}
                 </div>
+              ) : data.module === 'RQ1' && (data.optimized.count || 0) === 0 ? (
+                <div className="p-4 rounded-lg border border-amber-200 bg-amber-50 text-xs text-amber-800">
+                  Không tìm thấy sách nào thuộc thể loại <strong>{data.category}</strong> trong {ramBookCount.toLocaleString('vi-VN')} sách RAM.
+                </div>
               ) : data.overdue_records && data.overdue_records.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
@@ -618,6 +821,28 @@ export default function DashboardPage() {
                   {data.optimized.found === false ? 'Không tìm thấy tài liệu phù hợp trong cơ sở dữ liệu.' : 'Chưa có dữ liệu.'}
                 </div>
               )}
+            </div>
+          )}
+
+          {data?.module === 'RQ1' && (data.total || 0) > (data.page_size || 25) && (
+            <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-3 shadow-xs">
+              <span className="text-xs text-gray-500">
+                Trang {data.page || currentPage} / {Math.ceil((data.total || 0) / (data.page_size || 25))} · {data.total?.toLocaleString('vi-VN')} kết quả
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={loading || currentPage <= 1}
+                  onClick={() => executeDSA(currentPage - 1)}
+                  className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 disabled:cursor-not-allowed disabled:opacity-40"
+                >Trước</button>
+                <button
+                  type="button"
+                  disabled={loading || currentPage >= Math.ceil((data.total || 0) / (data.page_size || 25))}
+                  onClick={() => executeDSA(currentPage + 1)}
+                  className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-40"
+                >Sau</button>
+              </div>
             </div>
           )}
         </div>
@@ -764,7 +989,7 @@ export default function DashboardPage() {
 
                 <button
                   type="button"
-                  onClick={executeDSA}
+                  onClick={() => executeDSA(1)}
                   disabled={loading}
                   className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-xs transition-all duration-150 flex items-center gap-2 shrink-0 shadow-sm hover:shadow active:scale-95 cursor-pointer border border-blue-700"
                 >
