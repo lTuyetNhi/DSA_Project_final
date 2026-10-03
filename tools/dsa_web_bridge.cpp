@@ -69,10 +69,9 @@ string recordToJson(const BorrowRecord& r) {
     return ss.str();
 }
 
-// The web bridge is persistent, but a repeated 500k-item linear scan is still
-// intentionally expensive. For a large RAM dataset, report one exact full-data
-// measurement instead of repeating the same query many times. This keeps the
-// UI responsive while preserving a truthful baseline-vs-optimized comparison.
+// Web Bridge duy trì trạng thái thường trực trong RAM. Đối với tập dữ liệu lớn (>= 100k),
+// hệ thống thực hiện đo đạc chính xác trên toàn bộ tập dữ liệu thực thay vì lặp lại nhiều lần,
+// vừa bảo đảm giao diện phản hồi mượt mà vừa giữ nguyên tính khách quan khi đối sánh Baseline và Tối ưu.
 int workloadForSize(size_t size) {
     return size >= 100000 ? 1 : 1000;
 }
@@ -175,9 +174,9 @@ vector<BorrowRecord> loadRecordsForRam(int requestedSize) {
     return records;
 }
 
-// Long-lived web engine: the daemon keeps the dataset and every optimized
-// structure in RAM. Rebuilding only happens after the requested RAM size
-// changes, never on an ordinary query click.
+// Bộ nhớ đệm động cơ Web: tiến trình daemon duy trì toàn bộ tập dữ liệu và các cấu trúc dữ liệu
+// tối ưu trong RAM. Việc khởi tạo lại chỉ diễn ra khi người dùng thay đổi dung lượng RAM,
+// tuyệt đối không lặp lại khi thực hiện các truy vấn thông thường.
 struct WebEngineCache {
     int ramSize = -1;
     vector<Book> books;
@@ -240,9 +239,8 @@ void handleData(int ramSize) {
     ensureEngineData(ramSize);
     warmEngineStructures();
     const MaxResult maxBook = webEngine.maxHeap.getMax();
-    // The dashboard needs only readiness and aggregate statistics. Keeping the
-    // 500k records inside this process avoids a second expensive JSON transfer
-    // and React render pass whenever RAM is warmed or extended.
+    // Dashboard chỉ cần nhận trạng thái sẵn sàng và các chỉ số thống kê tổng hợp.
+    // Giữ 500k bản ghi trực tiếp trong bộ nhớ tiến trình C++ để tối ưu hóa hiệu năng truyền tải.
     cout << "{\"status\":\"success\","
          << "\"total_books\":" << webEngine.books.size() << ","
          << "\"total_records\":" << webEngine.records.size() << ","
@@ -262,14 +260,12 @@ void handleMC1(const string& targetId, int ramSize) {
     auto baseRes = LinearSearch::search(books, targetId);
     auto optRes = ht.search(targetId);
 
-    // 1000 Workload benchmark
+    // Đo đạc chu kỳ workload
     const int WORKLOAD = workloadForSize(books.size());
-    // Use a middle-of-dataset key for the comparative workload. If the user
-    // asks for B001, a linear scan wins trivially because it stops at item 1;
-    // that is a valid single-query result but not a fair structural benchmark.
+    // Sử dụng một khóa ở giữa tập dữ liệu cho phần đo kiểm đối sánh workload khách quan
     const string workloadId = books[books.size() / 2].book_id;
-    (void)LinearSearch::search(books, workloadId); // warm up baseline path
-    (void)ht.search(workloadId);                   // warm up final path
+    (void)LinearSearch::search(books, workloadId); // khởi động đường dẫn baseline
+    (void)ht.search(workloadId);                   // khởi động đường dẫn bảng băm
     auto start = high_resolution_clock::now();
     for (int i = 0; i < WORKLOAD; ++i) {
         LinearSearch::search(books, workloadId);
@@ -652,7 +648,7 @@ void handleBenchmark(int size) {
     string searchCat = "Computer Science";
     string searchKey = "Code";
 
-    // Measure MC1
+    // Đo đạc Module MC1
     auto start = high_resolution_clock::now();
     auto mc1Base = LinearSearch::search(synBooks, searchId);
     auto end = high_resolution_clock::now();
@@ -663,7 +659,7 @@ void handleBenchmark(int size) {
     end = high_resolution_clock::now();
     long long mc1OptNs = duration_cast<nanoseconds>(end - start).count();
 
-    // Measure MC2
+    // Đo đạc Module MC2
     start = high_resolution_clock::now();
     auto mc2Base = LinearMaxScan::findMax(synBooks);
     end = high_resolution_clock::now();
@@ -674,7 +670,7 @@ void handleBenchmark(int size) {
     end = high_resolution_clock::now();
     long long mc2OptNs = duration_cast<nanoseconds>(end - start).count();
 
-    // Measure RQ1
+    // Đo đạc Module RQ1
     start = high_resolution_clock::now();
     auto rq1Base = LinearCategoryScan::search(synBooks, searchCat);
     end = high_resolution_clock::now();
@@ -685,7 +681,7 @@ void handleBenchmark(int size) {
     end = high_resolution_clock::now();
     long long rq1OptNs = duration_cast<nanoseconds>(end - start).count();
 
-    // Measure RQ3
+    // Đo đạc Module RQ3
     start = high_resolution_clock::now();
     auto rq3Base = LinearTitleScan::search(synBooks, searchKey);
     end = high_resolution_clock::now();
@@ -751,8 +747,9 @@ void dispatchRequest(const string& mode, const string& targetId, const string& c
 }
 
 void runServer() {
-    // One tab-separated request per line: mode, size, id, category, date,
-    // keyword, page, pageSize, metricsOnly. stdout is JSON-lines only.
+    // Mỗi dòng stdin là một yêu cầu phân cách bằng tab (\t):
+    // mode, size, id, category, date, keyword, page, pageSize, metricsOnly.
+    // Kết xuất stdout là từng dòng định dạng JSON.
     string line;
     while (getline(cin, line)) {
         vector<string> fields;

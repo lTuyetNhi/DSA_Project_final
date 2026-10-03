@@ -19,9 +19,9 @@ public:
         if (normalized.capacity() < s.size()) normalized.reserve(s.size());
         bool separatorPending = false;
 
-        // Normalize in one pass. The old stringstream implementation created
-        // multiple temporary strings for every title, which dominated RQ3's
-        // 500k-item baseline even though the actual substring test was cheap.
+        // Chuẩn hóa chuỗi trong 1 lượt duyệt (one-pass):
+        // Chuyển chữ hoa thành chữ thường, gom khoảng trắng và loại bỏ ký tự đặc biệt
+        // để tối ưu hóa hiệu năng và tránh tạo chuỗi tạm khi xử lý 500.000 bản ghi.
         for (char c : s) {
             const unsigned char uc = static_cast<unsigned char>(c);
             const bool upper = uc >= 'A' && uc <= 'Z';

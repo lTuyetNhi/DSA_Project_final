@@ -26,9 +26,8 @@ void CategoryTitleSearch::insertPrefix(const string& prefix, int bookIndex) {
     size_t index = hashFunction(normPrefix);
     for (auto& entry : table[index]) {
         if (entry.word == normPrefix) {
-            // Each book is indexed once per complete word during build, so
-            // checking the entire posting list for duplicates would make
-            // common words O(n^2) on a large dataset.
+            // Mỗi cuốn sách chỉ được lập chỉ mục một lần cho mỗi từ hoàn chỉnh khi khởi tạo.
+            // Thêm trực tiếp chỉ số sách vào danh sách posting để tối ưu hiệu năng O(1).
             entry.bookIndices.push_back(bookIndex);
             return;
         }
@@ -63,8 +62,7 @@ void CategoryTitleSearch::clear() {
 
 void CategoryTitleSearch::build(const vector<Book>& books) {
     clear();
-    // Keep a non-owning reference to the RAM dataset. Copying 500k Books here
-    // duplicates every string and makes index construction needlessly slow.
+    // Giữ tham chiếu (con trỏ) đến tập sách trong RAM để tránh sao chép lãng phí bộ nhớ
     allBooks = &books;
     normalizedTitles.reserve(books.size());
 
@@ -77,8 +75,7 @@ void CategoryTitleSearch::build(const vector<Book>& books) {
         while (ss >> word) {
             const bool numericToken = !word.empty() && all_of(word.begin(), word.end(), [](unsigned char c) { return std::isdigit(c) != 0; });
             if (numericToken || word.size() < 2) continue;
-            // Index complete words. The final substring check below preserves
-            // exact title matching while avoiding millions of prefix entries.
+            // Lập chỉ mục các từ hoàn chỉnh vào bảng băm chỉ mục ngược
             insertPrefix(word, static_cast<int>(i));
         }
     }
@@ -98,6 +95,7 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
 
         const vector<int>* candidateIndices = findCandidateIndices(firstToken);
         if (candidateIndices) {
+            // Tìm thấy từ tố trong bảng chỉ mục ngược -> Chỉ kiểm tra các sách ứng viên
             for (int bookIndex : *candidateIndices) {
                 if (bookIndex < 0 || static_cast<size_t>(bookIndex) >= allBooks->size()) continue;
                 booksChecked++;
@@ -106,8 +104,7 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
                 }
             }
         } else {
-            // A substring may not be a complete indexed word. Scan by index
-            // directly instead of allocating a temporary 0..N vector.
+            // Từ tố không nằm trong chỉ mục -> Quét dự phòng toàn bộ tiêu đề để không bỏ sót chuỗi con
             for (size_t bookIndex = 0; bookIndex < allBooks->size(); ++bookIndex) {
                 booksChecked++;
                 if (normalizedTitles[bookIndex].find(normKw) != string::npos) {
@@ -132,7 +129,7 @@ size_t CategoryTitleSearch::count(const string& keyword, long long* booksChecked
     ss >> firstToken;
     const vector<int>* candidates = findCandidateIndices(firstToken);
     if (candidates && normKw == firstToken) {
-        // An exact indexed word's posting-list length is already its count.
+        // Khớp chính xác một từ đơn đã lập chỉ mục -> Trả về ngay số lượng ứng viên
         if (booksChecked) *booksChecked = 1;
         return candidates->size();
     }
