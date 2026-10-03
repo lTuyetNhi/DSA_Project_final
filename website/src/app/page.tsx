@@ -28,6 +28,7 @@ import AVLTreeVisualizer from '@/components/visualizer/AVLTreeVisualizer';
 import InvertedIndexVisualizer from '@/components/visualizer/InvertedIndexVisualizer';
 import BookCard from '@/components/ui/BookCard';
 import { Book, BorrowRecord, ModuleResponse } from '@/types/dsa';
+import { INITIAL_BOOKS, INITIAL_RECORDS } from '@/data/initialData';
 
 export default function DashboardPage() {
   const [activeMode, setActiveMode] = useState<1 | 2 | 3>(1);
@@ -35,21 +36,43 @@ export default function DashboardPage() {
   const [inputValue, setInputValue] = useState('B001');
   const [data, setData] = useState<ModuleResponse | null>(null);
   const [loading, setLoading] = useState(false);
-  const [rawBooks, setRawBooks] = useState<Book[]>([]);
-  const [rawRecords, setRawRecords] = useState<BorrowRecord[]>([]);
+  const [rawBooks, setRawBooks] = useState<Book[]>(INITIAL_BOOKS);
+  const [rawRecords, setRawRecords] = useState<BorrowRecord[]>(INITIAL_RECORDS);
 
-  // Load initial data
+  // Load live data from C++ Engine / JSON
   useEffect(() => {
     fetch('/api/bridge?mode=data')
       .then((res) => res.json())
       .then((resData) => {
         if (resData.status === 'success') {
-          setRawBooks(resData.books || []);
-          setRawRecords(resData.borrow_records || []);
+          if (resData.books && resData.books.length > 0) setRawBooks(resData.books);
+          if (resData.borrow_records && resData.borrow_records.length > 0) setRawRecords(resData.borrow_records);
         }
       })
       .catch((err) => console.error(err));
   }, []);
+
+  // Dynamic random select from loaded JSON books & data
+  const handleRandomSelect = () => {
+    if (selectedModule === 'mc1') {
+      const booksToPick = rawBooks.length > 0 ? rawBooks : INITIAL_BOOKS;
+      const randIdx = Math.floor(Math.random() * booksToPick.length);
+      const chosen = booksToPick[randIdx].book_id;
+      setInputValue(chosen);
+    } else if (selectedModule === 'mc2') {
+      const kList = ['1', '2', '3', '4', '5', '8', '10'];
+      setInputValue(kList[Math.floor(Math.random() * kList.length)]);
+    } else if (selectedModule === 'rq1') {
+      const categories = ['Software Engineering', 'Computer Science', 'Database', 'Networking', 'Operating System', 'Mathematics'];
+      setInputValue(categories[Math.floor(Math.random() * categories.length)]);
+    } else if (selectedModule === 'rq2') {
+      const dates = ['2026-10-03', '2026-10-01', '2026-09-26', '2026-09-20', '2026-09-15', '2026-11-01'];
+      setInputValue(dates[Math.floor(Math.random() * dates.length)]);
+    } else if (selectedModule === 'rq3') {
+      const keywords = ['Code', 'Algorithms', 'System', 'Design', 'Computer', 'Approach', 'Database', 'Data'];
+      setInputValue(keywords[Math.floor(Math.random() * keywords.length)]);
+    }
+  };
 
   // Run benchmark / execution
   const executeDSA = () => {
@@ -243,15 +266,12 @@ export default function DashboardPage() {
                   <>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B003')}
-                      className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B003'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
-                          : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
-                      }`}
+                      onClick={handleRandomSelect}
+                      title="Lấy ngẫu nhiên 1 mã sách từ cơ sở dữ liệu"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-blue-50/80 hover:border-blue-400 hover:text-blue-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
                     >
                       <span>🎲</span>
-                      <span>Ngẫu Nhiên (B003)</span>
+                      <span>Ngẫu Nhiên</span>
                     </button>
                     <button
                       type="button"
@@ -306,6 +326,15 @@ export default function DashboardPage() {
 
                 {selectedModule === 'mc2' && (
                   <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên Top K"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-amber-50/80 hover:border-amber-400 hover:text-amber-800 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
                     {['1', '3', '5', '10'].map((k) => (
                       <button
                         key={k}
@@ -325,6 +354,15 @@ export default function DashboardPage() {
 
                 {selectedModule === 'rq1' && (
                   <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên thể loại"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-blue-50/80 hover:border-blue-400 hover:text-blue-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
                     {['Software Engineering', 'Computer Science', 'Database', 'Operating System'].map((cat) => (
                       <button
                         key={cat}
@@ -344,6 +382,15 @@ export default function DashboardPage() {
 
                 {selectedModule === 'rq2' && (
                   <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên mốc ngày"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-emerald-50/80 hover:border-emerald-400 hover:text-emerald-800 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
                     {[
                       { label: '📅 Hôm nay (2026-10-03)', val: '2026-10-03' },
                       { label: '⚠️ Quá hạn gần (2026-10-01)', val: '2026-10-01' },
@@ -368,6 +415,15 @@ export default function DashboardPage() {
 
                 {selectedModule === 'rq3' && (
                   <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên từ khóa"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-purple-50/80 hover:border-purple-400 hover:text-purple-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
                     {['Code', 'Algorithms', 'System', 'Database', 'Unknown'].map((kw) => (
                       <button
                         key={kw}
@@ -739,15 +795,12 @@ export default function DashboardPage() {
                   <>
                     <button
                       type="button"
-                      onClick={() => handlePreset('B003')}
-                      className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
-                        inputValue === 'B003'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
-                          : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
-                      }`}
+                      onClick={handleRandomSelect}
+                      title="Lấy ngẫu nhiên 1 mã sách từ cơ sở dữ liệu"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-blue-50/80 hover:border-blue-400 hover:text-blue-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
                     >
                       <span>🎲</span>
-                      <span>Ngẫu Nhiên (B003)</span>
+                      <span>Ngẫu Nhiên</span>
                     </button>
                     <button
                       type="button"
@@ -797,6 +850,123 @@ export default function DashboardPage() {
                       <span className="text-rose-500 font-bold">⊘</span>
                       <span>Không tồn tại (B999)</span>
                     </button>
+                  </>
+                )}
+
+                {selectedModule === 'mc2' && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên Top K"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-amber-50/80 hover:border-amber-400 hover:text-amber-800 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
+                    {['1', '3', '5', '10'].map((k) => (
+                      <button
+                        key={k}
+                        type="button"
+                        onClick={() => handlePreset(k)}
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
+                          inputValue === k
+                            ? 'border-amber-500 bg-amber-50 text-amber-800 ring-1 ring-amber-400 font-bold'
+                            : 'border-gray-300 bg-white hover:bg-amber-50/60 hover:border-amber-300 text-gray-700'
+                        }`}
+                      >
+                        <span>Top {k} Sách</span>
+                      </button>
+                    ))}
+                  </>
+                )}
+
+                {selectedModule === 'rq1' && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên thể loại"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-blue-50/80 hover:border-blue-400 hover:text-blue-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
+                    {['Software Engineering', 'Computer Science', 'Database', 'Operating System'].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => handlePreset(cat)}
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
+                          inputValue === cat
+                            ? 'border-blue-500 bg-blue-50 text-blue-700 ring-1 ring-blue-400 font-bold'
+                            : 'border-gray-300 bg-white hover:bg-blue-50/60 hover:border-blue-300 text-gray-700'
+                        }`}
+                      >
+                        <span>{cat}</span>
+                      </button>
+                    ))}
+                  </>
+                )}
+
+                {selectedModule === 'rq2' && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên mốc ngày"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-emerald-50/80 hover:border-emerald-400 hover:text-emerald-800 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
+                    {[
+                      { label: '📅 Hôm nay (2026-10-03)', val: '2026-10-03' },
+                      { label: '⚠️ Quá hạn gần (2026-10-01)', val: '2026-10-01' },
+                      { label: '🚨 Quá hạn sâu (2026-09-20)', val: '2026-09-20' },
+                      { label: '⏳ Tương lai (2026-11-01)', val: '2026-11-01' },
+                    ].map((item) => (
+                      <button
+                        key={item.val}
+                        type="button"
+                        onClick={() => handlePreset(item.val)}
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
+                          inputValue === item.val
+                            ? 'border-emerald-500 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-400 font-bold'
+                            : 'border-gray-300 bg-white hover:bg-emerald-50/60 hover:border-emerald-300 text-gray-700'
+                        }`}
+                      >
+                        <span>{item.label}</span>
+                      </button>
+                    ))}
+                  </>
+                )}
+
+                {selectedModule === 'rq3' && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleRandomSelect}
+                      title="Chọn ngẫu nhiên từ khóa"
+                      className="px-3 py-1.5 rounded-lg border border-gray-300 bg-white hover:bg-purple-50/80 hover:border-purple-400 hover:text-purple-700 text-gray-700 text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <span>🎲</span>
+                      <span>Ngẫu Nhiên</span>
+                    </button>
+                    {['Code', 'Algorithms', 'System', 'Database', 'Unknown'].map((kw) => (
+                      <button
+                        key={kw}
+                        type="button"
+                        onClick={() => handlePreset(kw)}
+                        className={`px-3 py-1.5 rounded-lg border text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer inline-flex items-center gap-1.5 ${
+                          inputValue === kw
+                            ? 'border-purple-500 bg-purple-50 text-purple-700 ring-1 ring-purple-400 font-bold'
+                            : 'border-gray-300 bg-white hover:bg-purple-50/60 hover:border-purple-300 text-gray-700'
+                        }`}
+                      >
+                        <span>🔍 &quot;{kw}&quot;</span>
+                      </button>
+                    ))}
                   </>
                 )}
               </div>

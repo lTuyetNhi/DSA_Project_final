@@ -13,12 +13,38 @@ export async function GET(request: NextRequest) {
   const top = searchParams.get('top') || '3';
   const size = searchParams.get('size') || '10000';
 
+  // If mode is 'data', load directly from data/*.json or fallback
+  if (mode === 'data') {
+    let projectRoot = path.resolve(process.cwd(), '..');
+    let booksPath = path.join(projectRoot, 'data', 'books.json');
+    let recordsPath = path.join(projectRoot, 'data', 'borrow_records.json');
+
+    if (!fs.existsSync(booksPath)) {
+      projectRoot = process.cwd();
+      booksPath = path.join(projectRoot, 'data', 'books.json');
+      recordsPath = path.join(projectRoot, 'data', 'borrow_records.json');
+    }
+
+    if (fs.existsSync(booksPath) && fs.existsSync(recordsPath)) {
+      try {
+        const books = JSON.parse(fs.readFileSync(booksPath, 'utf8'));
+        const borrow_records = JSON.parse(fs.readFileSync(recordsPath, 'utf8'));
+        return NextResponse.json({
+          status: 'success',
+          books,
+          borrow_records,
+        });
+      } catch (err) {
+        console.error('Error reading JSON files directly:', err);
+      }
+    }
+  }
+
   // Determine root path and bridge exe path
   let projectRoot = path.resolve(process.cwd(), '..');
   let bridgeExe = path.join(projectRoot, 'tools', 'dsa_web_bridge.exe');
 
   if (!fs.existsSync(bridgeExe)) {
-    // If running with cwd as root
     projectRoot = process.cwd();
     bridgeExe = path.join(projectRoot, 'tools', 'dsa_web_bridge.exe');
   }
