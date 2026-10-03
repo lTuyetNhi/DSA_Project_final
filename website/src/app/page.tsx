@@ -12,7 +12,10 @@ import {
   faFolderOpen,
   faArrowRight,
   faDatabase,
+  faSitemap,
 } from '@fortawesome/free-solid-svg-icons';
+import RequirementBanner from '@/components/layout/RequirementBanner';
+import ModeSelector from '@/components/layout/ModeSelector';
 import MetricCard from '@/components/ui/MetricCard';
 import BookCard from '@/components/ui/BookCard';
 import { Book, BorrowRecord } from '@/types/dsa';
@@ -36,173 +39,156 @@ export default function HomePage() {
   const modules = [
     {
       href: '/mc1-hashtable',
-      tag: 'MC1',
-      title: 'Bảng băm tra cứu mã sách',
-      subtitle: 'Separate Chaining & DJB2 Hash',
-      desc: 'Ánh xạ mã sách sang bucket index trong O(1). Giải quyết va chạm bằng danh sách liên kết đơn xích rời.',
-      badge: 'O(1) vs O(N)',
+      tag: 'MC1 (Bắt buộc)',
+      title: 'Tra cứu sách theo mã',
+      dsa: 'Hash Table (Separate Chaining)',
+      desc: 'Băm mã sách bằng hàm DJB2 kết hợp kích thước số nguyên tố 100.003 để định vị ô nhớ tức thời.',
+      complexity: 'Average: O(1)',
       icon: faBolt,
+      badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
     },
     {
       href: '/mc2-maxheap',
-      tag: 'MC2',
-      title: 'Cây đống Max-Heap Top sách',
-      subtitle: 'Floyd Build Heap & Peek O(1)',
-      desc: 'Cấu trúc mảng 1 chiều liên tục biểu diễn cây nhị phân hoàn chỉnh. Trích xuất đầu sách mượn nhiều nhất trong O(1).',
-      badge: 'O(1) peek / O(log N)',
+      tag: 'MC2 (Bắt buộc)',
+      title: 'Tài liệu mượn nhiều nhất',
+      dsa: 'Max-Heap (Floyd Build)',
+      desc: 'Cấu trúc đống cực đại mảng 1 chiều liên tục trong RAM. Đỉnh cực đại luôn nằm tại heap[0].',
+      complexity: 'Peek: O(1)',
       icon: faLayerGroup,
+      badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
     },
     {
       href: '/rq1-category',
-      tag: 'RQ1',
-      title: 'Gom cụm thể loại sách',
-      subtitle: 'Category Hash Table',
-      desc: 'Băm thể loại sách để truy xuất toàn bộ các đầu sách cùng nhóm trong O(1+K), loại bỏ quét toàn thư viện.',
-      badge: 'O(1 + K) vs O(N)',
+      tag: 'RQ1 (Tự chọn)',
+      title: 'Tra cứu sách theo thể loại',
+      dsa: 'Category Hash Index',
+      desc: 'Băm thể loại sách để lấy toàn bộ danh sách tài liệu cùng nhóm trong một thao tác O(1+K).',
+      complexity: 'Total: O(1 + K)',
       icon: faFolderOpen,
+      badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
     },
     {
       href: '/rq2-avltree',
-      tag: 'RQ2',
-      title: 'Cây tự cân bằng AVL quá hạn',
-      subtitle: 'Self-Balancing & 4 Rotations',
+      tag: 'RQ2 (Tự chọn)',
+      title: 'Theo dõi tài liệu quá hạn',
+      dsa: 'AVL Tree (Self-Balancing)',
       desc: 'Quản lý phiếu mượn theo ngày hẹn trả. Chiều cao cây luôn đảm bảo logarit nhờ 4 phép quay LL, RR, LR, RL.',
-      badge: 'O(log N + K)',
+      complexity: 'Query: O(log N + K)',
       icon: faCodeBranch,
+      badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
     },
     {
       href: '/rq3-invertedindex',
-      tag: 'RQ3',
-      title: 'Chỉ mục ngược tìm từ khóa',
-      subtitle: 'Inverted Index Full-Text Search',
-      desc: 'Tách từ khóa tiêu đề sách và tra cứu Posting List nhanh chóng, triệt tiêu phép so khớp xâu O(N × M).',
-      badge: 'O(1 + K) vs O(N×M)',
+      tag: 'RQ3 (Tự chọn)',
+      title: 'Tìm kiếm sách theo từ khóa',
+      dsa: 'Inverted Index Hash Table',
+      desc: 'Tách tiêu đề thành từ khóa chuẩn hóa và tra cứu Posting List, loại bỏ phép quét so khớp xâu O(N × M).',
+      complexity: 'Lookup: O(1 + K)',
       icon: faBookOpen,
+      badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
     },
     {
       href: '/benchmark',
-      tag: 'BENCHMARK',
+      tag: 'BENCHMARK SUITE',
       title: 'Đo kiểm hiệu năng đa quy mô',
-      subtitle: 'Multi-scale Empirical Engine',
-      desc: 'Thử nghiệm trực tiếp từ N=100 đến N=1.000.000 bản ghi. Đạt hệ số tăng tốc lên đến 48.000x.',
-      badge: 'Speedup ~48.000x',
+      dsa: 'Empirical Benchmark Engine',
+      desc: 'Đối sánh trực tiếp thời gian thực thi (ns/μs) và số phép so sánh từ N=100 đến N=1.000.000 bản ghi.',
+      complexity: 'Speedup: ~48.000x',
       icon: faChartLine,
+      badgeColor: 'bg-cyan-50 text-cyan-800 border-cyan-200',
     },
   ];
 
   return (
-    <div className="w-full space-y-6">
-      {/* Header Banner */}
-      <div className="p-6 rounded-xl bg-white border border-gray-200">
-        <div className="max-w-3xl space-y-2">
-          <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-            Học phần Cấu trúc Dữ liệu và Giải thuật (261DASA230179_06)
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
-            Hệ Thống Mô Hình Hóa & Đối Sánh Cấu Trúc Dữ Liệu Bộ Nhớ Chính
-          </h1>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            Ứng dụng cầu nối tương tác trực tiếp với Native C++ Engine. Trực quan hóa Bảng băm DJB2, Cây đống cực đại Max-Heap, Cây tự cân bằng AVL (4 phép quay) và Chỉ mục ngược Inverted Index.
-          </p>
+    <div className="w-full space-y-5">
+      {/* Requirement Banner */}
+      <RequirementBanner />
 
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Link
-              href="/benchmark"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors"
-            >
-              <FontAwesomeIcon icon={faChartLine} />
-              Chạy đo kiểm hiệu năng
-            </Link>
-            <Link
-              href="/mc1-hashtable"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium text-xs transition-colors"
-            >
-              <FontAwesomeIcon icon={faBolt} />
-              Module MC1 Bảng băm
-            </Link>
+      {/* Mode Selector */}
+      <ModeSelector />
+
+      {/* System Architecture Box */}
+      <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+          <h2 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+            <FontAwesomeIcon icon={faSitemap} className="text-blue-600 text-xs" />
+            Kiến Trúc Động Cơ DSA Bộ Nhớ Chính (In-Memory Engine Architecture)
+          </h2>
+          <span className="text-[11px] font-mono text-gray-500">C++20 Core & Native JSON Bridge</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-1">
+            <div className="text-[10px] text-gray-500 font-bold uppercase">1. Tầng Trình Diễn (Presentation)</div>
+            <div className="text-xs font-semibold text-gray-900">Next.js Web Visualizer + TUI CLI</div>
+            <p className="text-[11px] text-gray-500">Giao diện điều khiển & Trực quan hóa từng bước thuật toán</p>
+          </div>
+
+          <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-200 space-y-1">
+            <div className="text-[10px] text-blue-700 font-bold uppercase">2. Tầng Cấu Trúc Dữ Liệu (DSA Core)</div>
+            <div className="text-xs font-semibold text-blue-900">Hash Table • Max-Heap • AVL Tree • Inverted Index</div>
+            <p className="text-[11px] text-blue-800">Cài đặt C++ nguyên bản không dùng thư viện ngoài</p>
+          </div>
+
+          <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-1">
+            <div className="text-[10px] text-gray-500 font-bold uppercase">3. Tầng Lưu Trữ (Persistence)</div>
+            <div className="text-xs font-semibold text-gray-900">JSON FileStore (RAM Sync)</div>
+            <p className="text-[11px] text-gray-500">Nạp & Đồng bộ dữ liệu sách, phiếu mượn bền vững</p>
           </div>
         </div>
       </div>
 
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          title="Tổng số bản ghi sách"
-          value={books.length || 10}
-          unit="cuốn"
-          subtitle="Tập dữ liệu data/books.json"
-          icon={faBookOpen}
-        />
-        <MetricCard
-          title="Phiếu mượn / Quá hạn"
-          value={records.length || 10}
-          unit="phiếu"
-          subtitle="Quản lý bởi Cây AVL"
-          icon={faCodeBranch}
-        />
-        <MetricCard
-          title="Độ tăng tốc tối đa"
-          value="48.000x"
-          subtitle="Max-Heap vs Quét mảng tại N=1M"
-          icon={faBolt}
-        />
-        <MetricCard
-          title="Độ phức tạp tra cứu"
-          value="O(1)"
-          subtitle="Bảng băm DJB2 Prime 100.003"
-          icon={faLayerGroup}
-        />
-      </div>
-
-      {/* Modules Grid */}
+      {/* Modules Cards Grid */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-gray-900">Danh Sách Các Chế Độ Thuật Toán</h2>
+          <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
+            Các Module Thuật Toán & Cấu Trúc Dữ Liệu
+          </h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {modules.map((m) => (
             <Link
               key={m.href}
               href={m.href}
-              className="p-5 rounded-xl bg-white border border-gray-200 hover:border-blue-500 transition-colors flex flex-col justify-between"
+              className="p-4 rounded-xl bg-white border border-gray-200 hover:border-blue-400 transition-colors flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="px-2 py-0.5 rounded text-xs font-bold bg-gray-100 text-gray-800 border border-gray-200">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className={`px-2 py-0.5 rounded text-[11px] font-bold border ${m.badgeColor}`}>
                     {m.tag}
                   </span>
-                  <span className="text-[11px] font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
-                    {m.badge}
+                  <span className="text-[11px] font-mono text-gray-600 bg-gray-50 px-2 py-0.5 rounded border border-gray-200">
+                    {m.complexity}
                   </span>
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mb-1">
+                <h4 className="text-sm font-bold text-gray-900 mb-0.5">
                   {m.title}
-                </h3>
-                <p className="text-xs text-blue-600 font-medium mb-2">{m.subtitle}</p>
+                </h4>
+                <div className="text-xs font-medium text-blue-700 font-mono mb-2">{m.dsa}</div>
                 <p className="text-xs text-gray-500 leading-relaxed mb-4">{m.desc}</p>
               </div>
 
-              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-blue-600">
-                <span>Vào chế độ</span>
-                <FontAwesomeIcon icon={faArrowRight} className="text-[11px]" />
+              <div className="pt-2.5 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-blue-700">
+                <span>Mô hình hóa & Thử nghiệm</span>
+                <FontAwesomeIcon icon={faArrowRight} className="text-[10px]" />
               </div>
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Dataset Preview */}
-      <div className="p-5 rounded-xl bg-white border border-gray-200">
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+      {/* Data Records Preview */}
+      <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+        <div className="flex items-center justify-between pb-3 border-b border-gray-200">
           <div>
-            <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-              <FontAwesomeIcon icon={faDatabase} className="text-blue-600 text-sm" />
-              Dữ Liệu Thư Viện Trong Bộ Nhớ RAM
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <FontAwesomeIcon icon={faDatabase} className="text-blue-600" />
+              Tập Dữ Liệu Khởi Tạo Trong Bộ Nhớ RAM
             </h3>
-            <p className="text-xs text-gray-500">Nạp trực tiếp vào C++ Engine từ file JSON</p>
+            <p className="text-xs text-gray-500">Nạp từ data/books.json vào C++ Native Engine</p>
           </div>
-          <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
+          <span className="text-xs font-mono px-2.5 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200 font-semibold">
             {books.length} đầu sách
           </span>
         </div>

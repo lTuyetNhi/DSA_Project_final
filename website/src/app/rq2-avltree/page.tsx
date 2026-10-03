@@ -5,14 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCodeBranch,
   faCalendarAlt,
-  faTriangleExclamation,
-  faRotateRight,
   faBolt,
+  faTriangleExclamation,
   faCheckCircle,
   faClock,
+  faListCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import ComparisonTable from '@/components/ui/ComparisonTable';
+import RequirementBanner from '@/components/layout/RequirementBanner';
+import ModeSelector from '@/components/layout/ModeSelector';
+import ModuleHeader from '@/components/ui/ModuleHeader';
 import MetricCard from '@/components/ui/MetricCard';
+import ComparisonTable from '@/components/ui/ComparisonTable';
+import ComplexityCard from '@/components/ui/ComplexityCard';
+import AVLTreeVisualizer from '@/components/visualizer/AVLTreeVisualizer';
 import { RQ2Response } from '@/types/dsa';
 
 export default function RQ2Page() {
@@ -35,33 +40,27 @@ export default function RQ2Page() {
     fetchRQ2(currentDate);
   }, []);
 
-  const sampleDates = ['2026-10-02', '2026-09-27', '2026-09-20', '2026-08-01'];
-
-  const rotations = [
-    { code: 'LL', name: 'Quay Đơn Phải (Right Rotation)', desc: 'Nút mất cân bằng lệch Trái-Trái (BF = +2, con trái BF = +1).' },
-    { code: 'RR', name: 'Quay Đơn Trái (Left Rotation)', desc: 'Nút mất cân bằng lệch Phải-Phải (BF = -2, con phải BF = -1).' },
-    { code: 'LR', name: 'Quay Kép Trái-Phải (Left-Right Rotation)', desc: 'Quay Trái tại con trái rồi Quay Phải tại nút gốc mất cân bằng.' },
-    { code: 'RL', name: 'Quay Kép Phải-Trái (Right-Left Rotation)', desc: 'Quay Phải tại con phải rồi Quay Trái tại nút gốc mất cân bằng.' },
+  const sampleDates = [
+    { label: 'Hôm nay (2026-10-02)', date: '2026-10-02' },
+    { label: '2026-09-27', date: '2026-09-27' },
+    { label: '2026-09-20', date: '2026-09-20' },
   ];
 
   return (
-    <div className="w-full space-y-6">
-      {/* Module Header */}
-      <div className="p-6 rounded-xl bg-white border border-gray-200">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-rose-50 text-rose-800 border border-rose-200 mb-2">
-              Module RQ2 — Cây tự cân bằng AVL (Adelson-Velsky & Landis)
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Truy Vết Phiếu Quá Hạn Trong O(log N + K)
-            </h1>
-            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
-              Tổ chức phiếu mượn theo ngày hẹn trả (`due_date`). Chiều cao cây luôn đảm bảo $h \le 1.44 \log_2 N$ nhờ 4 phép quay cân bằng.
-            </p>
-          </div>
+    <div className="w-full space-y-5">
+      {/* Top Criteria & Mode Selector */}
+      <RequirementBanner />
+      <ModeSelector />
 
-          {/* Date Picker */}
+      {/* Module Header */}
+      <ModuleHeader
+        moduleCode="RQ2"
+        dsaName="AVL TREE"
+        title="Theo dõi tài liệu quá hạn"
+        description="Truy vấn khoảng (Range Query) các phiếu mượn có hạn trả trước mốc thời gian chỉ định thông qua cơ chế tỉa nhánh cây tự cân bằng."
+        complexityLabel="Range Query"
+        complexityValue="O(log n + k)"
+        childrenRight={
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <input
@@ -71,125 +70,90 @@ export default function RQ2Page() {
                   setCurrentDate(e.target.value);
                   fetchRQ2(e.target.value);
                 }}
-                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-rose-500 font-mono"
+                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-emerald-500 font-mono font-medium"
               />
               <button
                 onClick={() => fetchRQ2(currentDate)}
                 disabled={loading}
-                className="px-4 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
               >
                 <FontAwesomeIcon icon={faCalendarAlt} />
-                <span>Kiểm tra</span>
+                <span>{loading ? 'Đang kiểm...' : 'Kiểm tra'}</span>
               </button>
             </div>
 
-            {/* Quick Dates */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] text-gray-500">Ngày mẫu:</span>
+            {/* Quick Sample Dates */}
+            <div className="flex items-center gap-1 flex-wrap">
+              <span className="text-[11px] text-gray-500 font-medium">Mốc ngày:</span>
               {sampleDates.map((d) => (
                 <button
-                  key={d}
+                  key={d.date}
                   onClick={() => {
-                    setCurrentDate(d);
-                    fetchRQ2(d);
+                    setCurrentDate(d.date);
+                    fetchRQ2(d.date);
                   }}
-                  className={`px-2 py-0.5 rounded text-xs font-mono transition-colors ${
-                    currentDate === d
-                      ? 'bg-rose-600 text-white font-bold'
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors ${
+                    currentDate === d.date
+                      ? 'bg-emerald-600 text-white font-bold'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {d}
+                  {d.label}
                 </button>
               ))}
             </div>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Metrics */}
       {data && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <MetricCard
-            title="Thời gian duyệt Cây AVL"
-            value={data.optimized.execution_time_ns}
-            unit="ns"
-            subtitle="Đo trực tiếp từ C++ Engine"
+            title="TRAVERSAL TIME"
+            value={`${data.optimized.execution_time_ns} ns`}
+            subtitle="Native C++ Engine"
             icon={faBolt}
           />
           <MetricCard
-            title="Số nút cây duyệt (DSA)"
-            value={data.optimized.checks ?? 0}
-            unit="nút"
-            subtitle="Tỉa nhánh bỏ qua các nút không quá hạn"
+            title="VISITED NODES"
+            value={`${data.optimized.checks ?? 0} nút`}
+            subtitle="Tỉa nhánh cây AVL O(log n)"
             icon={faCodeBranch}
           />
           <MetricCard
-            title="Số phiếu quét (Baseline)"
-            value={data.baseline.checks ?? 10}
-            unit="phiếu"
-            subtitle="Duyệt qua toàn bộ N phiếu mượn"
+            title="BASELINE SCANS"
+            value={`${data.baseline.checks ?? 10} phiếu`}
+            subtitle="Linear Overdue Scan O(n)"
             icon={faClock}
           />
           <MetricCard
-            title="Số phiếu quá hạn"
-            value={data.overdue_records.length}
-            unit="phiếu"
+            title="MATCHED OVERDUE (K)"
+            value={`${data.overdue_records.length} phiếu`}
             subtitle={`Hạn trước ${data.current_date}`}
             icon={faTriangleExclamation}
           />
         </div>
       )}
 
-      {/* 4 Rotations Box */}
-      <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-        <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-          <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-            <FontAwesomeIcon icon={faRotateRight} className="text-rose-600" />
-            4 Phép Quay Cân Bằng Cây AVL Chuẩn Hóa
-          </h3>
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
-            BF = Height(L) - Height(R) ∈ &#123;-1, 0, 1&#125;
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-          {rotations.map((r) => (
-            <div key={r.code} className="p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-white text-rose-700 border border-rose-200">
-                  {r.code}
-                </span>
-                <span className="text-[10px] text-gray-500">O(1)</span>
-              </div>
-              <h4 className="text-xs font-bold text-gray-900">{r.name}</h4>
-              <p className="text-[11px] text-gray-500 leading-relaxed">{r.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Comparison Table */}
+      {/* AVL Tree Visualizer */}
       {data && (
-        <ComparisonTable
-          baselineName="Quét Tuyến Tính Toàn Bộ Phiếu (Linear Overdue Scan)"
-          optimizedName="Cây Tự Cân Bằng AVL (AVL Tree Range Query)"
-          baseline={data.baseline}
-          optimized={data.optimized}
-          stepLabel="Số lượt kiểm tra phiếu / nút cây"
+        <AVLTreeVisualizer
+          currentDate={data.current_date}
+          overdueRecords={data.overdue_records}
         />
       )}
 
-      {/* Overdue Records Table */}
+      {/* Overdue Records Result Table */}
       {data && (
         <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
               <FontAwesomeIcon icon={faTriangleExclamation} className="text-rose-600" />
               Danh Sách Phiếu Mượn Quá Hạn ({data.overdue_records.length} phiếu)
             </h3>
             <span className="text-xs font-mono text-gray-500">
-              Độ phức tạp: O(log N + K)
+              Query: dueDate &lt; {data.current_date}
             </span>
           </div>
 
@@ -197,7 +161,7 @@ export default function RQ2Page() {
             <div className="p-6 text-center text-gray-500 bg-gray-50 rounded-lg">
               <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-500 text-2xl mb-1" />
               <div className="text-xs font-semibold text-gray-800">Không có phiếu quá hạn</div>
-              <div className="text-[11px] text-gray-500">Tất cả độc giả đã trả sách hoặc chưa đến hạn trả tính đến ngày {data.current_date}.</div>
+              <div className="text-[11px] text-gray-500">Toàn bộ độc giả đã trả sách hoặc chưa đến hạn trả tính đến ngày {data.current_date}.</div>
             </div>
           ) : (
             <div className="overflow-x-auto">
@@ -231,6 +195,29 @@ export default function RQ2Page() {
               </table>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Benchmark & Complexity */}
+      {data && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <ComparisonTable
+              baselineName="Linear Overdue Scan (Quét tuyến tính toàn bộ phiếu)"
+              optimizedName="AVL Tree Range Query (Cây tự cân bằng tỉa nhánh)"
+              baseline={data.baseline}
+              optimized={data.optimized}
+              stepLabel="Số lượt kiểm tra phiếu / nút cây"
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <ComplexityCard
+              averageTime="Search Boundary: O(log n)"
+              worstTime="Output: O(k)"
+              spaceComplexity="O(n) AVL Nodes"
+              notes="Định vị biên ngày quá hạn trong O(log n), sau đó duyệt cây In-Order lấy K phiếu quá hạn trong O(k). Tổng chi phí O(log n + k)."
+            />
+          </div>
         </div>
       )}
     </div>

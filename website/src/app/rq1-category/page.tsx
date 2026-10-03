@@ -3,15 +3,21 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTags,
+  faFolderOpen,
+  faSearch,
   faBolt,
-  faCheckCircle,
   faListCheck,
   faLayerGroup,
+  faBook,
 } from '@fortawesome/free-solid-svg-icons';
-import ComparisonTable from '@/components/ui/ComparisonTable';
-import BookCard from '@/components/ui/BookCard';
+import RequirementBanner from '@/components/layout/RequirementBanner';
+import ModeSelector from '@/components/layout/ModeSelector';
+import ModuleHeader from '@/components/ui/ModuleHeader';
 import MetricCard from '@/components/ui/MetricCard';
+import ComparisonTable from '@/components/ui/ComparisonTable';
+import ComplexityCard from '@/components/ui/ComplexityCard';
+import CategoryIndexVisualizer from '@/components/visualizer/CategoryIndexVisualizer';
+import BookCard from '@/components/ui/BookCard';
 import { RQ1Response } from '@/types/dsa';
 
 export default function RQ1Page() {
@@ -44,100 +50,92 @@ export default function RQ1Page() {
   }, []);
 
   return (
-    <div className="w-full space-y-6">
-      {/* Module Header */}
-      <div className="p-6 rounded-xl bg-white border border-gray-200">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-2">
-              Module RQ1 — Bảng băm phân cụm thể loại
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Gom Cụm & Lọc Toàn Bộ Sách Theo Thể Loại Trong O(1+K)
-            </h1>
-            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
-              Truy xuất <strong>toàn bộ tất cả $K$ cuốn sách</strong> thuộc thể loại xác định trong một nhóm băm, không phải xếp hạng Top-K.
-            </p>
-          </div>
+    <div className="w-full space-y-5">
+      {/* Top Criteria & Mode Selector */}
+      <RequirementBanner />
+      <ModeSelector />
 
-          {/* Category Filter Badges */}
-          <div className="flex flex-wrap gap-1.5 max-w-md">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => {
-                  setCategory(cat);
-                  fetchRQ1(cat);
-                }}
-                disabled={loading}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  category === cat
-                    ? 'bg-emerald-600 text-white font-bold'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+      {/* Module Header */}
+      <ModuleHeader
+        moduleCode="RQ1"
+        dsaName="CATEGORY HASH INDEX"
+        title="Tra cứu sách theo thể loại"
+        description="Băm tên thể loại để định vị danh sách tham chiếu (List of Book References) trong O(1+K), không quét toàn bộ thư viện."
+        complexityLabel="Total lookup"
+        complexityValue="O(1 + K)"
+        childrenRight={
+          <div className="flex items-center gap-2">
+            <select
+              value={category}
+              onChange={(e) => {
+                setCategory(e.target.value);
+                fetchRQ1(e.target.value);
+              }}
+              className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-purple-500 bg-white font-medium"
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => fetchRQ1(category)}
+              disabled={loading}
+              className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
+            >
+              <FontAwesomeIcon icon={faSearch} />
+              <span>{loading ? 'Đang lọc...' : 'Tìm kiếm'}</span>
+            </button>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Metrics */}
       {data && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <MetricCard
-            title="Thời gian định vị nhóm"
-            value={data.optimized.execution_time_ns}
-            unit="ns"
-            subtitle="Đo trực tiếp từ C++ Engine"
+            title="FIND GROUP TIME"
+            value={`${data.optimized.execution_time_ns} ns`}
+            subtitle="Native C++ Engine"
             icon={faBolt}
           />
           <MetricCard
-            title="Số sách trả về (K)"
-            value={data.books.length}
-            unit="cuốn"
+            title="TÀI LIỆU TRẢ VỀ (K)"
+            value={`${data.books.length} cuốn`}
             subtitle={`Thể loại ${data.category}`}
             icon={faListCheck}
           />
           <MetricCard
-            title="Số phép so sánh (DSA)"
-            value={data.optimized.comparisons ?? 1}
-            unit="bước"
-            subtitle="1 lần băm nhóm + trích xuất K sách"
-            icon={faTags}
+            title="HASH LOOKUPS"
+            value="1"
+            subtitle="Định vị ô nhóm O(1)"
+            icon={faFolderOpen}
           />
           <MetricCard
-            title="Số lần quét (Baseline)"
-            value={data.baseline.comparisons ?? 10}
-            unit="bước"
-            subtitle="Phải duyệt qua toàn bộ N cuốn"
+            title="BASELINE COMPARISONS"
+            value={`${data.baseline.comparisons} lần`}
+            subtitle="Quét tuần tự Linear Scan O(n)"
             icon={faLayerGroup}
           />
         </div>
       )}
 
-      {/* Comparison Table */}
+      {/* Category Index Visualizer */}
       {data && (
-        <ComparisonTable
-          baselineName="Quét Tuyến Tính Thể Loại (Linear Category Scan)"
-          optimizedName="Bảng Băm Gom Cụm Thể Loại (Category Hash Table)"
-          baseline={data.baseline}
-          optimized={data.optimized}
-          stepLabel="Số phép kiểm tra tên thể loại"
-        />
+        <CategoryIndexVisualizer category={data.category} books={data.books} />
       )}
 
-      {/* Books List */}
+      {/* Result Panel: Book List */}
       {data && (
         <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600" />
-              Toàn Bộ Sách Thuộc Thể Loại "{data.category}" ({data.books.length} cuốn)
+              <FontAwesomeIcon icon={faBook} className="text-purple-600" />
+              Danh Sách Tài Liệu Thuộc "{data.category}" ({data.books.length} cuốn)
             </h3>
-            <span className="text-xs font-mono text-gray-500">
-              Độ phức tạp: O(1 + K)
+            <span className="text-xs font-mono text-purple-700 font-semibold">
+              K = {data.books.length} phần tử
             </span>
           </div>
 
@@ -145,6 +143,29 @@ export default function RQ1Page() {
             {data.books.map((b) => (
               <BookCard key={b.book_id} book={b} highlight={true} />
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Benchmark & Complexity */}
+      {data && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <ComparisonTable
+              baselineName="Linear Category Scan (Quét mảng so khớp thể loại)"
+              optimizedName="Category Hash Index (Bảng băm gom cụm thể loại)"
+              baseline={data.baseline}
+              optimized={data.optimized}
+              stepLabel="Số phép kiểm tra tên thể loại"
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <ComplexityCard
+              averageTime="Find Group: O(1)"
+              worstTime="Return: O(k)"
+              spaceComplexity="O(n)"
+              notes="Băm tên thể loại để lấy đầu danh sách liên kết trong O(1). Sau đó trích xuất K cuốn sách trong O(K). Tổng độ phức tạp là O(1 + K)."
+            />
           </div>
         </div>
       )}

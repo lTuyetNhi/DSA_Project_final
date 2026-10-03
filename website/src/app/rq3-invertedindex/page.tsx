@@ -9,11 +9,15 @@ import {
   faLayerGroup,
   faCheckCircle,
   faKey,
-  faDiagramProject,
 } from '@fortawesome/free-solid-svg-icons';
-import ComparisonTable from '@/components/ui/ComparisonTable';
-import BookCard from '@/components/ui/BookCard';
+import RequirementBanner from '@/components/layout/RequirementBanner';
+import ModeSelector from '@/components/layout/ModeSelector';
+import ModuleHeader from '@/components/ui/ModuleHeader';
 import MetricCard from '@/components/ui/MetricCard';
+import ComparisonTable from '@/components/ui/ComparisonTable';
+import ComplexityCard from '@/components/ui/ComplexityCard';
+import InvertedIndexVisualizer from '@/components/visualizer/InvertedIndexVisualizer';
+import BookCard from '@/components/ui/BookCard';
 import { RQ3Response } from '@/types/dsa';
 
 export default function RQ3Page() {
@@ -39,23 +43,20 @@ export default function RQ3Page() {
   const sampleKeywords = ['Code', 'Algorithms', 'System', 'Approach', 'Mathematics', 'Python'];
 
   return (
-    <div className="w-full space-y-6">
-      {/* Module Header */}
-      <div className="p-6 rounded-xl bg-white border border-gray-200">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-purple-50 text-purple-800 border border-purple-200 mb-2">
-              Module RQ3 — Bảng băm Chỉ mục ngược (Inverted Index)
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Tìm Kiếm Sách Theo Từ Khóa Trong O(1+K)
-            </h1>
-            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
-              Tách nhỏ tiêu đề thành các từ khóa chuẩn hóa. Tra cứu Posting List trực tiếp trong $O(1+K)$, loại bỏ so khớp xâu $O(N \times M)$.
-            </p>
-          </div>
+    <div className="w-full space-y-5">
+      {/* Top Criteria & Mode Selector */}
+      <RequirementBanner />
+      <ModeSelector />
 
-          {/* Search Box */}
+      {/* Module Header */}
+      <ModuleHeader
+        moduleCode="RQ3"
+        dsaName="INVERTED INDEX"
+        title="Tìm kiếm sách theo từ khóa"
+        description="Phân tích tiêu đề thành các token và tra cứu Posting List trong bảng băm chỉ mục ngược, loại bỏ phép so khớp xâu tuyến tính đắt đỏ O(N × M)."
+        complexityLabel="Search Pipeline"
+        complexityValue="O(1 + K)"
+        childrenRight={
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <input
@@ -63,22 +64,22 @@ export default function RQ3Page() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && fetchRQ3(keyword)}
-                placeholder="Từ khóa (VD: Code)..."
-                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-purple-500 font-mono"
+                placeholder="Nhập từ khóa (VD: Code)..."
+                className="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-indigo-500 font-mono font-bold"
               />
               <button
                 onClick={() => fetchRQ3(keyword)}
                 disabled={loading}
-                className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <FontAwesomeIcon icon={faSearch} />
-                <span>Tìm kiếm</span>
+                <span>{loading ? 'Đang tìm...' : 'Tìm kiếm'}</span>
               </button>
             </div>
 
             {/* Quick Keywords */}
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] text-gray-500">Từ khóa mẫu:</span>
+            <div className="flex items-center gap-1 flex-wrap">
+              <span className="text-[11px] text-gray-500 font-medium">Từ khóa:</span>
               {sampleKeywords.map((kw) => (
                 <button
                   key={kw}
@@ -86,9 +87,9 @@ export default function RQ3Page() {
                     setKeyword(kw);
                     fetchRQ3(kw);
                   }}
-                  className={`px-2 py-0.5 rounded text-xs font-mono transition-colors ${
+                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors ${
                     keyword === kw
-                      ? 'bg-purple-600 text-white font-bold'
+                      ? 'bg-indigo-600 text-white font-bold'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -97,100 +98,63 @@ export default function RQ3Page() {
               ))}
             </div>
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Metrics */}
       {data && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <MetricCard
-            title="Thời gian tra chỉ mục"
-            value={data.optimized.execution_time_ns}
-            unit="ns"
-            subtitle="Đo trực tiếp từ C++ Engine"
+            title="SEARCH TIME"
+            value={`${data.optimized.execution_time_ns} ns`}
+            subtitle="Native C++ Engine"
             icon={faBolt}
           />
           <MetricCard
-            title="Số sách khớp từ khóa"
-            value={data.matched_books.length}
-            unit="cuốn"
-            subtitle={`Từ khóa "${data.keyword}"`}
+            title="MATCHED BOOKS (K)"
+            value={`${data.matched_books.length} cuốn`}
+            subtitle={`Khớp từ khóa "${data.keyword}"`}
             icon={faBookOpen}
           />
           <MetricCard
-            title="Thao tác lấy Posting List"
-            value={data.optimized.checks ?? 0}
-            unit="thao tác"
-            subtitle="Chỉ 1 lần băm từ khóa"
+            title="POSTING LIST LOOKUPS"
+            value="1"
+            subtitle="Băm từ khóa O(1)"
             icon={faKey}
           />
           <MetricCard
-            title="Số sách quét so khớp xâu"
-            value={data.baseline.checks ?? 10}
-            unit="cuốn"
-            subtitle="So khớp xâu tuần tự O(N * M)"
+            title="BASELINE STRING SCANS"
+            value={`${data.baseline.checks ?? 10} cuốn`}
+            subtitle="Linear Substring Scan O(N×M)"
             icon={faLayerGroup}
           />
         </div>
       )}
 
-      {/* Inverted Index Architecture Visualizer */}
-      <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-        <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-          <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-            <FontAwesomeIcon icon={faDiagramProject} className="text-purple-600" />
-            Kiến Trúc Chỉ Mục Ngược (Inverted Index)
-          </h3>
-          <span className="text-xs font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
-            Token &rarr; Hash Table &rarr; Posting List [Book IDs]
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-1">
-            <div className="text-[11px] text-gray-500 font-semibold">1. Phân tách từ khóa (Tokenization)</div>
-            <div className="text-xs font-mono text-purple-700">"Clean Code" &rarr; ['clean', 'code']</div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 space-y-1">
-            <div className="text-[11px] text-gray-500 font-semibold">2. Băm vào bảng chỉ mục</div>
-            <div className="text-xs font-mono text-emerald-700">DJB2('code') % Prime &rarr; Slot</div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-purple-50/60 border border-purple-200 space-y-1">
-            <div className="text-[11px] text-purple-800 font-semibold">3. Lấy Posting List trong O(1)</div>
-            <div className="text-xs font-mono text-purple-900 font-bold">['B002', 'B007', ...]</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Comparison Table */}
+      {/* Inverted Index Pipeline Visualizer */}
       {data && (
-        <ComparisonTable
-          baselineName="So Khớp Xâu Tuyến Tính (Linear Substring Scan O(N×M))"
-          optimizedName="Chỉ Mục Ngược (Inverted Index Hash Table O(1+K))"
-          baseline={data.baseline}
-          optimized={data.optimized}
-          stepLabel="Số sách đã kiểm tra"
+        <InvertedIndexVisualizer
+          keyword={data.keyword}
+          matchedCount={data.matched_books.length}
         />
       )}
 
-      {/* Matched Books List */}
+      {/* Result Panel: Matched Books List */}
       {data && (
         <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100">
             <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
               <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600" />
-              Danh Sách Sách Khớp Từ Khóa "{data.keyword}" ({data.matched_books.length} cuốn)
+              Kết Quả Khớp Từ Khóa "{data.keyword}" ({data.matched_books.length} cuốn)
             </h3>
-            <span className="text-xs font-mono text-gray-500">
-              Độ phức tạp: O(1 + K)
+            <span className="text-xs font-mono text-indigo-700 font-semibold">
+              K = {data.matched_books.length} phần tử
             </span>
           </div>
 
           {data.matched_books.length === 0 ? (
             <div className="p-6 text-center text-gray-500 bg-gray-50 rounded-lg">
-              <div className="text-xs font-semibold text-gray-800">Không tìm thấy sách phù hợp</div>
+              <div className="text-xs font-semibold text-gray-800">Không tìm thấy tài liệu phù hợp</div>
               <div className="text-[11px] text-gray-500 mt-0.5">Không có cuốn sách nào trong thư viện chứa từ khóa "{data.keyword}".</div>
             </div>
           ) : (
@@ -200,6 +164,29 @@ export default function RQ3Page() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {/* Benchmark & Complexity */}
+      {data && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <ComparisonTable
+              baselineName="Linear Substring Scan (So khớp chuỗi con O(N×M))"
+              optimizedName="Inverted Index Hash Table (Bảng băm chỉ mục ngược O(1+K))"
+              baseline={data.baseline}
+              optimized={data.optimized}
+              stepLabel="Số sách đã kiểm tra"
+            />
+          </div>
+          <div className="lg:col-span-1">
+            <ComplexityCard
+              averageTime="Token Hash: O(1)"
+              worstTime="Extract Posting: O(k)"
+              spaceComplexity="O(Total Tokens)"
+              notes="Băm từ khóa tìm Posting List trong O(1). Sau đó trích xuất K tài liệu khớp trong O(K). Loại bỏ chi phí quét so khớp chuỗi O(N × M)."
+            />
+          </div>
         </div>
       )}
     </div>

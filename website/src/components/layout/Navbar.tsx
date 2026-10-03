@@ -5,98 +5,103 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faBookOpen,
-  faBolt,
-  faChartLine,
-  faLayerGroup,
-  faCodeBranch,
-  faFolderOpen,
+  faMicrochip,
+  faRotateRight,
+  faDownload,
+  faServer,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function Navbar() {
   const pathname = usePathname();
   const [bridgeStatus, setBridgeStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [bookCount, setBookCount] = useState(10);
+  const [maxBorrow, setMaxBorrow] = useState(70);
 
   useEffect(() => {
     fetch('/api/bridge?mode=data')
-      .then((res) => {
-        if (res.ok) setBridgeStatus('connected');
-        else setBridgeStatus('error');
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          setBridgeStatus('connected');
+          setBookCount(data.books?.length || 10);
+          const maxB = data.books?.reduce((max: number, b: any) => Math.max(max, b.borrow_count || 0), 0);
+          if (maxB) setMaxBorrow(maxB);
+        } else {
+          setBridgeStatus('error');
+        }
       })
       .catch(() => setBridgeStatus('error'));
   }, []);
 
-  const navLinks = [
-    { href: '/', label: 'Tổng quan', icon: faBookOpen },
-    { href: '/mc1-hashtable', label: 'MC1: Bảng băm', icon: faBolt },
-    { href: '/mc2-maxheap', label: 'MC2: Max-Heap', icon: faLayerGroup },
-    { href: '/rq1-category', label: 'RQ1: Thể loại', icon: faFolderOpen },
-    { href: '/rq2-avltree', label: 'RQ2: Cây AVL', icon: faCodeBranch },
-    { href: '/rq3-invertedindex', label: 'RQ3: Chỉ mục ngược', icon: faBookOpen },
-    { href: '/benchmark', label: 'Đo kiểm hiệu năng', icon: faChartLine },
-  ];
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white">
-      <div className="w-full px-6 py-3 flex items-center justify-between">
-        {/* Logo & Brand */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
-            DSA
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-base text-gray-900">
-                DSA Library Engine
-              </span>
-              <span className="px-2 py-0.5 text-[11px] font-medium rounded bg-blue-50 text-blue-700 border border-blue-200">
-                C++ Native
+      <div className="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
+        {/* Logo & Header Title */}
+        <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white text-sm">
+              <FontAwesomeIcon icon={faMicrochip} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-sm sm:text-base text-gray-900 tracking-tight">
+                  DSA Performance Dashboard
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                <span>C++ High Performance Engine</span>
+                <span>•</span>
+                <span className="text-emerald-700 font-medium">In-Memory Active</span>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* Right Action Buttons & Real-time Stats */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Quick Actions */}
+          <button
+            onClick={() => window.location.reload()}
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition-colors"
+          >
+            <FontAwesomeIcon icon={faDownload} className="text-[10px]" />
+            <span>Nạp RAM</span>
+          </button>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium border border-gray-200 transition-colors"
+          >
+            <FontAwesomeIcon icon={faRotateRight} className="text-[10px]" />
+            <span>Reset</span>
+          </button>
+
+          {/* Quick Stats Badges */}
+          <div className="flex items-center gap-2 border-l border-gray-200 pl-3">
+            <div className="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-center">
+              <div className="text-[9px] uppercase tracking-wider text-blue-700 font-bold">Tổng Sách</div>
+              <div className="text-xs font-black text-blue-900 font-mono">{bookCount} Cuốn</div>
+            </div>
+
+            <div className="px-2.5 py-1 rounded-lg bg-gray-50 border border-gray-200 text-center">
+              <div className="text-[9px] uppercase tracking-wider text-gray-500 font-bold">Phổ Mượn</div>
+              <div className="text-xs font-bold text-gray-800 font-mono">0 - {maxBorrow}</div>
+            </div>
+
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  bridgeStatus === 'connected'
+                    ? 'bg-emerald-500'
+                    : bridgeStatus === 'checking'
+                    ? 'bg-amber-500'
+                    : 'bg-rose-500'
+                }`}
+              />
+              <span className="text-[11px] font-medium text-gray-700 hidden lg:inline">
+                {bridgeStatus === 'connected' ? 'C++ Ready' : 'C++ Offline'}
               </span>
             </div>
-            <p className="text-[11px] text-gray-500">Mô hình hóa cấu trúc dữ liệu & Thuật toán</p>
-          </div>
-        </Link>
-
-        {/* Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  isActive
-                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                <FontAwesomeIcon icon={link.icon} className="text-xs text-gray-500" />
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* C++ Status Indicator */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-2 px-2.5 py-1 rounded-md bg-gray-50 border border-gray-200 text-xs">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                bridgeStatus === 'connected'
-                  ? 'bg-emerald-500'
-                  : bridgeStatus === 'checking'
-                  ? 'bg-amber-500'
-                  : 'bg-rose-500'
-              }`}
-            />
-            <span className="text-gray-600 font-medium text-[11px]">
-              {bridgeStatus === 'connected'
-                ? 'C++ Engine: Sẵn sàng'
-                : bridgeStatus === 'checking'
-                ? 'Đang kết nối C++...'
-                : 'C++ Offline'}
-            </span>
           </div>
         </div>
       </div>

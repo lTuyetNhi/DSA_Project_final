@@ -5,24 +5,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faLayerGroup,
   faTrophy,
-  faSitemap,
-  faTable,
   faBolt,
   faFire,
+  faSitemap,
 } from '@fortawesome/free-solid-svg-icons';
-import ComparisonTable from '@/components/ui/ComparisonTable';
-import BookCard from '@/components/ui/BookCard';
+import RequirementBanner from '@/components/layout/RequirementBanner';
+import ModeSelector from '@/components/layout/ModeSelector';
+import ModuleHeader from '@/components/ui/ModuleHeader';
 import MetricCard from '@/components/ui/MetricCard';
+import ComparisonTable from '@/components/ui/ComparisonTable';
+import ComplexityCard from '@/components/ui/ComplexityCard';
+import HeapTreeVisualizer from '@/components/visualizer/HeapTreeVisualizer';
+import BookCard from '@/components/ui/BookCard';
 import { MC2Response } from '@/types/dsa';
 
 export default function MC2Page() {
-  const [topK, setTopK] = useState(3);
   const [data, setData] = useState<MC2Response | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchMC2 = (kVal: number) => {
+  const fetchMC2 = () => {
     setLoading(true);
-    fetch(`/api/bridge?mode=mc2&top=${kVal}`)
+    fetch(`/api/bridge?mode=mc2&top=5`)
       .then((res) => res.json())
       .then((resData: MC2Response) => {
         setData(resData);
@@ -32,168 +35,119 @@ export default function MC2Page() {
   };
 
   useEffect(() => {
-    fetchMC2(topK);
+    fetchMC2();
   }, []);
 
-  const topOptions = [1, 3, 5, 10];
-
   return (
-    <div className="w-full space-y-6">
-      {/* Module Header */}
-      <div className="p-6 rounded-xl bg-white border border-gray-200">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 mb-2">
-              Module MC2 — Cây đống cực đại Max-Heap
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
-              Truy Xuất Top Sách Mượn Nhiều Nhất Trong O(1)
-            </h1>
-            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
-              Xây dựng cây đống bằng giải thuật Floyd's Build Heap tuyến tính $O(N)$. Phần tử có lượt mượn cao nhất luôn nằm tại vị trí gốc `heap[0]`.
-            </p>
-          </div>
+    <div className="w-full space-y-5">
+      {/* Top Criteria & Mode Selector */}
+      <RequirementBanner />
+      <ModeSelector />
 
-          {/* Top-K Selector Controls */}
-          <div className="flex items-center gap-1.5 bg-gray-50 p-1.5 rounded-lg border border-gray-200">
-            <span className="text-xs text-gray-600 px-2 font-medium">Chọn Top:</span>
-            {topOptions.map((k) => (
-              <button
-                key={k}
-                onClick={() => {
-                  setTopK(k);
-                  fetchMC2(k);
-                }}
-                disabled={loading}
-                className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
-                  topK === k
-                    ? 'bg-amber-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                Top {k}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Module Header */}
+      <ModuleHeader
+        moduleCode="MC2"
+        dsaName="MAX HEAP"
+        title="Tài liệu được mượn nhiều nhất"
+        description="Xác định cuốn sách có lượt mượn cao nhất tại vị trí gốc heap[0] với chi phí truy xuất hằng số O(1)."
+        complexityLabel="Peek Max"
+        complexityValue="O(1)"
+        childrenRight={
+          <button
+            onClick={fetchMC2}
+            disabled={loading}
+            className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
+          >
+            <FontAwesomeIcon icon={faTrophy} />
+            <span>{loading ? 'Đang trích xuất...' : 'Lấy tài liệu ưu tiên cao nhất'}</span>
+          </button>
+        }
+      />
 
       {/* Metrics */}
       {data && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           <MetricCard
-            title="Thời gian lấy đỉnh Heap"
-            value={data.optimized.execution_time_ns}
-            unit="ns"
-            subtitle="Đo trực tiếp từ C++ Engine"
+            title="PEEK TIME"
+            value={`${data.optimized.execution_time_ns} ns`}
+            subtitle="Native C++ Engine"
             icon={faBolt}
           />
           <MetricCard
-            title="Số phép so sánh (Heap)"
-            value={data.optimized.comparisons ?? 1}
-            unit="bước"
-            subtitle="Truy xuất tức thì phần tử heap[0]"
+            title="HEAP COMPARISONS"
+            value="1"
+            subtitle="Truy xuất trực tiếp heap[0]"
             icon={faTrophy}
           />
           <MetricCard
-            title="Số phép so sánh (Baseline)"
-            value={data.baseline.comparisons ?? 10}
-            unit="bước"
-            subtitle="Duyệt qua toàn bộ N cuốn sách"
+            title="BASELINE COMPARISONS"
+            value={`${data.baseline.comparisons} lần`}
+            subtitle="Quét tuần tự Linear Max Scan"
             icon={faLayerGroup}
           />
           <MetricCard
-            title="Độ phức tạp lấy cực đại"
-            value="O(1)"
-            subtitle="Trích xuất O(log N)"
-            icon={faSitemap}
+            title="TRẠNG THÁI GỐC HEAP"
+            value={data.top_books[0]?.book_id || 'N/A'}
+            subtitle={`${data.top_books[0]?.borrow_count || 0} lượt mượn`}
+            icon={faFire}
           />
         </div>
       )}
 
-      {/* Max-Heap Array & Root Visualizer */}
+      {/* Result Panel: Highest Borrowed Book */}
       {data && data.top_books.length > 0 && (
-        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-200">
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <FontAwesomeIcon icon={faSitemap} className="text-amber-600" />
-                Mô Hình Hóa Cấu Trúc Max-Heap Trên Mảng Bộ Nhớ
-              </h3>
-              <p className="text-xs text-gray-500">Mảng 1 chiều liên tục trong RAM đại diện cho Cây nhị phân hoàn chỉnh</p>
-            </div>
-            <span className="text-xs font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
-              Cha = (i-1)/2 | Con Trái = 2i+1 | Con Phải = 2i+2
+        <div className="p-5 rounded-xl bg-amber-50/60 border border-amber-200 space-y-3">
+          <div className="flex items-center justify-between pb-2 border-b border-amber-200">
+            <h3 className="text-sm font-bold text-amber-900 flex items-center gap-2">
+              <FontAwesomeIcon icon={faTrophy} className="text-amber-600" />
+              Tài Liệu Ưu Tiên Cao Nhất (Root Element)
+            </h3>
+            <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900">
+              #1 MAX BORROW
             </span>
           </div>
 
-          {/* Array View */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
-              <FontAwesomeIcon icon={faTable} className="text-gray-500" />
-              1. Biểu diễn mảng 1 chiều liên tục trong RAM
-            </span>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2">
-              {data.top_books.map((b, idx) => (
-                <div
-                  key={b.book_id}
-                  className={`p-2.5 rounded-lg border text-center space-y-1 ${
-                    idx === 0
-                      ? 'bg-amber-50 border-amber-300 text-amber-900 font-medium'
-                      : 'bg-gray-50 border-gray-200 text-gray-800'
-                  }`}
-                >
-                  <div className="text-[10px] font-mono text-gray-500">heap[{idx}] {idx === 0 && '(Gốc)'}</div>
-                  <div className="text-xs font-bold truncate">{b.book_id}</div>
-                  <div className="text-xs font-mono text-amber-700 flex items-center justify-center gap-1">
-                    <FontAwesomeIcon icon={faFire} className="text-[10px] text-amber-500" />
-                    {b.borrow_count} lượt
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Root Element Highlight */}
-          <div className="p-4 rounded-lg bg-amber-50/70 border border-amber-200 flex items-center justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
             <div>
-              <div className="text-xs text-amber-800 font-bold uppercase">Đầu Sách Mượn Nhiều Nhất Hệ Thống (Root)</div>
-              <div className="text-sm font-bold text-gray-900">{data.top_books[0].title}</div>
-              <div className="text-xs text-gray-600">Mã sách: {data.top_books[0].book_id} — Tác giả: {data.top_books[0].author}</div>
+              <div className="text-lg font-bold text-gray-900">{data.top_books[0].title}</div>
+              <p className="text-xs text-gray-600 mt-0.5">
+                Mã sách: <span className="font-mono font-bold text-blue-700">{data.top_books[0].book_id}</span> • Tác giả: {data.top_books[0].author} • Thể loại: {data.top_books[0].category}
+              </p>
             </div>
-            <div className="text-right">
-              <div className="text-xl font-black text-amber-800">{data.top_books[0].borrow_count}</div>
-              <div className="text-[11px] text-gray-500">Lượt mượn</div>
+            <div className="flex items-center justify-end gap-3 text-right">
+              <div>
+                <div className="text-2xl font-black text-amber-800 font-mono">{data.top_books[0].borrow_count}</div>
+                <div className="text-[11px] text-gray-500 font-medium">Lượt mượn tích lũy</div>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Comparison Table */}
+      {/* Heap Visualizer: Binary Tree & Array */}
       {data && (
-        <ComparisonTable
-          baselineName="Tìm Max Tuyến Tính (Linear Max Scan)"
-          optimizedName="Cây Đống Cực Đại (Max-Heap In-Memory)"
-          baseline={data.baseline}
-          optimized={data.optimized}
-          stepLabel="Số phép so sánh tìm phần tử lớn nhất"
-        />
+        <HeapTreeVisualizer books={data.top_books} />
       )}
 
-      {/* Top Books Grid */}
+      {/* Benchmark & Complexity */}
       {data && (
-        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
-            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-              <FontAwesomeIcon icon={faTrophy} className="text-amber-600" />
-              Danh Sách Xếp Hạng Top {topK} Sách Mượn Nhiều Nhất
-            </h3>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <ComparisonTable
+              baselineName="Linear Max Scan (Quét tìm cực đại tuyến tính)"
+              optimizedName="Max-Heap (Cây đống cực đại mảng 1 chiều)"
+              baseline={data.baseline}
+              optimized={data.optimized}
+              stepLabel="Số phép so sánh tìm phần tử lớn nhất"
+            />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {data.top_books.map((b, index) => (
-              <BookCard key={b.book_id} book={b} rank={index + 1} highlight={index === 0} />
-            ))}
+          <div className="lg:col-span-1">
+            <ComplexityCard
+              averageTime="Peek: O(1)"
+              worstTime="Extract/Update: O(log n)"
+              spaceComplexity="O(n) Mảng liên tục"
+              notes="Floyd's algorithm xây dựng đống trong O(n). Lấy phần tử cực đại trong O(1) và tái cân bằng đống sau khi trích xuất trong O(log n)."
+            />
           </div>
         </div>
       )}
