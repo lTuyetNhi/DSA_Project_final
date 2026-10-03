@@ -30,7 +30,7 @@
 
 Dự án là một **Hệ thống Quản lý Thư viện hoàn chỉnh**, tập trung giải quyết các bài toán tra cứu, thống kê, kiểm tra hạn trả và tìm kiếm từ khóa với hiệu năng cao. Hệ thống được xây dựng nhằm đối sánh trực quan giữa:
 - **Baseline Solution**: Các thuật toán thô sơ duyệt tuần tự (Linear Scan $O(n)$).
-- **Final Solution**: Các Cấu trúc Dữ liệu Nâng cao tự thiết kế (Hash Table, Max-Heap, AVL Tree, Inverted Index) đạt độ phức tạp tiệm cận $O(1)$ hoặc $O(\log n)$.
+- **Final Solution**: Các Cấu trúc Dữ liệu Nâng cao tự thiết kế (Hash Table, Max-Heap, AVL Tree, Prefix Title Index) để tối ưu theo từng nghiệp vụ.
 
 ### Điểm nổi bật về mặt Kỹ thuật:
 - **Không dùng STL nâng cao có sẵn cho core**: Tự cài đặt Bảng băm Chaining, Cây AVL tự cân bằng, Cấu trúc Max-Heap mảng động.
@@ -158,7 +158,7 @@ sequenceDiagram
     Main->>Core: Khởi tạo mc1, mc2, rq1, rq2, rq3
     Main->>Core: mc1.build(), mc2.build(), rq1.build(), rq2.build(), rq3.build()
     activate Core
-    Note over Core: Xây dựng sẵn Hash Table, Max-Heap, AVL Tree, Inverted Index
+    Note over Core: Xây dựng sẵn Hash Table, Max-Heap, AVL Tree, Prefix Title Index
     Core-->>Main: Hoàn tất nạp dữ liệu vào cấu trúc DSA
     deactivate Core
 
@@ -315,11 +315,10 @@ sequenceDiagram
 - **Baseline**: `Full Linear Title Scan`
   - Quét toàn bộ danh mục sách và thực hiện `substring find` không phân biệt hoa thường.
   - Độ phức tạp: $O(n \cdot m)$ (với $n$ là số sách, $m$ là độ dài tiêu đề).
-- **Final Solution**: `Inverted Title Hash Index`
-  - Tách từ (Tokenize) và chuẩn hóa toàn bộ từ vựng trong tiêu đề của tất cả cuốn sách đưa vào Bảng băm chỉ mục ngược (`word -> vector<Book*>`).
-  - Khi tìm kiếm từ khóa đơn: Tra cứu trực tiếp trong Bảng băm với $O(1)$.
-  - Khi tìm kiếm chuỗi con: Quét trên tập từ khóa đã được chỉ mục hóa thay vì phải quét toàn bộ đối tượng sách thô.
-  - Độ phức tạp: $O(1 + k)$ average.
+- **Final Solution**: `Prefix Title Index`
+  - Chuẩn hóa tiêu đề và từ khóa, tách token, sau đó lập chỉ mục theo prefix của từng token để lọc tập ứng viên.
+  - Sau khi lấy tập ứng viên, hệ thống kiểm tra lại `substring find` trên tiêu đề đã chuẩn hóa để giữ kết quả không lệch so với baseline.
+  - Với truy vấn prefix thông thường: chi phí phụ thuộc vào số ứng viên $O(c + k)$. Với substring nằm giữa từ, hệ thống fallback quét toàn bộ để bảo toàn tính đúng.
 
 ---
 
@@ -328,9 +327,9 @@ sequenceDiagram
 | Tệp Dữ Liệu | Đường Dẫn | Các Trường Chính (Fields) |
 |---|---|---|
 | **Books** | `data/books.json` | `book_id`, `title`, `author`, `category`, `published_year`, `total_quantity`, `available_quantity`, `borrow_count` |
-| **Readers** | `data/readers.json` | `reader_id`, `name`, `email`, `phone`, `max_borrow_limit`, `current_borrowing_count` |
+| **Readers** | `data/readers.json` | `reader_id`, `name`, `email`, `phone` |
 | **Borrow Records** | `data/borrow_records.json` | `borrow_id`, `reader_id`, `book_id`, `borrow_date`, `due_date`, `return_date`, `status` (`BORROWING` / `RETURNED`) |
-| **Waitlist** | `data/waitlist.json` | `wait_id`, `book_id`, `reader_id`, `request_date`, `priority` |
+| **Waitlist** | `data/waitlist.json` | `wait_id`, `book_id`, `reader_id`, `registered_at` |
 
 ---
 
@@ -348,7 +347,7 @@ Giao diện được thiết kế theo phong cách **Tối giản - Đơn sắc 
      2. MC2 - Tim sach co luot muon cao nhat (Max-Heap vs Linear Max Scan)
      3. RQ1 - Tra cuu tat ca sach theo The loai (Category Hash Table vs Linear Scan)
      4. RQ2 - Loc danh sach phieu muon qua han (AVL Tree vs Linear Scan)
-     5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Inverted Hash vs Linear Scan)
+     5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Prefix Title Index vs Linear Scan)
      9. Doi Che do hoat dong (Change Mode)
      0. Thoat chuong trinh (Exit)
 

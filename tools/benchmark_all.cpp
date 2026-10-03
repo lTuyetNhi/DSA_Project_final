@@ -1,7 +1,18 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "../src/persistence/FileStore.h"
+#include "../include/core/mc1/HashTable.h"
+#include "../include/core/mc1/LinearSearch.h"
+#include "../include/core/mc2/MaxHeap.h"
+#include "../include/core/mc2/LinearMaxScan.h"
+#include "../include/core/rq1/CategoryHashTable.h"
+#include "../include/core/rq1/LinearCategoryScan.h"
+#include "../include/core/rq2/AVLTree.h"
+#include "../include/core/rq2/LinearOverdueScan.h"
+#include "../include/core/rq3/CategoryTitleSearch.h"
+#include "../include/core/rq3/LinearTitleScan.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -17,8 +28,8 @@ int main() {
 
     cout << "Real Dataset Loaded: " << realBooks.size() << " books, " << realRecords.size() << " borrow records.\n\n" << flush;
 
-    // Benchmark on N = 10 (Real Dataset) with 1000 repetitions
-    cout << "--- 1. BENCHMARK ON REAL DATASET (N = 10) [Averaged over 1000 runs] ---\n" << flush;
+    // Benchmark on the real dataset with modest repetitions.
+    cout << "--- 1. BENCHMARK ON REAL DATASET [Averaged over 50 runs] ---\n" << flush;
     {
         HashTable ht;
         for (const auto& b : realBooks) ht.insert(b);
@@ -35,12 +46,12 @@ int main() {
         CategoryTitleSearch cts;
         cts.build(realBooks);
 
-        string searchId = "BK005";
-        string searchCat = "CNTT";
-        string searchKey = "Cau truc";
+        string searchId = realBooks.empty() ? "" : realBooks[realBooks.size() / 2].book_id;
+        string searchCat = realBooks.empty() ? "" : realBooks[0].category;
+        string searchKey = "data";
         string curDate = "2026-10-02";
 
-        const int RUNS = 1000;
+        const int RUNS = 50;
 
         // MC1
         long long baseMc1Time = 0, finMc1Time = 0;
@@ -98,17 +109,17 @@ int main() {
             auto r2 = cts.search(searchKey);
             finRq3Time += r2.executionTime;
         }
-        cout << "[RQ3 - Inverted Title Search]:\n"
+        cout << "[RQ3 - Prefix Title Index]:\n"
              << "  Baseline String Scan:  " << (double)baseRq3Time / RUNS << " ns | Checked: " << LinearTitleScan::search(realBooks, searchKey).booksChecked << "\n"
-             << "  Final Inverted Index:  " << (double)finRq3Time / RUNS << " ns | Checked: " << cts.search(searchKey).booksChecked << "\n\n" << flush;
+             << "  Final Prefix Index:    " << (double)finRq3Time / RUNS << " ns | Checked: " << cts.search(searchKey).booksChecked << "\n\n" << flush;
     }
 
-    // 2. Synthetic Scaled Dataset Generation & Benchmark (N = 10,000 and N = 500,000)
-    cout << "--- 2. BENCHMARK ON SCALED SYNTHETIC DATASETS (N = 10.000 & N = 500.000) ---\n" << flush;
-    vector<size_t> testSizes = {10000, 500000};
+    // 2. Synthetic Scaled Dataset Generation & Benchmark (N = 5,000 and N = 10,000)
+    cout << "--- 2. BENCHMARK ON SCALED SYNTHETIC DATASETS (N = 5.000 & N = 10.000) ---\n" << flush;
+    vector<size_t> testSizes = {5000, 10000};
 
-    vector<string> sampleCategories = {"CNTT", "Kinh te", "Van hoc", "Ngoai ngu", "Y hoc", "Luat", "Tam ly", "Lich su"};
-    vector<string> sampleWords = {"Lap trinh", "Cau truc", "Giai thuat", "Co so", "Tri tue", "He thong", "Mang", "Du lieu", "Hoc may"};
+    vector<string> sampleCategories = {"Computer Science", "Software Engineering", "Database", "Networking", "Mathematics"};
+    vector<string> sampleWords = {"Algorithms", "Database", "System", "Network", "Design", "Clean", "Data"};
 
     for(size_t N : testSizes) {
         cout << "Generating Synthetic Dataset N = " << N << "...\n" << flush;
@@ -120,7 +131,7 @@ int main() {
         for(size_t i = 0; i < N; ++i) {
             Book b;
             b.book_id = "BK" + to_string(i + 1);
-            b.title = sampleWords[i % sampleWords.size()] + " Chuyen Sau " + to_string(i + 1);
+            b.title = sampleWords[i % sampleWords.size()] + " fundamentals volume " + to_string(i + 1);
             b.author = "Tac Gia " + to_string(i % 100);
             b.category = sampleCategories[i % sampleCategories.size()];
             b.total_quantity = 10 + (i % 20);
@@ -161,11 +172,11 @@ int main() {
         cts.build(synBooks);
 
         string targetId = "BK" + to_string(N - 5); // Worst-case near end
-        string targetCat = "CNTT";
-        string targetWord = "Giai thuat";
+        string targetCat = "Computer Science";
+        string targetWord = "Data";
         string checkDate = "2026-10-02";
 
-        const int RUNS = (N > 100000) ? 5 : 20;
+        const int RUNS = (N > 5000) ? 3 : 5;
 
         // MC1
         long long baseMc1 = 0, finMc1 = 0;
@@ -216,7 +227,7 @@ int main() {
         }
         cout << "RQ3 (Title Keyword):\n"
              << "  Baseline Substring:   " << (double)baseRq3 / (RUNS * 1000.0) << " us | Checked: " << LinearTitleScan::search(synBooks, targetWord).booksChecked << "\n"
-             << "  Final Inverted Index: " << (double)finRq3 / (RUNS * 1000.0) << " us | Checked: " << cts.search(targetWord).booksChecked << "\n\n" << flush;
+             << "  Final Prefix Index:   " << (double)finRq3 / (RUNS * 1000.0) << " us | Checked: " << cts.search(targetWord).booksChecked << "\n\n" << flush;
     }
 
     return 0;

@@ -238,7 +238,7 @@ int AppMenu::showModuleMenu() {
         "2. MC2 - Tim sach co luot muon cao nhat (Max-Heap vs Linear Max Scan)",
         "3. RQ1 - Tra cuu tat ca sach theo The loai (Category Hash Table vs Linear Scan)",
         "4. RQ2 - Loc danh sach phieu muon qua han (AVL Tree vs Linear Scan)",
-        "5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Inverted Hash vs Linear Scan)",
+        "5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Prefix Title Index vs Linear Scan)",
         "6. Chay Benchmark Toan Dien (5 Module) & Xuat CSV/LaTeX",
         "9. Doi Che do hoat dong (Change Mode)",
         "0. Thoat chuong trinh (Exit)"
@@ -412,7 +412,7 @@ bool AppMenu::runFullBenchmark() {
     auto rq3BaseRes = rq3.getBaseline().search(rq3.getBooks(), testKeyword);
     auto rq3OptRes = rq3.getFinalSolution().search(testKeyword);
     auto rq3Base = BenchmarkRunner::run("Linear Scan", rq3BaseRes.booksChecked, rq3BaseRes.found, [&]() { return rq3.getBaseline().search(rq3.getBooks(), testKeyword); }, iterations, warmup);
-    auto rq3Opt = BenchmarkRunner::run("Inverted Index", rq3OptRes.booksChecked, rq3OptRes.found, [&]() { return rq3.getFinalSolution().search(testKeyword); }, iterations, warmup);
+    auto rq3Opt = BenchmarkRunner::run("Prefix Title Index", rq3OptRes.booksChecked, rq3OptRes.found, [&]() { return rq3.getFinalSolution().search(testKeyword); }, iterations, warmup);
     double rq3Speedup = rq3Opt.avgTimeUs > 0 ? (rq3Base.avgTimeUs / rq3Opt.avgTimeUs) : 1.0;
     results.push_back(ModuleBenchmarkResult("RQ3", "Keyword Search", static_cast<int>(rq3.getBooks().size()), rq3Base, rq3Opt, rq3Speedup));
 

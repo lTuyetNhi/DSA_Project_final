@@ -5,15 +5,10 @@
 #include <string>
 #include "TitleSearchResult.h"
 
-using namespace std;
-
 // Quét tuần tự toàn bộ sách và kiểm tra xem tên sách có chứa từ khóa không (O(n * m))
 class LinearTitleScan {
 public:
-    static TitleSearchResult search(vector<Book>& books, const string& keyword);
+    static TitleSearchResult search(std::vector<Book>& books, const std::string& keyword);
 };
 
 #endif // LINEAR_TITLE_SCAN_H
-
-
-

@@ -8,16 +8,16 @@
 #include <algorithm>
 #include <random>
 
-#include "src/models/Book.h"
-#include "src/models/BorrowRecord.h"
-#include "src/models/Reader.h"
-#include "src/models/WaitlistEntry.h"
-#include "src/persistence/FileStore.h"
-#include "include/core/mc1/MC1.h"
-#include "include/core/mc2/MC2.h"
-#include "include/core/rq1/RQ1.h"
-#include "include/core/rq2/RQ2.h"
-#include "include/core/rq3/RQ3.h"
+#include "../src/models/Book.h"
+#include "../src/models/BorrowRecord.h"
+#include "../src/models/Reader.h"
+#include "../src/models/WaitlistEntry.h"
+#include "../src/persistence/FileStore.h"
+#include "../include/core/mc1/MC1.h"
+#include "../include/core/mc2/MC2.h"
+#include "../include/core/rq1/RQ1.h"
+#include "../include/core/rq2/RQ2.h"
+#include "../include/core/rq3/RQ3.h"
 
 using namespace std;
 
@@ -35,6 +35,9 @@ struct BenchmarkRunResult {
 
 template <typename Func>
 void measure(Func&& f, int iterations, int warmup, double& avgUs) {
+    if (iterations <= 0) iterations = 1;
+    if (warmup < 0) warmup = 0;
+
     for (int i = 0; i < warmup; ++i) {
         f();
     }
@@ -59,6 +62,10 @@ int main() {
     // 1. KICH BAN 1: DỮ LIỆU THỰC TẾ (N = 10)
     vector<Book> booksReal = FileStore::loadBooks("data/books.json");
     vector<BorrowRecord> borrowReal = FileStore::loadBorrowRecords("data/borrow_records.json");
+    if (booksReal.empty() || borrowReal.empty()) {
+        cerr << "[ERROR] Khong load duoc data/*.json de benchmark.\n";
+        return 1;
+    }
 
     MC1 mc1Real(booksReal); mc1Real.build();
     MC2 mc2Real(booksReal); mc2Real.build();
@@ -107,7 +114,7 @@ int main() {
         double bAvg, oAvg;
         measure([&]() { return rq3Real.getBaseline().search(booksReal, kw); }, ITERS, WARMUP, bAvg);
         measure([&]() { return rq3Real.getFinalSolution().search(kw); }, ITERS, WARMUP, oAvg);
-        realResults.push_back({"RQ3", "Tim kiem Tu khoa Tieu de", (int)booksReal.size(), "Linear Substring Scan", bAvg, "Inverted Index Hash", oAvg, (oAvg>0?bAvg/oAvg:1.0), "O(N*M) -> O(1+K)"});
+        realResults.push_back({"RQ3", "Tim kiem Tu khoa Tieu de", (int)booksReal.size(), "Linear Substring Scan", bAvg, "Prefix Title Index", oAvg, (oAvg>0?bAvg/oAvg:1.0), "O(N*M) -> O(C+K)"});
     }
 
     // 2. KICH BAN 2: THỰC NGHIỆM MỞ RỘNG QUY MÔ LỚN (N = 5,000)
@@ -188,7 +195,7 @@ int main() {
         double bAvg, oAvg;
         measure([&]() { return rq3Scale.getBaseline().search(booksScale, kw); }, 500, 20, bAvg);
         measure([&]() { return rq3Scale.getFinalSolution().search(kw); }, 500, 20, oAvg);
-        scaleResults.push_back({"RQ3", "Tim kiem Tu khoa Tieu de", N_SCALE, "Linear Substring Scan", bAvg, "Inverted Index Hash", oAvg, (oAvg>0?bAvg/oAvg:1.0), "O(N*M) -> O(1+K)"});
+        scaleResults.push_back({"RQ3", "Tim kiem Tu khoa Tieu de", N_SCALE, "Linear Substring Scan", bAvg, "Prefix Title Index", oAvg, (oAvg>0?bAvg/oAvg:1.0), "O(N*M) -> O(C+K)"});
     }
 
     cout << "\n>>> [1] KET QUA KICH BAN THUC TE (N = 10):\n";

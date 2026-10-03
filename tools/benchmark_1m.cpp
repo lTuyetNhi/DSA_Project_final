@@ -8,21 +8,24 @@
 #include <algorithm>
 #include <random>
 
-#include "src/models/Book.h"
-#include "src/models/BorrowRecord.h"
-#include "src/models/Reader.h"
-#include "src/models/WaitlistEntry.h"
-#include "src/persistence/FileStore.h"
-#include "include/core/mc1/MC1.h"
-#include "include/core/mc2/MC2.h"
-#include "include/core/rq1/RQ1.h"
-#include "include/core/rq2/RQ2.h"
-#include "include/core/rq3/RQ3.h"
+#include "../src/models/Book.h"
+#include "../src/models/BorrowRecord.h"
+#include "../src/models/Reader.h"
+#include "../src/models/WaitlistEntry.h"
+#include "../src/persistence/FileStore.h"
+#include "../include/core/mc1/MC1.h"
+#include "../include/core/mc2/MC2.h"
+#include "../include/core/rq1/RQ1.h"
+#include "../include/core/rq2/RQ2.h"
+#include "../include/core/rq3/RQ3.h"
 
 using namespace std;
 
 template <typename Func>
 double measureAvgUs(Func&& f, int iterations, int warmup) {
+    if (iterations <= 0) iterations = 1;
+    if (warmup < 0) warmup = 0;
+
     for (int i = 0; i < warmup; ++i) {
         f();
     }
@@ -79,7 +82,7 @@ int main() {
         borrow1M.push_back(br);
     }
 
-    cout << "[3/4] Dang xay dung cac chi muc DSA (HashTable, MaxHeap, AVL, InvertedIndex)...\n";
+    cout << "[3/4] Dang xay dung cac cau truc (HashTable, MaxHeap, AVL, TitleSearch)...\n";
     auto tBuildStart = chrono::high_resolution_clock::now();
     MC1 mc1(books1M); mc1.build();
     MC2 mc2(books1M); mc2.build();
@@ -155,7 +158,7 @@ int main() {
     cout << "========================================================================================================\n";
     cout << left << setw(8) << "Module"
          << setw(26) << "Nghiep vu"
-         << setw(20) << "Baseline O(N) (us)"
+         << setw(20) << "Baseline est. (us)"
          << setw(18) << "DSA Opt (us)"
          << setw(16) << "Speedup"
          << setw(16) << "Do phuc tap" << "\n";
@@ -175,7 +178,7 @@ int main() {
     printRow("MC2", "Top Sach Muon Nhieu", mc2BaseEstimatedUs, mc2OptUs, "O(N) -> O(1)");
     printRow("RQ1", "Loc theo The loai", rq1BaseEstimatedUs, rq1OptUs, "O(N) -> O(1+K)");
     printRow("RQ2", "Truy vet Muon Qua han", rq2BaseEstimatedUs, rq2OptUs, "O(N) -> O(log N+K)");
-    printRow("RQ3", "Tim kiem Tu khoa", rq3BaseEstimatedUs, rq3OptUs, "O(NM) -> O(1+K)");
+    printRow("RQ3", "Tim kiem Tu khoa", rq3BaseEstimatedUs, rq3OptUs, "O(NM) -> O(C+K)");
 
     cout << "========================================================================================================\n";
     return 0;

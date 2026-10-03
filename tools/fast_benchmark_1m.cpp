@@ -7,16 +7,16 @@
 #include <numeric>
 #include <algorithm>
 
-#include "src/models/Book.h"
-#include "src/models/BorrowRecord.h"
-#include "src/models/Reader.h"
-#include "src/models/WaitlistEntry.h"
-#include "src/persistence/FileStore.h"
-#include "include/core/mc1/MC1.h"
-#include "include/core/mc2/MC2.h"
-#include "include/core/rq1/RQ1.h"
-#include "include/core/rq2/RQ2.h"
-#include "include/core/rq3/RQ3.h"
+#include "../src/models/Book.h"
+#include "../src/models/BorrowRecord.h"
+#include "../src/models/Reader.h"
+#include "../src/models/WaitlistEntry.h"
+#include "../src/persistence/FileStore.h"
+#include "../include/core/mc1/MC1.h"
+#include "../include/core/mc2/MC2.h"
+#include "../include/core/rq1/RQ1.h"
+#include "../include/core/rq2/RQ2.h"
+#include "../include/core/rq3/RQ3.h"
 
 using namespace std;
 
@@ -47,20 +47,24 @@ int main() {
     RQ2 rq2_10(borrow10); rq2_10.build();
     RQ3 rq3_10(books10); rq3_10.build();
 
-    double t_mc1_base_10 = timeIt([&]() { return mc1_10.getBaseline().search(books10, "BK005"); }, 500);
-    double t_mc1_opt_10  = timeIt([&]() { return mc1_10.getFinalSolution().search("BK005"); }, 500);
+    string id10 = books10.empty() ? "" : books10[books10.size() / 2].book_id;
+    string cat10 = books10.empty() ? "" : books10[0].category;
+    string kw10 = "data";
+
+    double t_mc1_base_10 = timeIt([&]() { return mc1_10.getBaseline().search(books10, id10); }, 500);
+    double t_mc1_opt_10  = timeIt([&]() { return mc1_10.getFinalSolution().search(id10); }, 500);
 
     double t_mc2_base_10 = timeIt([&]() { return mc2_10.getBaseline().findMax(books10); }, 500);
     double t_mc2_opt_10  = timeIt([&]() { return mc2_10.getFinalSolution().getMax(); }, 500);
 
-    double t_rq1_base_10 = timeIt([&]() { return rq1_10.getBaseline().search(books10, "Lap trinh"); }, 500);
-    double t_rq1_opt_10  = timeIt([&]() { return rq1_10.getFinalSolution().search("Lap trinh"); }, 500);
+    double t_rq1_base_10 = timeIt([&]() { return rq1_10.getBaseline().search(books10, cat10); }, 500);
+    double t_rq1_opt_10  = timeIt([&]() { return rq1_10.getFinalSolution().search(cat10); }, 500);
 
     double t_rq2_base_10 = timeIt([&]() { return rq2_10.getBaseline().search(borrow10, "2026-10-02"); }, 500);
     double t_rq2_opt_10  = timeIt([&]() { return rq2_10.getFinalSolution().findOverdue("2026-10-02"); }, 500);
 
-    double t_rq3_base_10 = timeIt([&]() { return rq3_10.getBaseline().search(books10, "Lap"); }, 500);
-    double t_rq3_opt_10  = timeIt([&]() { return rq3_10.getFinalSolution().search("Lap"); }, 500);
+    double t_rq3_base_10 = timeIt([&]() { return rq3_10.getBaseline().search(books10, kw10); }, 500);
+    double t_rq3_opt_10  = timeIt([&]() { return rq3_10.getFinalSolution().search(kw10); }, 500);
 
     cout << ">>> [1] KET QUA KICH BAN THUC TE N = 10:\n";
     cout << " - MC1 (Ma sach):     Baseline = " << fixed << setprecision(2) << t_mc1_base_10 << " us | DSA = " << t_mc1_opt_10 << " us | Speedup = " << (t_mc1_base_10/t_mc1_opt_10) << "x\n";
@@ -69,7 +73,7 @@ int main() {
     cout << " - RQ2 (Qua han):     Baseline = " << t_rq2_base_10 << " us | DSA = " << t_rq2_opt_10 << " us | Speedup = " << (t_rq2_base_10/t_rq2_opt_10) << "x\n";
     cout << " - RQ3 (Tu khoa):     Baseline = " << t_rq3_base_10 << " us | DSA = " << t_rq3_opt_10 << " us | Speedup = " << (t_rq3_base_10/t_rq3_opt_10) << "x\n\n";
 
-    // 2. KICH BAN QUY MO LON: N = 100.000 (100K) -> Tinh toan chinh xac scale 1.000.000 (1M)
+    // 2. KICH BAN QUY MO LON: N = 100.000 (100K) -> Uoc luong scale 1.000.000 (1M)
     const int N_BENCH = 100000;
     cout << ">>> [2] DANG SINH VA DO TREN QUY MO 100.000 -> 1.000.000 PHAN TU...\n";
     vector<Book> booksBench;
@@ -153,7 +157,7 @@ int main() {
     }, 10) * 5.0;
     double t_rq3_opt_100k = timeIt([&]() { return rq3_bench.getFinalSolution().search("Giai"); }, 20);
 
-    // SCALE CHÍNH XÁC LÊN 1.000.000 (1 TRIỆU) PHẦN TỬ THEO MÔ HÌNH LÝ THUYẾT & THỰC NGHIỆM
+    // UOC LUONG LEN 1.000.000 (1 TRIEU) PHAN TU THEO MO HINH LY THUYET & THUC NGHIEM
     // Baseline O(N) tang tuyen tinh gap 10 lan. DSA O(1) giu nguyen ~0.3us, O(log N) tang log2(1M)/log2(100K) = 20/16.6 = 1.2 lan.
     double t_mc1_base_1m = t_mc1_base_100k * 10.0;
     double t_mc1_opt_1m  = t_mc1_opt_100k * 1.05; // O(1)
@@ -168,7 +172,7 @@ int main() {
     double t_rq2_opt_1m  = t_rq2_opt_100k * 1.2; // O(log N + K)
 
     double t_rq3_base_1m = t_rq3_base_100k * 10.0;
-    double t_rq3_opt_1m  = t_rq3_opt_100k * 10.0; // O(1+K)
+    double t_rq3_opt_1m  = t_rq3_opt_100k * 10.0; // O(N*M) voi cach tim tieu de chuan hoa hien tai
 
     cout << "\n========================================================================================================\n";
     cout << "                    BANG TONG HOP BENCHMARK DOI SANH DA CAP DO (10 -> 100K -> 1M)                      \n";
@@ -177,7 +181,7 @@ int main() {
          << setw(24) << "Thao tac"
          << setw(16) << "N=10 Base/Opt"
          << setw(18) << "N=100K Base/Opt"
-         << setw(22) << "N=1M Base/Opt (us)"
+         << setw(22) << "N=1M est. Base/Opt"
          << setw(18) << "Speedup (1M)" << "\n";
     cout << string(104, '-') << "\n";
 

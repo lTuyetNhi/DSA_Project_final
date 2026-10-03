@@ -8,14 +8,17 @@ TitleSearchResult LinearTitleScan::search(vector<Book>& books, const string& key
     long long booksChecked = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string targetKw = StringUtils::toLower(keyword);
+    string targetKw = StringUtils::normalizeSearchText(keyword);
     vector<Book> foundBooks;
 
-    // Duyet tuan tu qua tat ca sach trong he thong va kiem tra tieu de
-    for (size_t i = 0; i < books.size(); ++i) {
-        booksChecked++;
-        if (StringUtils::toLower(books[i].title).find(targetKw) != string::npos) {
-            foundBooks.push_back(books[i]);
+    if (!targetKw.empty()) {
+        // Duyet tuan tu qua tat ca sach trong he thong va kiem tra tieu de
+        for (size_t i = 0; i < books.size(); ++i) {
+            booksChecked++;
+            string normalizedTitle = StringUtils::normalizeSearchText(books[i].title);
+            if (normalizedTitle.find(targetKw) != string::npos) {
+                foundBooks.push_back(books[i]);
+            }
         }
     }
 

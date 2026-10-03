@@ -17,53 +17,62 @@ size_t CategoryTitleSearch::hashFunction(const string& key) const {
     return hash % TABLE_SIZE;
 }
 
-void CategoryTitleSearch::insertWord(const string& word, const Book& book) {
-    string normWord = StringUtils::toLower(word);
-    if (normWord.empty()) return;
+void CategoryTitleSearch::insertPrefix(const string& prefix, int bookIndex) {
+    string normPrefix = StringUtils::normalizeSearchText(prefix);
+    if (normPrefix.empty()) return;
 
-    size_t index = hashFunction(normWord);
-
-    // Kiểm tra xem từ khóa đã có trong bucket chưa
+    size_t index = hashFunction(normPrefix);
     for (auto& entry : table[index]) {
-        if (entry.word == normWord) {
-            // Tránh trùng sách trong cùng một từ khóa
-            for (const auto& b : entry.books) {
-                if (b.book_id == book.book_id) return;
+        if (entry.word == normPrefix) {
+            for (int existingIndex : entry.bookIndices) {
+                if (existingIndex == bookIndex) return;
             }
-            entry.books.push_back(book);
+            entry.bookIndices.push_back(bookIndex);
             return;
         }
     }
 
-    // Nếu chưa có từ khóa này thì tạo mục mới
     TitleEntry newEntry;
-    newEntry.word = normWord;
-    newEntry.books.push_back(book);
+    newEntry.word = normPrefix;
+    newEntry.bookIndices.push_back(bookIndex);
     table[index].push_back(newEntry);
+}
+
+vector<int> CategoryTitleSearch::findCandidateIndices(const string& prefix) const {
+    string normPrefix = StringUtils::normalizeSearchText(prefix);
+    if (normPrefix.empty()) return {};
+
+    size_t index = hashFunction(normPrefix);
+    for (const auto& entry : table[index]) {
+        if (entry.word == normPrefix) {
+            return entry.bookIndices;
+        }
+    }
+    return {};
 }
 
 void CategoryTitleSearch::clear() {
     for (auto& bucket : table) {
         bucket.clear();
     }
+    allBooks.clear();
+    normalizedTitles.clear();
 }
 
-// Tách tiêu đề từng cuốn sách thành các từ đơn và lập chỉ mục ngược
 void CategoryTitleSearch::build(const vector<Book>& books) {
     clear();
-    for (const auto& b : books) {
-        stringstream ss(b.title);
+    allBooks = books;
+    normalizedTitles.reserve(books.size());
+
+    for (size_t i = 0; i < books.size(); ++i) {
+        string normalizedTitle = StringUtils::normalizeSearchText(books[i].title);
+        normalizedTitles.push_back(normalizedTitle);
+
+        stringstream ss(normalizedTitle);
         string word;
         while (ss >> word) {
-            // Loại bỏ dấu câu cơ bản
-            string cleanWord = "";
-            for (char c : word) {
-                if (isalnum(static_cast<unsigned char>(c))) {
-                    cleanWord += c;
-                }
-            }
-            if (!cleanWord.empty()) {
-                insertWord(cleanWord, b);
+            for (size_t len = 1; len <= word.size(); ++len) {
+                insertPrefix(word.substr(0, len), static_cast<int>(i));
             }
         }
     }
@@ -73,20 +82,35 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
     long long booksChecked = 0;
     auto start = chrono::high_resolution_clock::now();
 
-    string normKw = StringUtils::toLower(keyword);
-    size_t index = hashFunction(normKw);
-
+    string normKw = StringUtils::normalizeSearchText(keyword);
     vector<Book> foundBooks;
-    for (const auto& entry : table[index]) {
-        booksChecked++;
-        if (entry.word == normKw) {
-            foundBooks = entry.books;
-            break;
+
+    if (!normKw.empty()) {
+        string firstToken;
+        stringstream ss(normKw);
+        ss >> firstToken;
+
+        vector<int> candidateIndices = findCandidateIndices(firstToken);
+        if (candidateIndices.empty()) {
+            candidateIndices.reserve(allBooks.size());
+            for (size_t i = 0; i < allBooks.size(); ++i) {
+                candidateIndices.push_back(static_cast<int>(i));
+            }
+        }
+
+        for (int bookIndex : candidateIndices) {
+            if (bookIndex < 0 || static_cast<size_t>(bookIndex) >= allBooks.size()) {
+                continue;
+            }
+            booksChecked++;
+            if (normalizedTitles[bookIndex].find(normKw) != string::npos) {
+                foundBooks.push_back(allBooks[bookIndex]);
+            }
         }
     }
 
     auto end = chrono::high_resolution_clock::now();
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
-    return TitleSearchResult(foundBooks, !foundBooks.empty(), durationNs, booksChecked, "Title Inverted Hash Index", "O(1 + k)");
+    return TitleSearchResult(foundBooks, !foundBooks.empty(), durationNs, booksChecked, "Prefix Title Index", "O(c + k)");
 }

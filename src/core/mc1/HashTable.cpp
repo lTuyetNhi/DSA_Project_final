@@ -4,7 +4,7 @@
 
 using namespace std;
 
-HashTable::HashTable(int cap) : capacity(cap) {
+HashTable::HashTable(int cap) : capacity(cap > 0 ? cap : 1) {
     buckets.resize(capacity);
 }
 

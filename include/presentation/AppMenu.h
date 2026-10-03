@@ -9,8 +9,6 @@
 #include "../core/rq2/RQ2.h"
 #include "../core/rq3/RQ3.h"
 
-using namespace std;
-
 // 2 chế độ chính của chương trình
 enum AppMode {
     BENCHMARK_MODE = 1, // So sánh hiệu năng giữa thuật toán cơ sở và thuật toán tối ưu
@@ -28,9 +26,9 @@ private:
     AppMode currentMode;
 
     // Các hàm vẽ menu và nhận phím điều hướng
-    int selectMenu(const vector<string>& options, const string& title, const string& subtitle = "");
-    string selectDate(const string& title, int defaultYear = 2026, int defaultMonth = 10, int defaultDay = 2);
-    string readLineWithEsc(const string& prompt, bool& cancelled);
+    int selectMenu(const std::vector<std::string>& options, const std::string& title, const std::string& subtitle = "");
+    std::string selectDate(const std::string& title, int defaultYear = 2026, int defaultMonth = 10, int defaultDay = 2);
+    std::string readLineWithEsc(const std::string& prompt, bool& cancelled);
 
     int showModeMenu();
     int showModuleMenu();
@@ -48,4 +46,3 @@ public:
 };
 
 #endif // APP_MENU_H
-

@@ -1,34 +1,34 @@
 #ifndef CATEGORY_TITLE_SEARCH_H
 #define CATEGORY_TITLE_SEARCH_H
 
-#include <vector>
 #include <string>
+#include <vector>
+#include <cstddef>
 #include "TitleSearchResult.h"
 #include "../../../src/models/Book.h"
 
-using namespace std;
-
-// Mục lưu một từ khóa đơn và danh sách các cuốn sách có chứa từ đó
 struct TitleEntry {
-    string word;        // Từ khóa đơn đã chuẩn hóa
-    vector<Book> books; // Danh sách sách chứa từ này
+    std::string word;
+    std::vector<int> bookIndices;
 };
 
-// Bảng băm chỉ mục ngược (Inverted Index) tra cứu sách theo từ khóa (không dùng con trỏ)
 class CategoryTitleSearch {
 private:
-    static const size_t TABLE_SIZE = 1009;
-    vector<vector<TitleEntry>> table; // Bảng băm lưu các mục từ khóa
+    static const std::size_t TABLE_SIZE = 1009;
+    std::vector<std::vector<TitleEntry>> table;
+    std::vector<Book> allBooks;
+    std::vector<std::string> normalizedTitles;
 
-    size_t hashFunction(const string& key) const;
-    void insertWord(const string& word, const Book& book);
+    std::size_t hashFunction(const std::string& key) const;
+    void insertPrefix(const std::string& prefix, int bookIndex);
+    std::vector<int> findCandidateIndices(const std::string& prefix) const;
 
 public:
     CategoryTitleSearch();
 
     void clear();
-    void build(const vector<Book>& books);
-    TitleSearchResult search(const string& keyword) const;
+    void build(const std::vector<Book>& books);
+    TitleSearchResult search(const std::string& keyword) const;
 };
 
 #endif // CATEGORY_TITLE_SEARCH_H

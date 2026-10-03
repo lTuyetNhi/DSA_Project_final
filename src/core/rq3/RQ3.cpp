@@ -46,7 +46,7 @@ void RQ3::printComparison(size_t datasetSize, const string& keyword, const Title
     cout << "+--------------------------+------------------------------+----------------------------------+\n";
     cout << "| " << left << setw(24) << "Tieu chi so sanh" 
          << " | " << left << setw(28) << "Baseline (Linear Title Scan)" 
-         << " | " << left << setw(32) << "Final (Inverted Hash Index)" << " |\n";
+         << " | " << left << setw(32) << "Final (Prefix Title Index)" << " |\n";
     cout << "+--------------------------+------------------------------+----------------------------------+\n";
 
     // Hang 1: So ket qua
@@ -111,7 +111,7 @@ void RQ3::comparisonMode(const string& keyword) {
 
 void RQ3::normalMode(const string& keyword) {
     cout << "==============================================================================================\n";
-    cout << "               RQ3: TIM SACH THEO TU KHOA (INVERTED HASH INDEX)                               \n";
+    cout << "               RQ3: TIM SACH THEO TU KHOA (PREFIX TITLE INDEX)                                  \n";
     cout << "==============================================================================================\n\n";
 
     TitleSearchResult finalSolRes = finalSolution.search(keyword);

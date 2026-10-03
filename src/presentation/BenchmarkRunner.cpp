@@ -1,4 +1,9 @@
 #include "../../include/utils/BenchmarkRunner.h"
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+
+using namespace std;
 
 // In bảng so sánh trực quan ra màn hình Console
 void BenchmarkRunner::printComparisonTable(const vector<ModuleBenchmarkResult>& results) {
@@ -98,5 +103,5 @@ void BenchmarkRunner::exportToLaTeX(const string& filePath, const vector<ModuleB
     file << "\\end{table}\n";
 
     file.close();
-    cout << "[Thanh cong] Da xuat bang LaTeX sang file: " << filePath << "\n";
+    cout << "[Thanh cong] Da xuat ket qua Benchmark sang file LaTeX: " << filePath << "\n";
 }

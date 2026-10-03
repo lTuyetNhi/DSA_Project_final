@@ -13,6 +13,7 @@ MaxResult LinearMaxScan::findMax(vector<Book>& books) {
     if (!books.empty()) {
         maxBook = books[0];
         found = true;
+        comparisons++;
         // Duyet qua toan bo danh sach sach de tim sach co borrow_count lon nhat
         for (size_t i = 1; i < books.size(); ++i) {
             comparisons++;
