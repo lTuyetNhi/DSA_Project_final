@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Input, Button, ConfigProvider, message } from 'antd';
 import { ReloadOutlined, ThunderboltFilled, CloseOutlined } from '@ant-design/icons';
+import type { RamSyncState } from '@/context/RamContext';
+import { formatIntegerWithSpaces, parseGroupedInteger } from '@/utils/numberFormat';
 
 interface RamInjectorModalProps {
   isOpen: boolean;
@@ -10,6 +12,8 @@ interface RamInjectorModalProps {
   currentCount: number;
   onInject: (addedCount: number) => void;
   onReset: () => void;
+  ramSyncState: RamSyncState;
+  loadedCount: number;
 }
 
 export default function RamInjectorModal({
@@ -18,30 +22,53 @@ export default function RamInjectorModal({
   currentCount,
   onInject,
   onReset,
+  ramSyncState,
+  loadedCount,
 }: RamInjectorModalProps) {
-  const [injectInput, setInjectInput] = useState<string>('500000');
+  const [messageApi, messageContextHolder] = message.useMessage();
+  const [injectInput, setInjectInput] = useState<string>(formatIntegerWithSpaces(500000));
   const [isInjecting, setIsInjecting] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'inject' | 'reset' | null>(null);
+
+  // Keep the modal open until C++ confirms that the requested dataset and all
+  // indexes are ready. A failed warm-up leaves the modal open for retry.
+  useEffect(() => {
+    if (!pendingAction) return;
+    if (ramSyncState === 'error') {
+      setIsInjecting(false);
+      setPendingAction(null);
+      messageApi.error('Nạp dữ liệu C++ thất bại. Modal được giữ mở để bạn thử lại.');
+      return;
+    }
+    if (ramSyncState === 'ready' && loadedCount === currentCount) {
+      const completedAction = pendingAction;
+      setIsInjecting(false);
+      setPendingAction(null);
+      messageApi.success(
+        completedAction === 'reset'
+          ? 'Đã đặt lại RAM và lập chỉ mục xong 500.000 sách.'
+          : `Đã nạp và lập chỉ mục xong ${formatIntegerWithSpaces(currentCount)} sách trong C++ RAM.`
+      );
+      onClose();
+    }
+  }, [pendingAction, ramSyncState, loadedCount, currentCount, messageApi, onClose]);
 
   const handleInject = () => {
-    const num = parseInt(injectInput.replace(/,/g, '').replace(/\./g, ''), 10);
+    const num = parseGroupedInteger(injectInput);
     if (!isNaN(num) && num > 0) {
       setIsInjecting(true);
-      setTimeout(() => {
-        onInject(num);
-        setIsInjecting(false);
-        message.success(`Đã nạp thêm ${num.toLocaleString('vi-VN')} sách vào C++ In-Memory RAM thành công!`);
-        onClose();
-      }, 300);
+      setPendingAction('inject');
+      onInject(num);
     } else {
-      message.warning('Vui lòng nhập số lượng hợp lệ (> 0)');
+      messageApi.warning('Vui lòng nhập số lượng hợp lệ (> 0)');
     }
   };
 
   const handleResetClick = () => {
+    setIsInjecting(true);
+    setPendingAction('reset');
     onReset();
-    setInjectInput('500000');
-    message.info('Đã đặt lại bộ nhớ RAM về mặc định (500.000 sách)!');
-    onClose();
+    setInjectInput(formatIntegerWithSpaces(500000));
   };
 
   return (
@@ -54,12 +81,18 @@ export default function RamInjectorModal({
         },
       }}
     >
+      {messageContextHolder}
       <Modal
         open={isOpen}
-        onCancel={onClose}
+        onCancel={() => {
+          if (!isInjecting) onClose();
+        }}
         footer={null}
         centered
         width={480}
+        closable={!isInjecting}
+        maskClosable={!isInjecting}
+        keyboard={!isInjecting}
         closeIcon={<CloseOutlined className="text-gray-400 hover:text-gray-700" />}
         styles={{
           body: {
@@ -80,9 +113,15 @@ export default function RamInjectorModal({
           <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-between">
             <span className="text-xs font-semibold text-gray-600">Đang có trong RAM:</span>
             <span className="text-sm font-bold font-mono text-blue-700">
-              {currentCount.toLocaleString('vi-VN')} sách
+              {formatIntegerWithSpaces(currentCount)} sách
             </span>
           </div>
+
+          {isInjecting && (
+            <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 text-xs text-blue-800 font-semibold animate-pulse">
+              C++ đang tạo dữ liệu thật và lập chỉ mục cho 5 module. Modal sẽ tự đóng khi RAM sẵn sàng.
+            </div>
+          )}
 
           {/* Inject Amount Input */}
           <div className="space-y-2">
@@ -92,9 +131,10 @@ export default function RamInjectorModal({
             <Input
               size="large"
               value={injectInput}
-              onChange={(e) => setInjectInput(e.target.value)}
+              onChange={(e) => setInjectInput(formatIntegerWithSpaces(e.target.value))}
               onPressEnter={handleInject}
-              placeholder="500000"
+              inputMode="numeric"
+              placeholder="500 000"
               className="font-mono font-bold text-sm rounded-xl"
             />
             {/* Quick Increment Preset Tags */}
@@ -103,10 +143,10 @@ export default function RamInjectorModal({
                 <button
                   key={preset}
                   type="button"
-                  onClick={() => setInjectInput(preset)}
+                  onClick={() => setInjectInput(formatIntegerWithSpaces(preset))}
                   className="px-2.5 py-1 rounded-md border border-gray-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-gray-600 hover:text-blue-700 text-[11px] font-mono font-semibold shadow-2xs cursor-pointer transition-colors"
                 >
-                  +{parseInt(preset).toLocaleString('vi-VN')}
+                  +{formatIntegerWithSpaces(preset)}
                 </button>
               ))}
             </div>
@@ -119,6 +159,7 @@ export default function RamInjectorModal({
               size="large"
               icon={<ThunderboltFilled />}
               loading={isInjecting}
+              disabled={isInjecting}
               onClick={handleInject}
               className="flex-1 font-bold text-xs h-10 rounded-xl bg-blue-600 hover:bg-blue-700 shadow-sm"
             >
@@ -129,6 +170,7 @@ export default function RamInjectorModal({
               size="large"
               icon={<ReloadOutlined />}
               onClick={handleResetClick}
+              disabled={isInjecting}
               className="font-semibold text-xs h-10 rounded-xl text-gray-700 hover:text-gray-900 border-gray-300 shadow-2xs"
             >
               Reset

@@ -2,6 +2,8 @@
 #include "../../../include/utils/StringUtils.h"
 #include <chrono>
 #include <sstream>
+#include <cctype>
+#include <algorithm>
 
 using namespace std;
 
@@ -24,9 +26,9 @@ void CategoryTitleSearch::insertPrefix(const string& prefix, int bookIndex) {
     size_t index = hashFunction(normPrefix);
     for (auto& entry : table[index]) {
         if (entry.word == normPrefix) {
-            for (int existingIndex : entry.bookIndices) {
-                if (existingIndex == bookIndex) return;
-            }
+            // Each book is indexed once per complete word during build, so
+            // checking the entire posting list for duplicates would make
+            // common words O(n^2) on a large dataset.
             entry.bookIndices.push_back(bookIndex);
             return;
         }
@@ -38,30 +40,32 @@ void CategoryTitleSearch::insertPrefix(const string& prefix, int bookIndex) {
     table[index].push_back(newEntry);
 }
 
-vector<int> CategoryTitleSearch::findCandidateIndices(const string& prefix) const {
+const vector<int>* CategoryTitleSearch::findCandidateIndices(const string& prefix) const {
     string normPrefix = StringUtils::normalizeSearchText(prefix);
-    if (normPrefix.empty()) return {};
+    if (normPrefix.empty()) return nullptr;
 
     size_t index = hashFunction(normPrefix);
     for (const auto& entry : table[index]) {
         if (entry.word == normPrefix) {
-            return entry.bookIndices;
+            return &entry.bookIndices;
         }
     }
-    return {};
+    return nullptr;
 }
 
 void CategoryTitleSearch::clear() {
     for (auto& bucket : table) {
         bucket.clear();
     }
-    allBooks.clear();
+    allBooks = nullptr;
     normalizedTitles.clear();
 }
 
 void CategoryTitleSearch::build(const vector<Book>& books) {
     clear();
-    allBooks = books;
+    // Keep a non-owning reference to the RAM dataset. Copying 500k Books here
+    // duplicates every string and makes index construction needlessly slow.
+    allBooks = &books;
     normalizedTitles.reserve(books.size());
 
     for (size_t i = 0; i < books.size(); ++i) {
@@ -71,9 +75,11 @@ void CategoryTitleSearch::build(const vector<Book>& books) {
         stringstream ss(normalizedTitle);
         string word;
         while (ss >> word) {
-            for (size_t len = 1; len <= word.size(); ++len) {
-                insertPrefix(word.substr(0, len), static_cast<int>(i));
-            }
+            const bool numericToken = !word.empty() && all_of(word.begin(), word.end(), [](unsigned char c) { return std::isdigit(c) != 0; });
+            if (numericToken || word.size() < 2) continue;
+            // Index complete words. The final substring check below preserves
+            // exact title matching while avoiding millions of prefix entries.
+            insertPrefix(word, static_cast<int>(i));
         }
     }
 }
@@ -90,21 +96,23 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
         stringstream ss(normKw);
         ss >> firstToken;
 
-        vector<int> candidateIndices = findCandidateIndices(firstToken);
-        if (candidateIndices.empty()) {
-            candidateIndices.reserve(allBooks.size());
-            for (size_t i = 0; i < allBooks.size(); ++i) {
-                candidateIndices.push_back(static_cast<int>(i));
+        const vector<int>* candidateIndices = findCandidateIndices(firstToken);
+        if (candidateIndices) {
+            for (int bookIndex : *candidateIndices) {
+                if (bookIndex < 0 || static_cast<size_t>(bookIndex) >= allBooks->size()) continue;
+                booksChecked++;
+                if (normalizedTitles[bookIndex].find(normKw) != string::npos) {
+                    foundBooks.push_back((*allBooks)[bookIndex]);
+                }
             }
-        }
-
-        for (int bookIndex : candidateIndices) {
-            if (bookIndex < 0 || static_cast<size_t>(bookIndex) >= allBooks.size()) {
-                continue;
-            }
-            booksChecked++;
-            if (normalizedTitles[bookIndex].find(normKw) != string::npos) {
-                foundBooks.push_back(allBooks[bookIndex]);
+        } else {
+            // A substring may not be a complete indexed word. Scan by index
+            // directly instead of allocating a temporary 0..N vector.
+            for (size_t bookIndex = 0; bookIndex < allBooks->size(); ++bookIndex) {
+                booksChecked++;
+                if (normalizedTitles[bookIndex].find(normKw) != string::npos) {
+                    foundBooks.push_back((*allBooks)[bookIndex]);
+                }
             }
         }
     }
@@ -113,4 +121,33 @@ TitleSearchResult CategoryTitleSearch::search(const string& keyword) const {
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
     return TitleSearchResult(foundBooks, !foundBooks.empty(), durationNs, booksChecked, "Prefix Title Index", "O(c + k)");
+}
+
+size_t CategoryTitleSearch::count(const string& keyword, long long* booksChecked) const {
+    if (booksChecked) *booksChecked = 0;
+    const string normKw = StringUtils::normalizeSearchText(keyword);
+    if (normKw.empty()) return 0;
+    string firstToken;
+    stringstream ss(normKw);
+    ss >> firstToken;
+    const vector<int>* candidates = findCandidateIndices(firstToken);
+    if (candidates && normKw == firstToken) {
+        // An exact indexed word's posting-list length is already its count.
+        if (booksChecked) *booksChecked = 1;
+        return candidates->size();
+    }
+
+    size_t total = 0;
+    if (candidates) {
+        for (int index : *candidates) {
+            if (booksChecked) ++(*booksChecked);
+            if (index >= 0 && static_cast<size_t>(index) < normalizedTitles.size() && normalizedTitles[index].find(normKw) != string::npos) ++total;
+        }
+    } else {
+        for (const string& title : normalizedTitles) {
+            if (booksChecked) ++(*booksChecked);
+            if (title.find(normKw) != string::npos) ++total;
+        }
+    }
+    return total;
 }

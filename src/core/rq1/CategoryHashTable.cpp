@@ -1,6 +1,7 @@
 #include "../../../include/core/rq1/CategoryHashTable.h"
 #include "../../../include/utils/StringUtils.h"
 #include <chrono>
+#include <algorithm>
 
 using namespace std;
 
@@ -62,6 +63,39 @@ CategoryResult CategoryHashTable::search(const string& category) const {
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
     return CategoryResult(foundBooks, !foundBooks.empty(), durationNs, comparisons, "Category Hash Table", "O(1 + k)");
+}
+
+CategoryResult CategoryHashTable::searchPage(const string& category, size_t offset, size_t limit) const {
+    long long comparisons = 0;
+    size_t total = 0;
+    vector<Book> page;
+    if (limit > 0) page.reserve(limit);
+    const string normCat = StringUtils::toLower(category);
+    const int index = hashFunction(normCat);
+    auto start = chrono::high_resolution_clock::now();
+    for (const auto& entry : buckets[index]) {
+        ++comparisons;
+        if (entry.category == normCat) {
+            total = entry.books.size();
+            const size_t begin = min(offset, total);
+            const size_t end = min(total, offset + limit);
+            for (size_t i = begin; i < end; ++i) page.push_back(entry.books[i]);
+            break;
+        }
+    }
+    auto finish = chrono::high_resolution_clock::now();
+    CategoryResult result(page, total > 0, chrono::duration_cast<chrono::nanoseconds>(finish - start).count(), comparisons, "Category Hash Table", "O(1 + k)");
+    result.totalCount = total;
+    return result;
+}
+
+size_t CategoryHashTable::count(const string& category) const {
+    string normCat = StringUtils::toLower(category);
+    int index = hashFunction(normCat);
+    for (const auto& entry : buckets[index]) {
+        if (entry.category == normCat) return entry.books.size();
+    }
+    return 0;
 }
 
 vector<Book> CategoryHashTable::getBooksInCategory(const string& category) const {

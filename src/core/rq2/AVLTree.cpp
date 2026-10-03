@@ -58,6 +58,7 @@ AVLNode* AVLTree::insert(AVLNode* node, const BorrowRecord& record) {
     if (!node) {
         AVLNode* newNode = new AVLNode(record.due_date);
         newNode->records.push_back(record);
+        if (record.status == "BORROWING") ++newNode->borrowingCount;
         return newNode;
     }
 
@@ -68,6 +69,7 @@ AVLNode* AVLTree::insert(AVLNode* node, const BorrowRecord& record) {
     } else {
         // Trùng ngày hẹn trả -> gom chung vào vector của node hiện tại
         node->records.push_back(record);
+        if (record.status == "BORROWING") ++node->borrowingCount;
         return node;
     }
 
@@ -145,6 +147,23 @@ OverdueResult AVLTree::findOverdue(const string& currentDate) const {
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
     return OverdueResult(overdueList, !overdueList.empty(), durationNs, nodesVisited, "AVL Tree Range Query", "O(log n + k)");
+}
+
+size_t AVLTree::countOverdue(const string& currentDate, long long* nodesVisited) const {
+    if (nodesVisited) *nodesVisited = 0;
+    if (!DateUtils::isValidDate(currentDate)) return 0;
+    return countRangeOverdue(root, currentDate, nodesVisited);
+}
+
+size_t AVLTree::countRangeOverdue(AVLNode* node, const string& currentDate, long long* nodesVisited) const {
+    if (!node) return 0;
+    if (nodesVisited) ++(*nodesVisited);
+    if (node->dueDate >= currentDate) {
+        return countRangeOverdue(node->left, currentDate, nodesVisited);
+    }
+    return node->borrowingCount
+        + countRangeOverdue(node->left, currentDate, nodesVisited)
+        + countRangeOverdue(node->right, currentDate, nodesVisited);
 }
 
 void AVLTree::destroy(AVLNode* node) {

@@ -18,14 +18,18 @@ import ComplexityCard from '@/components/ui/ComplexityCard';
 import HeapTreeVisualizer from '@/components/visualizer/HeapTreeVisualizer';
 import BookCard from '@/components/ui/BookCard';
 import { MC2Response } from '@/types/dsa';
+import { useRam } from '@/context/RamContext';
 
 export default function MC2Page() {
+  const { ramBookCount, ramSyncState } = useRam();
+  const ramReady = ramSyncState === 'ready';
   const [data, setData] = useState<MC2Response | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchMC2 = () => {
+    if (!ramReady) return;
     setLoading(true);
-    fetch(`/api/bridge?mode=mc2&top=5`)
+    fetch(`/api/bridge?mode=mc2&size=${ramBookCount}`)
       .then((res) => res.json())
       .then((resData: MC2Response) => {
         setData(resData);
@@ -35,8 +39,8 @@ export default function MC2Page() {
   };
 
   useEffect(() => {
-    fetchMC2();
-  }, []);
+    if (ramReady) fetchMC2();
+  }, [ramReady, ramBookCount]);
 
   return (
     <div className="w-full space-y-5">
@@ -55,7 +59,7 @@ export default function MC2Page() {
         childrenRight={
           <button
             onClick={fetchMC2}
-            disabled={loading}
+            disabled={loading || !ramReady}
             className="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
           >
             <FontAwesomeIcon icon={faTrophy} />

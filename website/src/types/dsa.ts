@@ -32,6 +32,7 @@ export interface AlgorithmMetrics {
   checks?: number;
   execution_time_ns: number;
   workload_1000_ns?: number;
+  workload_queries?: number;
   memory_label?: string;
   result_label?: string;
   complexity: string;
@@ -54,6 +55,9 @@ export interface ModuleResponse {
   top_books?: Book[];
   overdue_records?: BorrowRecord[];
   matched_books?: Book[];
+  page?: number;
+  page_size?: number;
+  total?: number;
 }
 
 export interface MC1Response {
@@ -71,7 +75,7 @@ export interface MC2Response {
   status: string;
   module: 'MC2';
   module_name: string;
-  top_k: number;
+  top_k?: number;
   baseline: AlgorithmMetrics;
   optimized: AlgorithmMetrics;
   top_books: Book[];

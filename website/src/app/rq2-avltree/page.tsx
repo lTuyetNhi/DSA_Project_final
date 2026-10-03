@@ -19,15 +19,19 @@ import ComparisonTable from '@/components/ui/ComparisonTable';
 import ComplexityCard from '@/components/ui/ComplexityCard';
 import AVLTreeVisualizer from '@/components/visualizer/AVLTreeVisualizer';
 import { RQ2Response } from '@/types/dsa';
+import { useRam } from '@/context/RamContext';
 
 export default function RQ2Page() {
+  const { ramBookCount, ramSyncState } = useRam();
+  const ramReady = ramSyncState === 'ready';
   const [currentDate, setCurrentDate] = useState('2026-10-02');
   const [data, setData] = useState<RQ2Response | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchRQ2 = (d: string) => {
+    if (!ramReady) return;
     setLoading(true);
-    fetch(`/api/bridge?mode=rq2&date=${encodeURIComponent(d)}`)
+    fetch(`/api/bridge?mode=rq2&date=${encodeURIComponent(d)}&size=${ramBookCount}`)
       .then((res) => res.json())
       .then((resData: RQ2Response) => {
         setData(resData);
@@ -37,8 +41,8 @@ export default function RQ2Page() {
   };
 
   useEffect(() => {
-    fetchRQ2(currentDate);
-  }, []);
+    if (ramReady) fetchRQ2(currentDate);
+  }, [ramReady, ramBookCount]);
 
   const sampleDates = [
     { label: 'Hôm nay (2026-10-02)', date: '2026-10-02' },
@@ -74,7 +78,7 @@ export default function RQ2Page() {
               />
               <button
                 onClick={() => fetchRQ2(currentDate)}
-                disabled={loading}
+                disabled={loading || !ramReady}
                 className="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
               >
                 <FontAwesomeIcon icon={faCalendarAlt} />

@@ -19,8 +19,11 @@ import ComplexityCard from '@/components/ui/ComplexityCard';
 import CategoryIndexVisualizer from '@/components/visualizer/CategoryIndexVisualizer';
 import BookCard from '@/components/ui/BookCard';
 import { RQ1Response } from '@/types/dsa';
+import { useRam } from '@/context/RamContext';
 
 export default function RQ1Page() {
+  const { ramBookCount, ramSyncState } = useRam();
+  const ramReady = ramSyncState === 'ready';
   const [category, setCategory] = useState('Software Engineering');
   const [data, setData] = useState<RQ1Response | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,8 +38,9 @@ export default function RQ1Page() {
   ];
 
   const fetchRQ1 = (cat: string) => {
+    if (!ramReady) return;
     setLoading(true);
-    fetch(`/api/bridge?mode=rq1&category=${encodeURIComponent(cat)}`)
+    fetch(`/api/bridge?mode=rq1&category=${encodeURIComponent(cat)}&size=${ramBookCount}`)
       .then((res) => res.json())
       .then((resData: RQ1Response) => {
         setData(resData);
@@ -46,8 +50,8 @@ export default function RQ1Page() {
   };
 
   useEffect(() => {
-    fetchRQ1(category);
-  }, []);
+    if (ramReady) fetchRQ1(category);
+  }, [ramReady, ramBookCount]);
 
   return (
     <div className="w-full space-y-5">
@@ -81,7 +85,7 @@ export default function RQ1Page() {
             </select>
             <button
               onClick={() => fetchRQ1(category)}
-              disabled={loading}
+              disabled={loading || !ramReady}
               className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
             >
               <FontAwesomeIcon icon={faSearch} />

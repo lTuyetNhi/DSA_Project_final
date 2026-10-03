@@ -25,6 +25,8 @@ public:
     void build(const std::vector<Book>& books);
     void insert(const Book& book);
     CategoryResult search(const std::string& category) const;
+    CategoryResult searchPage(const std::string& category, size_t offset, size_t limit) const;
+    size_t count(const std::string& category) const;
     std::vector<Book> getBooksInCategory(const std::string& category) const;
     void clear();
 };

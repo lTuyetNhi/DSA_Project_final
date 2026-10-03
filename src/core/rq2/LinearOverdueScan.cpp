@@ -13,10 +13,8 @@ OverdueResult LinearOverdueScan::search(vector<BorrowRecord>& records, const str
         for (size_t i = 0; i < records.size(); ++i) {
             checks++;
             // Phieu muon qua han neu dang muon (chua tra) va han tra nho hon ngay kiem tra hien tai
-            if (records[i].status == "BORROWING" && DateUtils::isValidDate(records[i].due_date)) {
-                if (DateUtils::daysBetween(records[i].due_date, currentDate) > 0) {
-                    overdueList.push_back(records[i]);
-                }
+            if (records[i].status == "BORROWING" && records[i].due_date < currentDate) {
+                overdueList.push_back(records[i]);
             }
         }
     }
@@ -25,4 +23,17 @@ OverdueResult LinearOverdueScan::search(vector<BorrowRecord>& records, const str
     long long durationNs = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
     return OverdueResult(overdueList, !overdueList.empty(), durationNs, checks, "Linear Scan", "O(n)");
+}
+
+size_t LinearOverdueScan::count(const vector<BorrowRecord>& records, const string& currentDate, long long* checks) {
+    if (checks) *checks = 0;
+    if (!DateUtils::isValidDate(currentDate)) return 0;
+    size_t total = 0;
+    for (const auto& record : records) {
+        if (checks) ++(*checks);
+        // Valid ISO YYYY-MM-DD strings sort in chronological order. Input is
+        // validated during loading/index construction, so no per-row parsing.
+        if (record.status == "BORROWING" && record.due_date < currentDate) ++total;
+    }
+    return total;
 }

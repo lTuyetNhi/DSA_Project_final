@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -10,26 +10,21 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useRam } from '@/context/RamContext';
 import RamInjectorModal from '@/components/ui/RamInjectorModal';
+import { formatIntegerWithSpaces } from '@/utils/numberFormat';
 
 export default function Navbar() {
-  const { ramBookCount, isModalOpen, openModal, closeModal, injectRam, resetRam } = useRam();
-  const [bridgeStatus, setBridgeStatus] = useState<'checking' | 'connected' | 'error'>('checking');
-  const [maxBorrow, setMaxBorrow] = useState(70);
-
-  useEffect(() => {
-    fetch('/api/bridge?mode=data')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === 'success') {
-          setBridgeStatus('connected');
-          const maxB = data.books?.reduce((max: number, b: any) => Math.max(max, b.borrow_count || 0), 0);
-          if (maxB) setMaxBorrow(maxB);
-        } else {
-          setBridgeStatus('error');
-        }
-      })
-      .catch(() => setBridgeStatus('error'));
-  }, []);
+  const {
+    ramBookCount,
+    isModalOpen,
+    openModal,
+    closeModal,
+    injectRam,
+    resetRam,
+    ramSyncState,
+    ramStats,
+  } = useRam();
+  const bridgeStatus = ramSyncState === 'ready' ? 'connected' : ramSyncState === 'error' ? 'error' : 'checking';
+  const maxBorrow = ramStats.maxBorrow || 70;
 
   return (
     <>
@@ -82,7 +77,7 @@ export default function Navbar() {
               <div className="px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-center cursor-pointer hover:bg-blue-100/70 transition-colors" onClick={openModal} title="Bấm để nạp thêm sách vào RAM">
                 <div className="text-[9px] uppercase tracking-wider text-blue-700 font-bold">Tổng Sách</div>
                 <div className="text-xs font-black text-blue-900 font-mono">
-                  {ramBookCount.toLocaleString('vi-VN')} Cuốn
+                  {formatIntegerWithSpaces(ramBookCount)} Cuốn
                 </div>
               </div>
 
@@ -102,7 +97,11 @@ export default function Navbar() {
                   }`}
                 />
                 <span className="text-[11px] font-medium text-gray-700 hidden lg:inline">
-                  {bridgeStatus === 'connected' ? 'C++ Ready' : 'C++ Offline'}
+                  {bridgeStatus === 'connected'
+                    ? 'C++ Ready'
+                    : bridgeStatus === 'checking'
+                    ? 'Đang nạp RAM...'
+                    : 'C++ Offline'}
                 </span>
               </div>
             </div>
@@ -117,8 +116,9 @@ export default function Navbar() {
         currentCount={ramBookCount}
         onInject={injectRam}
         onReset={resetRam}
+        ramSyncState={ramSyncState}
+        loadedCount={ramStats.totalBooks}
       />
     </>
   );
 }
-

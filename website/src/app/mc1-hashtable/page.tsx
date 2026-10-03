@@ -21,15 +21,19 @@ import HashPipeline from '@/components/visualizer/HashPipeline';
 import BucketVisualizer from '@/components/visualizer/BucketVisualizer';
 import BookCard from '@/components/ui/BookCard';
 import { MC1Response } from '@/types/dsa';
+import { useRam } from '@/context/RamContext';
 
 export default function MC1Page() {
+  const { ramBookCount, ramSyncState } = useRam();
+  const ramReady = ramSyncState === 'ready';
   const [targetId, setTargetId] = useState('B001');
   const [data, setData] = useState<MC1Response | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchMC1 = (idToSearch: string) => {
+    if (!ramReady) return;
     setLoading(true);
-    fetch(`/api/bridge?mode=mc1&id=${encodeURIComponent(idToSearch)}`)
+    fetch(`/api/bridge?mode=mc1&id=${encodeURIComponent(idToSearch)}&size=${ramBookCount}`)
       .then((res) => res.json())
       .then((resData: MC1Response) => {
         setData(resData);
@@ -39,8 +43,8 @@ export default function MC1Page() {
   };
 
   useEffect(() => {
-    fetchMC1(targetId);
-  }, []);
+    if (ramReady) fetchMC1(targetId);
+  }, [ramReady, ramBookCount]);
 
   const samplePresets = [
     { label: '🎲 Ngẫu nhiên', id: 'B003' },
@@ -77,7 +81,7 @@ export default function MC1Page() {
               />
               <button
                 onClick={() => fetchMC1(targetId)}
-                disabled={loading}
+                disabled={loading || !ramReady}
                 className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <FontAwesomeIcon icon={faSearch} />

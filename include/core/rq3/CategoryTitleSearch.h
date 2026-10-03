@@ -14,14 +14,14 @@ struct TitleEntry {
 
 class CategoryTitleSearch {
 private:
-    static const std::size_t TABLE_SIZE = 1009;
+    static const std::size_t TABLE_SIZE = 200003;
     std::vector<std::vector<TitleEntry>> table;
-    std::vector<Book> allBooks;
+    const std::vector<Book>* allBooks = nullptr;
     std::vector<std::string> normalizedTitles;
 
     std::size_t hashFunction(const std::string& key) const;
     void insertPrefix(const std::string& prefix, int bookIndex);
-    std::vector<int> findCandidateIndices(const std::string& prefix) const;
+    const std::vector<int>* findCandidateIndices(const std::string& prefix) const;
 
 public:
     CategoryTitleSearch();
@@ -29,6 +29,7 @@ public:
     void clear();
     void build(const std::vector<Book>& books);
     TitleSearchResult search(const std::string& keyword) const;
+    size_t count(const std::string& keyword, long long* booksChecked = nullptr) const;
 };
 
 #endif // CATEGORY_TITLE_SEARCH_H

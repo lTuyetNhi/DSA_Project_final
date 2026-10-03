@@ -13,8 +13,10 @@ struct AVLNode {
     AVLNode* right;                     // Nhánh con phải (ngày > dueDate)
     int height;                         // Chiều cao node
 
+    std::size_t borrowingCount;
+
     AVLNode(const std::string& d) 
-        : dueDate(d), left(nullptr), right(nullptr), height(1) {}
+        : dueDate(d), left(nullptr), right(nullptr), height(1), borrowingCount(0) {}
 };
 
 // Cây AVL tự cân bằng lọc phiếu quá hạn (không dùng con trỏ dữ liệu ngoài)
@@ -31,6 +33,7 @@ private:
 
     AVLNode* insert(AVLNode* node, const BorrowRecord& record);
     void rangeQueryOverdue(AVLNode* node, const std::string& currentDate, std::vector<BorrowRecord>& result, long long& nodesVisited) const;
+    size_t countRangeOverdue(AVLNode* node, const std::string& currentDate, long long* nodesVisited) const;
     void destroy(AVLNode* node);
 
 public:
@@ -43,6 +46,7 @@ public:
     void build(const std::vector<BorrowRecord>& records);
     void insert(const BorrowRecord& record);
     OverdueResult findOverdue(const std::string& currentDate) const;
+    size_t countOverdue(const std::string& currentDate, long long* nodesVisited = nullptr) const;
     void clear();
 };
 

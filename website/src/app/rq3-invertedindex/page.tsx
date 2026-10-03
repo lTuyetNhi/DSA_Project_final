@@ -19,15 +19,19 @@ import ComplexityCard from '@/components/ui/ComplexityCard';
 import InvertedIndexVisualizer from '@/components/visualizer/InvertedIndexVisualizer';
 import BookCard from '@/components/ui/BookCard';
 import { RQ3Response } from '@/types/dsa';
+import { useRam } from '@/context/RamContext';
 
 export default function RQ3Page() {
+  const { ramBookCount, ramSyncState } = useRam();
+  const ramReady = ramSyncState === 'ready';
   const [keyword, setKeyword] = useState('Code');
   const [data, setData] = useState<RQ3Response | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fetchRQ3 = (kw: string) => {
+    if (!ramReady) return;
     setLoading(true);
-    fetch(`/api/bridge?mode=rq3&keyword=${encodeURIComponent(kw)}`)
+    fetch(`/api/bridge?mode=rq3&keyword=${encodeURIComponent(kw)}&size=${ramBookCount}`)
       .then((res) => res.json())
       .then((resData: RQ3Response) => {
         setData(resData);
@@ -37,8 +41,8 @@ export default function RQ3Page() {
   };
 
   useEffect(() => {
-    fetchRQ3(keyword);
-  }, []);
+    if (ramReady) fetchRQ3(keyword);
+  }, [ramReady, ramBookCount]);
 
   const sampleKeywords = ['Code', 'Algorithms', 'System', 'Approach', 'Mathematics', 'Python'];
 
@@ -69,7 +73,7 @@ export default function RQ3Page() {
               />
               <button
                 onClick={() => fetchRQ3(keyword)}
-                disabled={loading}
+                disabled={loading || !ramReady}
                 className="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5 shrink-0"
               >
                 <FontAwesomeIcon icon={faSearch} />

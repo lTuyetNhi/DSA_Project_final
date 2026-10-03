@@ -3,7 +3,6 @@
 
 #include <string>
 #include <cctype>
-#include <sstream>
 
 class StringUtils {
 public:
@@ -15,28 +14,32 @@ public:
         return s;
     }
 
-    static std::string normalizeSearchText(const std::string& s) {
-        std::string spaced;
-        spaced.reserve(s.size());
+    static void normalizeSearchText(const std::string& s, std::string& normalized) {
+        normalized.clear();
+        if (normalized.capacity() < s.size()) normalized.reserve(s.size());
+        bool separatorPending = false;
 
+        // Normalize in one pass. The old stringstream implementation created
+        // multiple temporary strings for every title, which dominated RQ3's
+        // 500k-item baseline even though the actual substring test was cheap.
         for (char c : s) {
-            unsigned char uc = static_cast<unsigned char>(c);
-            if (isalnum(uc)) {
-                spaced += static_cast<char>(tolower(uc));
-            } else {
-                spaced += ' ';
+            const unsigned char uc = static_cast<unsigned char>(c);
+            const bool upper = uc >= 'A' && uc <= 'Z';
+            const bool lower = uc >= 'a' && uc <= 'z';
+            const bool digit = uc >= '0' && uc <= '9';
+            if (upper || lower || digit) {
+                if (separatorPending && !normalized.empty()) normalized += ' ';
+                normalized += static_cast<char>(upper ? uc + ('a' - 'A') : uc);
+                separatorPending = false;
+            } else if (!normalized.empty()) {
+                separatorPending = true;
             }
         }
+    }
 
-        std::string word;
+    static std::string normalizeSearchText(const std::string& s) {
         std::string normalized;
-        std::stringstream ss(spaced);
-        while (ss >> word) {
-            if (!normalized.empty()) {
-                normalized += ' ';
-            }
-            normalized += word;
-        }
+        normalizeSearchText(s, normalized);
         return normalized;
     }
 };

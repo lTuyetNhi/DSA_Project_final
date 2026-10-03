@@ -9,6 +9,7 @@
 class LinearTitleScan {
 public:
     static TitleSearchResult search(std::vector<Book>& books, const std::string& keyword);
+    static size_t count(const std::vector<Book>& books, const std::string& keyword, long long* booksChecked = nullptr);
 };
 
 #endif // LINEAR_TITLE_SCAN_H

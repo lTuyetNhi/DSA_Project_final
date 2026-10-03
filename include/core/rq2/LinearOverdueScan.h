@@ -9,6 +9,7 @@
 class LinearOverdueScan {
 public:
     static OverdueResult search(std::vector<BorrowRecord>& records, const std::string& currentDate);
+    static size_t count(const std::vector<BorrowRecord>& records, const std::string& currentDate, long long* checks = nullptr);
 };
 
 #endif // LINEAR_OVERDUE_SCAN_H

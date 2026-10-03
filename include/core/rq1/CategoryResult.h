@@ -14,6 +14,8 @@ struct CategoryResult {
     std::string method;             // Tên giải thuật
     std::string bigO;               // Độ phức tạp lý thuyết
 
+    size_t totalCount = 0;
+
     CategoryResult() = default;
 
     CategoryResult(const std::vector<Book>& bList, bool isFound, long long timeNs, long long comp, const std::string& m, const std::string& bo)
