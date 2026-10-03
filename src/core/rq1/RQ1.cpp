@@ -89,17 +89,23 @@ void RQ1::printBooks(const vector<Book>& bookList) {
         return;
     }
 
-    cout << "+--------------------------------------------------------------------------------------------+\n";
-    cout << "|                    DANH SACH TAI LIEU TIM THAY (" << left << setw(3) << bookList.size() << " cuon sach)                                |\n";
-    cout << "+--------------------------------------------------------------------------------------------+\n";
+    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
+    cout << "| STT | Ma sach | Ten sach                        | Tac gia            | Nam  | San co  |\n";
+    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
     for (size_t i = 0; i < bookList.size(); ++i) {
         const auto& b = bookList[i];
-        cout << "  [" << (i + 1) << "] [" << b.book_id << "] " << b.title 
-             << " | TG: " << b.author 
-             << " | Nam: " << b.published_year
-             << " | San co: " << b.available_quantity << "/" << b.total_quantity << "\n";
+        string titleShort = b.title.length() > 31 ? b.title.substr(0, 28) + "..." : b.title;
+        string authorShort = b.author.length() > 18 ? b.author.substr(0, 15) + "..." : b.author;
+        string qtyStr = to_string(b.available_quantity) + "/" + to_string(b.total_quantity);
+
+        cout << "| " << left << setw(3) << (i + 1)
+             << " | " << left << setw(7) << b.book_id
+             << " | " << left << setw(31) << titleShort
+             << " | " << left << setw(18) << authorShort
+             << " | " << left << setw(4) << b.published_year
+             << " | " << left << setw(7) << qtyStr << " |\n";
     }
-    cout << "+--------------------------------------------------------------------------------------------+\n";
+    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
 }
 
 void RQ1::comparisonMode(const string& category) {

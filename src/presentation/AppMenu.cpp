@@ -2,7 +2,6 @@
 #include "../../include/utils/DateUtils.h"
 #include "../../include/utils/BenchmarkRunner.h"
 #include <iostream>
-#include <iomanip>
 #include <cstdlib>
 #include <conio.h>
 
@@ -129,28 +128,33 @@ string AppMenu::selectDate(const string& title, int defaultYear, int defaultMont
         int maxDays = DateUtils::getDaysInMonth(year, month);
         if (day > maxDays) day = maxDays;
 
-        cout << "                     [ NAM ]         [ THANG ]         [ NGAY ]\n";
-        cout << "                 ";
+        char strYear[16], strMonth[16], strDay[16];
+        snprintf(strYear, sizeof(strYear), "%04d", year);
+        snprintf(strMonth, sizeof(strMonth), "%02d", month);
+        snprintf(strDay, sizeof(strDay), "%02d", day);
+
+        cout << "             [ NAM (YYYY) ]       [ THANG (MM) ]       [ NGAY (DD) ]\n";
+        cout << "            ";
 
         // Field 0: Nam
         if (curField == 0) {
-            cout << "  > [ " << setw(4) << year << " ] <     ";
+            cout << "  > [ " << strYear << " ] <       ";
         } else {
-            cout << "    [ " << setw(4) << year << " ]       ";
+            cout << "    [ " << strYear << " ]         ";
         }
 
         // Field 1: Thang
         if (curField == 1) {
-            cout << "> [ " << setfill('0') << setw(2) << month << " ] <       " << setfill(' ');
+            cout << "  > [   " << strMonth << "   ] <     ";
         } else {
-            cout << "  [ " << setfill('0') << setw(2) << month << " ]         " << setfill(' ');
+            cout << "    [   " << strMonth << "   ]       ";
         }
 
         // Field 2: Ngay
         if (curField == 2) {
-            cout << "> [ " << setfill('0') << setw(2) << day << " ] <\n" << setfill(' ');
+            cout << "  > [   " << strDay << "   ] <\n";
         } else {
-            cout << "  [ " << setfill('0') << setw(2) << day << " ]\n" << setfill(' ');
+            cout << "    [   " << strDay << "   ]\n";
         }
 
         char dateBuf[32];
@@ -239,7 +243,6 @@ int AppMenu::showModuleMenu() {
         "3. RQ1 - Tra cuu tat ca sach theo The loai (Category Hash Table vs Linear Scan)",
         "4. RQ2 - Loc danh sach phieu muon qua han (AVL Tree vs Linear Scan)",
         "5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Prefix Title Index vs Linear Scan)",
-        "6. Chay Benchmark Toan Dien (5 Module) & Xuat CSV/LaTeX",
         "9. Doi Che do hoat dong (Change Mode)",
         "0. Thoat chuong trinh (Exit)"
     };
@@ -250,8 +253,7 @@ int AppMenu::showModuleMenu() {
     if (choice == 2) return 3;
     if (choice == 3) return 4;
     if (choice == 4) return 5;
-    if (choice == 5) return 6;
-    if (choice == 6) return 9;
+    if (choice == 5) return 9;
     return 0;
 }
 

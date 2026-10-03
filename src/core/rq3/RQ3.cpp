@@ -86,18 +86,25 @@ void RQ3::printBooks(const vector<Book>& bookList) {
         return;
     }
 
-    cout << "+--------------------------------------------------------------------------------------------+\n";
-    cout << "|                    DANH SACH TAI LIEU TIM THAY (" << left << setw(3) << bookList.size() << " cuon sach)                                |\n";
-    cout << "+--------------------------------------------------------------------------------------------+\n";
+    cout << "+-----+---------+----------------------------+------------------+--------------+------+-------+\n";
+    cout << "| STT | Ma sach | Ten sach                   | Tac gia          | The loai     | Nam  | San co|\n";
+    cout << "+-----+---------+----------------------------+------------------+--------------+------+-------+\n";
     for (size_t i = 0; i < bookList.size(); ++i) {
         const auto& b = bookList[i];
-        cout << "  [" << (i + 1) << "] [" << b.book_id << "] " << b.title 
-             << " | TG: " << b.author 
-             << " | The loai: " << b.category 
-             << " | Nam: " << b.published_year
-             << " | San co: " << b.available_quantity << "/" << b.total_quantity << "\n";
+        string titleShort = b.title.length() > 26 ? b.title.substr(0, 23) + "..." : b.title;
+        string authorShort = b.author.length() > 16 ? b.author.substr(0, 13) + "..." : b.author;
+        string catShort = b.category.length() > 12 ? b.category.substr(0, 9) + "..." : b.category;
+        string qtyStr = to_string(b.available_quantity) + "/" + to_string(b.total_quantity);
+
+        cout << "| " << left << setw(3) << (i + 1)
+             << " | " << left << setw(7) << b.book_id
+             << " | " << left << setw(26) << titleShort
+             << " | " << left << setw(16) << authorShort
+             << " | " << left << setw(12) << catShort
+             << " | " << left << setw(4) << b.published_year
+             << " | " << left << setw(5) << qtyStr << " |\n";
     }
-    cout << "+--------------------------------------------------------------------------------------------+\n";
+    cout << "+-----+---------+----------------------------+------------------+--------------+------+-------+\n";
 }
 
 void RQ3::comparisonMode(const string& keyword) {
