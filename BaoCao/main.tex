@@ -64,7 +64,7 @@
 \renewcommand{\tabularxcolumn}[1]{m{#1}}
 \usepackage{float}
 \usepackage{graphicx}
-\graphicspath{{image/}}
+\graphicspath{{image/}{image/image_2/}}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usepackage{enumitem}
@@ -716,6 +716,44 @@ Khi thực hiện tra cứu mã sách, hệ thống tính toán giá trị băm 
 
 Hình \ref{fig:seq_mc1} mô tả chi tiết luồng tương tác giữa người dùng, tầng Menu điều phối, thuật toán Baseline và giải pháp Bảng băm tối ưu. Trong chế độ đối sánh, hệ thống đồng thời đo đạc thời gian thực thi của cả hai phương pháp và kiểm định tính đồng nhất của kết quả tìm kiếm trước khi kết xuất ra màn hình.
 
+\subsubsection*{2.2.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+\addcontentsline{toc}{subsubsection}{2.2.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+
+Để kiểm chứng sự hoạt động thực tế của Module MC1 trên môi trường thực thi, nhóm tiến hành chạy thử nghiệm trực tiếp trên giao diện dòng lệnh (TUI/CLI) với cả hai chế độ: Chế độ Vận hành thông thường (Normal Mode) và Chế độ Đối sánh thuật toán (Benchmark Mode).
+
+Trong chế độ Normal Mode, người dùng nhập mã định danh tài liệu cần tra cứu (ví dụ \texttt{b001}) để hệ thống kích hoạt cơ chế băm và truy xuất tức thời thông tin chi tiết của đầu sách như thể hiện trong Hình \ref{fig:mc1_normal}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{mc1_normal_view.jpg}
+    \caption{Giao diện tra cứu thông tin sách theo mã định danh bằng Hash Table (Normal Mode)}
+    \label{fig:mc1_normal}
+\end{figure}
+
+Kết quả hiển thị trên Hình \ref{fig:mc1_normal} cho thấy hệ thống trả về đầy đủ và chính xác các trường thuộc tính của cuốn sách tương ứng: Mã sách \texttt{B001}, Tên sách \textit{Introduction to Algorithms}, Tác giả \textit{Thomas H. Cormen}, Thể loại \textit{Computer Science}, Năm xuất bản \textit{2009}, Số lượng sẵn có \textit{2/5} và Tổng số lượt đã mượn \textit{45}. Quá trình tra cứu chỉ tiêu tốn duy nhất $1$ phép so sánh khóa tại ô băm mục tiêu, phản ánh đúng đặc tính truy xuất trực tiếp của cấu trúc Bảng băm.
+
+Tiếp theo, hệ thống được chuyển sang chế độ Benchmark Mode nhằm đối chiếu trực tiếp giữa thuật toán Baseline (Linear Search) và cấu trúc tối ưu (Separate Chaining Hash Table) trong trường hợp mã sách tồn tại trong kho dữ liệu (Hình \ref{fig:mc1_found}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{mc1_benchmark_found.jpg}
+    \caption{Đối sánh thực nghiệm giữa Linear Search và Hash Table khi tìm thấy mã sách}
+    \label{fig:mc1_found}
+\end{figure}
+
+Từ kết quả đối sánh tại Hình \ref{fig:mc1_found}, cả hai phương pháp đều trả về trạng thái \texttt{FOUND} với đúng bản ghi \texttt{B001}, giúp chương trình ghi nhận trạng thái kiểm định \texttt{PASS (Ket qua 2 thuat toan hoan toan dong nhat)}. Ở lần chạy minh họa cụ thể này, thời gian ghi nhận của Hash Table là $4.700\text{ ns}$ so với $9.400\text{ ns}$ của Linear Search. Cần lưu ý rằng giá trị thời gian trong ảnh chụp chỉ mang tính chất minh chứng cho một lần thực thi trực quan; hiệu năng trung bình toàn diện sẽ được tổng hợp khoa học qua hàng nghìn chu kỳ lặp ở Bảng \ref{tab:benchmark_n10}.
+
+Đối với trường hợp kiểm thử biên khi người dùng nhập một mã sách không tồn tại trong hệ thống (ví dụ \texttt{b9999}), việc đánh giá hành vi của hai thuật toán mang ý nghĩa lý thuyết rất quan trọng (Hình \ref{fig:mc1_notfound}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{mc1_benchmark_notfound.jpg}
+    \caption{Đối sánh thực nghiệm giữa Linear Search và Hash Table khi mã sách không tồn tại}
+    \label{fig:mc1_notfound}
+\end{figure}
+
+Khi mã sách không tồn tại trong kho $N=10$ phần tử, thuật toán Linear Search rơi vào kịch bản xấu nhất khi buộc phải duyệt tuần tự qua toàn bộ $10$ phần tử trong mảng ($10$ phép so sánh) mới có thể kết luận không tìm thấy. Ngược lại, cấu trúc Hash Table tính toán giá trị băm của \texttt{b9999}, ánh xạ đến một ô băm rỗng và lập tức trả về \texttt{NOT FOUND} với $0$ phép so sánh chuỗi, bảo toàn chi phí thời gian ở mức hằng số $O(1)$. Trạng thái kiểm định đạt \texttt{PASS}, xác nhận tính nhất quán tuyệt đối về mặt logic đầu ra giữa hai phương pháp.
+
 \subsection*{2.3. Hiện thực và phân tích chi tiết Module MC2: Top Sách Mượn Nhiều Nhất}
 \addcontentsline{toc}{subsection}{2.3. Hiện thực và phân tích chi tiết Module MC2: Top Sách Mượn Nhiều Nhất}
 
@@ -753,6 +791,33 @@ Sau khi cấu trúc đống được thiết lập, phần tử có số lượt
 \end{figure}
 
 Luồng thực thi hoàn chỉnh của module MC2 được trình bày trên sơ đồ tuần tự tại Hình \ref{fig:seq_mc2}. Khi có một độc giả mượn sách mới, hàm cập nhật số lượt mượn sẽ điều chỉnh giá trị của cuốn sách và thực hiện thao tác sàng lên phía gốc trong thời gian logarit theo chiều cao đống, bảo đảm hệ thống luôn trong trạng thái sẵn sàng cung cấp kết quả cực trị.
+
+\subsubsection*{2.3.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+\addcontentsline{toc}{subsubsection}{2.3.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+
+Để chứng minh tính hiệu quả của Cây đống cực đại (Max-Heap) trong việc liên tục cung cấp đầu sách có số lượt mượn cao nhất mà không cần quét toàn bộ tập dữ liệu, nhóm tiến hành thực thi Module MC2 trên giao diện Terminal.
+
+Ở chế độ Normal Mode, hệ thống truy xuất trực tiếp phần tử tại gốc của Max-Heap và hiển thị chi tiết đầu sách dẫn đầu về lượt mượn như thể hiện trong Hình \ref{fig:mc2_normal}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{mc2_normal_view.jpg}
+    \caption{Kết quả trích xuất sách được mượn nhiều nhất bằng Max-Heap (Normal Mode)}
+    \label{fig:mc2_normal}
+\end{figure}
+
+Giao diện thực thi tại Hình \ref{fig:mc2_normal} ghi nhận cuốn sách có lượt mượn cao nhất là \texttt{B007} (\textit{The Pragmatic Programmer}, tác giả \textit{Andrew Hunt}, thể loại \textit{Software Engineering}, số lượt mượn đạt $70$). Thao tác này hoàn tất chỉ trong đúng $1$ bước truy xuất mảng tại chỉ số gốc, thể hiện ưu thế vượt trội của cấu trúc đống được tổ chức sẵn trong bộ nhớ.
+
+Tại chế độ Benchmark Mode (Hình \ref{fig:mc2_benchmark}), hệ thống thực hiện đo đạc song song giữa phương pháp quét tuyến tính tìm cực đại (Linear Max Scan) và cấu trúc Max-Heap.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{mc2_benchmark_max.jpg}
+    \caption{Đối sánh thực nghiệm giữa Linear Max Scan và Max-Heap trong bài toán tìm cực đại}
+    \label{fig:mc2_benchmark}
+\end{figure}
+
+Kết quả đối chứng trong Hình \ref{fig:mc2_benchmark} khẳng định cả hai giải pháp đều xác định chính xác cùng một tài liệu cực đại (\texttt{B007} với $70$ lượt mượn), đạt trạng thái kiểm định \texttt{PASS}. Về mặt cơ chế xử lý, trong khi Linear Max Scan phải duyệt qua toàn bộ $10$ phần tử ($10$ phép so sánh) để tìm phần tử lớn nhất, Max-Heap chỉ cần $1$ bước truy xuất phần tử tại đỉnh đống với độ phức tạp lý thuyết $O(1)$. Ở lần chạy mẫu minh họa này, thời gian ghi nhận của Max-Heap là $1.200\text{ ns}$ so với $3.400\text{ ns}$ của Linear Max Scan, phản ánh trực quan sự khác biệt giữa việc tính toán lại từ đầu và việc duy trì cấu trúc dữ liệu có sẵn.
 
 \subsection*{2.4. Hiện thực và phân tích chi tiết Module RQ1: Lọc Sách Theo Thể Loại}
 \addcontentsline{toc}{subsection}{2.4. Hiện thực và phân tích chi tiết Module RQ1: Lọc Sách Theo Thể Loại}
@@ -792,6 +857,44 @@ Nhờ cơ chế gom cụm sẵn, thời gian thực thi của thao tác lọc th
 
 Sơ đồ tuần tự tại Hình \ref{fig:seq_rq1} thể hiện luồng đối sánh giữa việc quét tuyến tính toàn bộ kho sách và việc truy xuất trực tiếp từ Bảng băm danh mục, chứng minh tính hiệu quả rõ rệt của giải pháp gom cụm dữ liệu.
 
+\subsubsection*{2.4.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+\addcontentsline{toc}{subsubsection}{2.4.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+
+Cần nhấn mạnh rằng Module RQ1 là bài toán \textbf{truy vấn và trả về toàn bộ tất cả các cuốn sách thuộc một thể loại xác định}, hoàn toàn không phải là bài toán xếp hạng Top-$K$ hay chọn lọc theo số lượng giới hạn. Để kiểm chứng tính đúng đắn và tốc độ truy xuất, nhóm đã thử nghiệm Module RQ1 trên giao diện CLI ở cả hai chế độ vận hành.
+
+Trong chế độ Normal Mode, người dùng thực hiện tra cứu thể loại \texttt{Computer Science}. Hệ thống sử dụng Bảng băm danh mục (Category Hash Table) để định vị nhóm và kết xuất toàn bộ danh sách sách thuộc thể loại này (Hình \ref{fig:rq1_normal}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq1_normal_view.jpg}
+    \caption{Kết quả tra cứu toàn bộ sách thuộc thể loại Computer Science bằng Category Hash Table}
+    \label{fig:rq1_normal}
+\end{figure}
+
+Kết quả trên Hình \ref{fig:rq1_normal} hiển thị đầy đủ danh sách gồm 2 cuốn sách thuộc thể loại \textit{Computer Science} có trong tập dữ liệu mẫu: \texttt{B001} (\textit{Introduction to Algorithms}) và \texttt{B004} (\textit{Artificial Intelligence: A Modern Approach}). Nhờ việc phân cụm sẵn các con trỏ sách vào danh sách liên kết tại ô băm tương ứng, hệ thống chỉ cần duyệt qua đúng số lượng phần tử thực tế của nhóm đó mà không phải rà soát qua các thể loại khác.
+
+Tiếp tục đánh giá ở chế độ Benchmark Mode, Hình \ref{fig:rq1_found} ghi nhận trường hợp tra cứu thể loại \texttt{Database} trên tập dữ liệu thử nghiệm 10 cuốn sách.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq1_benchmark_found.jpg}
+    \caption{Đối sánh giữa Linear Scan và Category Hash khi tra cứu thể loại mẫu trên hệ thống}
+    \label{fig:rq1_found}
+\end{figure}
+
+Hình \ref{fig:rq1_found} phản ánh trường hợp thể loại \texttt{Database} trong tập dữ liệu mẫu ban đầu chưa chứa bản ghi sách nào (Count = $0$). Cả hai phương pháp đều đưa ra kết luận đồng nhất ($0$ sách tìm thấy) và đạt trạng thái \texttt{PASS}. Về mặt số bước thực hiện, Linear Scan vẫn phải duyệt qua toàn bộ $10$ cuốn sách trong kho để kiểm tra từng chuỗi thể loại, trong khi Category Hash định vị ô băm rỗng trong thời gian $O(1)$ với $0$ phép so sánh chuỗi lặp lại.
+
+Đối với trường hợp kiểm thử thể loại hoàn toàn không tồn tại trong danh mục hệ thống (ví dụ thể loại \texttt{Cooking}), kết quả đối sánh được thể hiện trong Hình \ref{fig:rq1_notfound}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq1_benchmark_notfound.jpg}
+    \caption{Đối sánh thực nghiệm giữa Linear Scan và Category Hash khi thể loại không tồn tại}
+    \label{fig:rq1_notfound}
+\end{figure}
+
+Tương tự như trường hợp trên, Hình \ref{fig:rq1_notfound} cho thấy Linear Scan tiêu tốn $10$ lần so sánh chuỗi trên toàn mảng, trong khi Category Hash Table nhận biết ngay khóa băm chưa từng được khởi tạo và kết thúc trong $0$ bước so sánh chuỗi, khẳng định tính ưu việt của mô hình phân cụm chỉ mục trước.
+
 \subsection*{2.5. Hiện thực và phân tích chi tiết Module RQ2: Truy Vết Phiếu Quá Hạn}
 \addcontentsline{toc}{subsection}{2.5. Hiện thực và phân tích chi tiết Module RQ2: Truy Vết Phiếu Quá Hạn}
 
@@ -830,6 +933,44 @@ Khi thực hiện truy vấn các phiếu mượn quá hạn trước một ngà
 
 Nếu ngày hẹn trả tại nút hiện tại lớn hơn hoặc bằng ngày kiểm tra, thuật toán hiểu rằng toàn bộ cây con bên phải chắc chắn cũng có hạn trả lớn hơn ngày kiểm tra, do đó loại bỏ hoàn toàn việc duyệt cây con bên phải và chỉ rẽ sang cây con bên trái. Ngược lại, nếu nút hiện tại có hạn trả nhỏ hơn ngày kiểm tra, toàn bộ danh sách phiếu tại nút đó được ghi nhận và thuật toán tiếp tục duyệt cả hai nhánh. Sơ đồ tuần tự tại Hình \ref{fig:seq_rq2} minh họa rõ quy trình tỉa nhánh tối ưu này.
 
+\subsubsection*{2.5.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+\addcontentsline{toc}{subsubsection}{2.5.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+
+Module RQ2 giải quyết bài toán nghiệp vụ cốt lõi: lọc và truy vết toàn bộ các phiếu mượn có hạn trả trước một mốc thời gian kiểm tra và hiện vẫn đang ở trạng thái chưa hoàn trả. Cấu trúc Cây tự cân bằng AVL được áp dụng nhằm hỗ trợ thao tác truy vấn theo khoảng ngày thông qua cơ chế cắt tỉa nhánh cây.
+
+Trong chế độ Normal Mode, nhân viên thư viện sử dụng bộ chọn ngày tương tác để thiết lập mốc kiểm tra là ngày \texttt{2026-10-02}. Hệ thống tiến hành duyệt cây AVL và trả về danh sách các phiếu quá hạn như thể hiện trong Hình \ref{fig:rq2_normal}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq2_normal_view.jpg}
+    \caption{Kết quả lọc danh sách phiếu mượn quá hạn bằng Cây tự cân bằng AVL (Normal Mode)}
+    \label{fig:rq2_normal}
+\end{figure}
+
+Giao diện tại Hình \ref{fig:rq2_normal} kết xuất chính xác 3 phiếu mượn bị quá hạn tính đến ngày \texttt{2026-10-02}: phiếu \texttt{BR002} (độc giả \texttt{R002}, hạn trả \texttt{2026-09-19}), phiếu \texttt{BR004} (độc giả \texttt{R004}, hạn trả \texttt{2026-09-26}) và phiếu \texttt{BR007} (độc giả \texttt{R007}, hạn trả \texttt{2026-09-29}). Quá trình truy vấn chỉ duyệt qua $4$ nút trên cây AVL nhờ loại bỏ sớm các nhánh chứa các phiếu có hạn trả sau ngày kiểm tra.
+
+Chuyển sang chế độ Benchmark Mode với cùng mốc kiểm tra \texttt{2026-10-02}, hệ thống tiến hành đo đạc đối chứng giữa phương pháp quét tuyến tính (Linear Scan) và Cây tự cân bằng AVL (Hình \ref{fig:rq2_overdue}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq2_benchmark_overdue.jpg}
+    \caption{Đối sánh giữa Linear Scan và AVL Tree khi tồn tại các phiếu mượn quá hạn}
+    \label{fig:rq2_overdue}
+\end{figure}
+
+Kết quả đối sánh tại Hình \ref{fig:rq2_overdue} xác nhận cả hai phương pháp đều tìm thấy chính xác tập $3$ phiếu quá hạn như nhau, đạt trạng thái kiểm định \texttt{PASS}. Về số lượng phần tử khảo sát, thuật toán Linear Scan phải duyệt qua toàn bộ $10$ phiếu mượn trong kho dữ liệu ($10$ phép kiểm tra), trong khi cây AVL chỉ cần thăm $4$ nút trên cây nhờ cơ chế tỉa nhánh cây con bên phải khi gặp nút có hạn trả vượt mốc kiểm tra. Thời gian ghi nhận trong lần chạy minh họa này là $8.700\text{ ns}$ cho AVL Tree so với $28.500\text{ ns}$ của Linear Scan.
+
+Để kiểm tra trường hợp biên khi mốc thời gian thiết lập nằm sâu trong quá khứ và không có bất kỳ phiếu nào bị trễ hạn (ví dụ mốc ngày \texttt{2026-01-01}), kịch bản đối sánh được thực thi như thể hiện trong Hình \ref{fig:rq2_no_overdue}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq2_benchmark_no_overdue.jpg}
+    \caption{Đối sánh giữa Linear Scan và AVL Tree tại mốc thời gian không có phiếu quá hạn}
+    \label{fig:rq2_no_overdue}
+\end{figure}
+
+Tại Hình \ref{fig:rq2_no_overdue}, cả hai thuật toán đều trả về kết quả rỗng ($0$ phiếu quá hạn), đạt trạng thái \texttt{PASS}. Thuật toán Linear Scan vẫn phải duyệt tuần tự qua toàn bộ $10$ bản ghi, trong khi cây AVL di chuyển dọc theo nhánh trái và nhanh chóng kết thúc sau khi thăm $3$ nút mà không cần khảo sát phần còn lại của cây.
+
 \subsection*{2.6. Hiện thực và phân tích chi tiết Module RQ3: Tìm Kiếm Tiêu Đề Sách}
 \addcontentsline{toc}{subsection}{2.6. Hiện thực và phân tích chi tiết Module RQ3: Tìm Kiếm Tiêu Đề Sách}
 
@@ -867,6 +1008,44 @@ Khi độc giả nhập từ khóa tìm kiếm, hệ thống chuẩn hóa từ k
 \end{figure}
 
 Sơ đồ tuần tự tại Hình \ref{fig:seq_rq3} thể hiện toàn bộ quy trình tiếp nhận từ khóa, tra cứu bảng băm chỉ mục ngược và trả về danh sách kết quả tức thời cho người dùng.
+
+\subsubsection*{2.6.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+\addcontentsline{toc}{subsubsection}{2.6.4. Thực nghiệm kiểm chứng trên Giao diện dòng lệnh (CLI Validation)}
+
+Module RQ3 hỗ trợ tìm kiếm tài liệu linh hoạt theo từ khóa xuất hiện trong tiêu đề sách bằng cách áp dụng kỹ thuật Bảng băm chỉ mục ngược (Inverted Index) kết hợp bộ tách từ tố (Tokenizer).
+
+Ở chế độ Normal Mode, người dùng nhập từ khóa tìm kiếm \texttt{"clean"}. Hệ thống bóc tách từ khóa, tra cứu trong Bảng băm chỉ mục ngược và hiển thị đầu sách tương ứng (Hình \ref{fig:rq3_normal}).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq3_normal_view.jpg}
+    \caption{Kết quả tìm kiếm sách theo từ khóa bằng Bảng băm chỉ mục ngược (Normal Mode)}
+    \label{fig:rq3_normal}
+\end{figure}
+
+Hình \ref{fig:rq3_normal} cho thấy hệ thống trả về đúng cuốn sách \texttt{B002} có tiêu đề \textit{Clean Code} của tác giả \textit{Robert C. Martin}, xuất bản năm \textit{2008}, số lượng sẵn có \textit{5/8}. Thao tác này chỉ cần $1$ phép tra cứu bảng băm chỉ mục mà không phải thực hiện các phép so khớp xâu con tốn kém trên từng ký tự của các tựa sách khác.
+
+Khi chuyển sang chế độ Benchmark Mode với từ khóa tìm kiếm \texttt{"data"} (Hình \ref{fig:rq3_found}), hệ thống thực hiện đối sánh giữa phương pháp quét xâu con vét cạn (Linear Title Scan) và Bảng băm chỉ mục ngược (Prefix Title Index).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq3_benchmark_found.jpg}
+    \caption{Đối sánh giữa Linear Title Scan và Inverted Index khi tìm thấy từ khóa trong tiêu đề}
+    \label{fig:rq3_found}
+\end{figure}
+
+Kết quả đối chứng tại Hình \ref{fig:rq3_found} cho thấy cả hai giải pháp đều định vị chính xác cuốn sách \texttt{B005} (\textit{Database System Concepts}), đạt trạng thái kiểm định \texttt{PASS}. Về cơ chế hoạt động, Linear Title Scan phải duyệt qua tất cả $10$ cuốn sách và thực hiện so khớp chuỗi con lặp đi lặp lại ($10$ lần kiểm tra), trong khi Inverted Index chỉ cần truy xuất trực tiếp $1$ danh sách liên kết gắn liền với token \texttt{"data"} trong thời gian $O(1+K)$. Thời gian ghi nhận trong lần chạy minh họa này là $3.900\text{ ns}$ cho Inverted Index so với $46.700\text{ ns}$ của Linear Title Scan.
+
+Cuối cùng, trường hợp kiểm thử khi độc giả nhập một từ khóa hoàn toàn không xuất hiện trong bất kỳ tựa sách nào (ví dụ \texttt{"quantum\_xyz"}) được thể hiện trong Hình \ref{fig:rq3_notfound}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.88\linewidth]{rq3_benchmark_notfound.jpg}
+    \caption{Đối sánh giữa Linear Title Scan và Inverted Index khi từ khóa không tồn tại}
+    \label{fig:rq3_notfound}
+\end{figure}
+
+Hình \ref{fig:rq3_notfound} minh chứng tính nhất quán khi cả hai phương pháp đều đưa ra thông báo không tìm thấy cuốn sách nào khớp với từ khóa, đạt trạng thái \texttt{PASS}. Linear Title Scan phải so khớp từ khóa với tất cả $10$ tiêu đề sách, trong khi Inverted Index chỉ cần băm từ khóa và nhận diện ngay ô băm rỗng trong thời gian hằng số, bảo đảm độ trễ phản hồi luôn ở mức tối thiểu.
 
 \subsection*{2.7. Thiết kế Framework Đo kiểm Benchmark và Đánh giá Thực nghiệm}
 \addcontentsline{toc}{subsection}{2.7. Thiết kế Framework Đo kiểm Benchmark và Đánh giá Thực nghiệm}
