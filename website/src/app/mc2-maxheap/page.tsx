@@ -4,17 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faLayerGroup,
-  faFire,
   faTrophy,
   faSitemap,
   faTable,
   faBolt,
-  faChartLine,
+  faFire,
 } from '@fortawesome/free-solid-svg-icons';
 import ComparisonTable from '@/components/ui/ComparisonTable';
 import BookCard from '@/components/ui/BookCard';
 import MetricCard from '@/components/ui/MetricCard';
-import { MC2Response, Book } from '@/types/dsa';
+import { MC2Response } from '@/types/dsa';
 
 export default function MC2Page() {
   const [topK, setTopK] = useState(3);
@@ -39,26 +38,25 @@ export default function MC2Page() {
   const topOptions = [1, 3, 5, 10];
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6">
       {/* Module Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-amber-950/40 via-gray-900/90 to-gray-950">
+      <div className="p-6 rounded-xl bg-white border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-semibold uppercase tracking-wider mb-3">
-              <FontAwesomeIcon icon={faTrophy} />
-              <span>Module MC2 — Cây Đống Cực Đại Max-Heap</span>
+            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200 mb-2">
+              Module MC2 — Cây đống cực đại Max-Heap
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
               Truy Xuất Top Sách Mượn Nhiều Nhất Trong O(1)
             </h1>
-            <p className="text-sm text-gray-300 mt-1 max-w-2xl">
-              Xây dựng cây đống bằng giải thuật Floyd's Build Heap trong thời gian tuyến tính $O(N)$. Phần tử có lượt mượn cao nhất luôn nằm tại vị trí gốc `heap[0]`.
+            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
+              Xây dựng cây đống bằng giải thuật Floyd's Build Heap tuyến tính $O(N)$. Phần tử có lượt mượn cao nhất luôn nằm tại vị trí gốc `heap[0]`.
             </p>
           </div>
 
           {/* Top-K Selector Controls */}
-          <div className="flex items-center gap-2 bg-gray-900/90 p-1.5 rounded-2xl border border-white/10">
-            <span className="text-xs text-gray-400 pl-3 pr-1 font-semibold">Chọn Top K:</span>
+          <div className="flex items-center gap-1.5 bg-gray-50 p-1.5 rounded-lg border border-gray-200">
+            <span className="text-xs text-gray-600 px-2 font-medium">Chọn Top:</span>
             {topOptions.map((k) => (
               <button
                 key={k}
@@ -67,10 +65,10 @@ export default function MC2Page() {
                   fetchMC2(k);
                 }}
                 disabled={loading}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
                   topK === k
-                    ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-gray-950 shadow-md shadow-amber-500/20'
-                    : 'text-gray-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-amber-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 Top {k}
@@ -80,80 +78,75 @@ export default function MC2Page() {
         </div>
       </div>
 
-      {/* Real-time C++ Metrics */}
+      {/* Metrics */}
       {data && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
-            title="Thời Gian Lấy Gốc Max-Heap"
+            title="Thời gian lấy đỉnh Heap"
             value={data.optimized.execution_time_ns}
-            unit="nanoseconds"
-            subtitle="Đo trực tiếp từ Native C++ Engine"
+            unit="ns"
+            subtitle="Đo trực tiếp từ C++ Engine"
             icon={faBolt}
-            variant="emerald"
           />
           <MetricCard
-            title="Số Phép So Sánh Max-Heap"
+            title="Số phép so sánh (Heap)"
             value={data.optimized.comparisons ?? 1}
-            unit="phép toán"
+            unit="bước"
             subtitle="Truy xuất tức thì phần tử heap[0]"
             icon={faTrophy}
-            variant="amber"
           />
           <MetricCard
-            title="Số Phép Quét Baseline"
+            title="Số phép so sánh (Baseline)"
             value={data.baseline.comparisons ?? 10}
-            unit="lần so sánh"
-            subtitle="Phải duyệt qua toàn bộ N cuốn sách"
+            unit="bước"
+            subtitle="Duyệt qua toàn bộ N cuốn sách"
             icon={faLayerGroup}
-            variant="rose"
           />
           <MetricCard
-            title="Độ Phức Tạp Lấy Cực Đại"
+            title="Độ phức tạp lấy cực đại"
             value="O(1)"
-            subtitle="Trích xuất logarit O(log N)"
+            subtitle="Trích xuất O(log N)"
             icon={faSitemap}
-            variant="cyan"
-            trend="Tối ưu tuyệt đối"
           />
         </div>
       )}
 
-      {/* Max-Heap Binary Tree & Array Visualizer */}
+      {/* Max-Heap Array & Root Visualizer */}
       {data && data.top_books.length > 0 && (
-        <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-white/10">
+        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-200">
             <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <FontAwesomeIcon icon={faSitemap} className="text-amber-400" />
-                Mô Hình Hóa Hai Góc Nhìn Cấu Trúc Max-Heap
+              <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                <FontAwesomeIcon icon={faSitemap} className="text-amber-600" />
+                Mô Hình Hóa Cấu Trúc Max-Heap Trên Mảng Bộ Nhớ
               </h3>
-              <p className="text-xs text-gray-400">Mảng 1 chiều liên tục trong RAM đại diện cho Cây nhị phân hoàn chỉnh</p>
+              <p className="text-xs text-gray-500">Mảng 1 chiều liên tục trong RAM đại diện cho Cây nhị phân hoàn chỉnh</p>
             </div>
-            <span className="text-xs font-mono px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30">
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
               Cha = (i-1)/2 | Con Trái = 2i+1 | Con Phải = 2i+2
             </span>
           </div>
 
-          {/* Array View Representation */}
+          {/* Array View */}
           <div className="space-y-2">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-              <FontAwesomeIcon icon={faTable} className="text-indigo-400" />
-              1. Biểu Diễn Mảng Bộ Nhớ Liên Tục (Contiguous Array in RAM)
+            <span className="text-xs font-semibold text-gray-700 flex items-center gap-1.5">
+              <FontAwesomeIcon icon={faTable} className="text-gray-500" />
+              1. Biểu diễn mảng 1 chiều liên tục trong RAM
             </span>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-2">
               {data.top_books.map((b, idx) => (
                 <div
                   key={b.book_id}
-                  className={`p-3 rounded-xl border text-center space-y-1 ${
+                  className={`p-2.5 rounded-lg border text-center space-y-1 ${
                     idx === 0
-                      ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 ring-1 ring-amber-400/40 shadow-lg shadow-amber-500/10'
-                      : 'bg-gray-900/80 border-white/10 text-gray-300'
+                      ? 'bg-amber-50 border-amber-300 text-amber-900 font-medium'
+                      : 'bg-gray-50 border-gray-200 text-gray-800'
                   }`}
                 >
-                  <div className="text-[10px] font-mono text-gray-400">heap[{idx}] {idx === 0 && '👑 ROOT'}</div>
-                  <div className="text-xs font-bold text-white truncate">{b.book_id}</div>
-                  <div className="text-xs font-mono text-amber-400 flex items-center justify-center gap-1">
-                    <FontAwesomeIcon icon={faFire} className="text-[10px]" />
+                  <div className="text-[10px] font-mono text-gray-500">heap[{idx}] {idx === 0 && '(Gốc)'}</div>
+                  <div className="text-xs font-bold truncate">{b.book_id}</div>
+                  <div className="text-xs font-mono text-amber-700 flex items-center justify-center gap-1">
+                    <FontAwesomeIcon icon={faFire} className="text-[10px] text-amber-500" />
                     {b.borrow_count} lượt
                   </div>
                 </div>
@@ -161,33 +154,22 @@ export default function MC2Page() {
             </div>
           </div>
 
-          {/* Tree Node Hierarchy */}
-          <div className="space-y-2 pt-4 border-t border-white/5">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-              <FontAwesomeIcon icon={faSitemap} className="text-amber-400" />
-              2. Đỉnh Cực Đại (Max-Heap Root Element)
-            </span>
-            <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/50 via-gray-900 to-amber-950/30 border border-amber-500/30 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-xl font-black">
-                  👑
-                </div>
-                <div>
-                  <div className="text-xs text-amber-300 font-semibold uppercase">Đầu Sách Mượn Nhiều Nhất Hệ Thống</div>
-                  <div className="text-base font-bold text-white">{data.top_books[0].title}</div>
-                  <div className="text-xs text-gray-400">Mã sách: {data.top_books[0].book_id} — Tác giả: {data.top_books[0].author}</div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-2xl font-black text-amber-400">{data.top_books[0].borrow_count}</div>
-                <div className="text-[11px] text-gray-400">Lượt mượn</div>
-              </div>
+          {/* Root Element Highlight */}
+          <div className="p-4 rounded-lg bg-amber-50/70 border border-amber-200 flex items-center justify-between">
+            <div>
+              <div className="text-xs text-amber-800 font-bold uppercase">Đầu Sách Mượn Nhiều Nhất Hệ Thống (Root)</div>
+              <div className="text-sm font-bold text-gray-900">{data.top_books[0].title}</div>
+              <div className="text-xs text-gray-600">Mã sách: {data.top_books[0].book_id} — Tác giả: {data.top_books[0].author}</div>
+            </div>
+            <div className="text-right">
+              <div className="text-xl font-black text-amber-800">{data.top_books[0].borrow_count}</div>
+              <div className="text-[11px] text-gray-500">Lượt mượn</div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Live Benchmark Comparison Table */}
+      {/* Comparison Table */}
       {data && (
         <ComparisonTable
           baselineName="Tìm Max Tuyến Tính (Linear Max Scan)"
@@ -198,20 +180,17 @@ export default function MC2Page() {
         />
       )}
 
-      {/* Top K Books Grid */}
+      {/* Top Books Grid */}
       {data && (
-        <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <FontAwesomeIcon icon={faTrophy} className="text-amber-400" />
+        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <FontAwesomeIcon icon={faTrophy} className="text-amber-600" />
               Danh Sách Xếp Hạng Top {topK} Sách Mượn Nhiều Nhất
             </h3>
-            <span className="text-xs font-mono text-gray-400">
-              Được trích xuất tuần tự qua cơ chế Heapify-Down
-            </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.top_books.map((b, index) => (
               <BookCard key={b.book_id} book={b} rank={index + 1} highlight={index === 0} />
             ))}

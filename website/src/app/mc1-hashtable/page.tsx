@@ -6,12 +6,9 @@ import {
   faBolt,
   faSearch,
   faCalculator,
-  faMicrochip,
   faCheckCircle,
   faTimesCircle,
   faLayerGroup,
-  faArrowRight,
-  faCode,
 } from '@fortawesome/free-solid-svg-icons';
 import ComparisonTable from '@/components/ui/ComparisonTable';
 import BookCard from '@/components/ui/BookCard';
@@ -41,49 +38,46 @@ export default function MC1Page() {
   const sampleIds = ['B001', 'B002', 'B003', 'B007', 'B010', 'B999'];
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6">
       {/* Module Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-950/40 via-gray-900/90 to-gray-950">
+      <div className="p-6 rounded-xl bg-white border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-3">
-              <FontAwesomeIcon icon={faBolt} />
-              <span>Module MC1 — Cấu Trúc Bảng Băm Xích Rời</span>
+            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-2">
+              Module MC1 — Cấu trúc Bảng băm Xích rời
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Tra Cứu Mã Sách Tức Thời Trong O(1)
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+              Tra Cứu Mã Sách Trong O(1)
             </h1>
-            <p className="text-sm text-gray-300 mt-1 max-w-2xl">
-              Sử dụng hàm băm DJB2 phân tán đều kết hợp bảng băm kích thước số nguyên tố lớn ($100.003$) để triệt tiêu hiện tượng va chạm phân cụm.
+            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
+              Hàm băm DJB2 phân tán đều kết hợp bảng băm kích thước số nguyên tố $100.003$ để hạn chế va chạm.
             </p>
           </div>
 
-          {/* Search Input Box */}
-          <div className="w-full md:w-auto flex flex-col gap-2">
+          {/* Search Box */}
+          <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
-              <div className="relative flex-1 md:w-64">
-                <input
-                  type="text"
-                  value={targetId}
-                  onChange={(e) => setTargetId(e.target.value.toUpperCase())}
-                  onKeyDown={(e) => e.key === 'Enter' && fetchMC1(targetId)}
-                  placeholder="Nhập mã sách (VD: B001)..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-white/15 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono"
-                />
-              </div>
+              <input
+                type="text"
+                value={targetId}
+                onChange={(e) => setTargetId(e.target.value.toUpperCase())}
+                onKeyDown={(e) => e.key === 'Enter' && fetchMC1(targetId)}
+                placeholder="Mã sách (VD: B001)..."
+                className="px-3 py-1.5 rounded-lg border border-gray-300 text-gray-900 text-xs focus:outline-none focus:border-blue-500 font-mono"
+              />
               <button
                 onClick={() => fetchMC1(targetId)}
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-md shadow-indigo-600/30 transition-all flex items-center gap-2"
+                className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors flex items-center gap-1.5"
               >
                 <FontAwesomeIcon icon={faSearch} />
-                <span>{loading ? 'Đang băm...' : 'Tra Cứu'}</span>
+                <span>{loading ? 'Đang băm...' : 'Tra cứu'}</span>
               </button>
             </div>
 
-            {/* Quick Select IDs */}
+            {/* Quick Sample IDs */}
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[11px] text-gray-400">Mã mẫu:</span>
+              <span className="text-[11px] text-gray-500">Mã mẫu:</span>
               {sampleIds.map((id) => (
                 <button
                   key={id}
@@ -91,10 +85,10 @@ export default function MC1Page() {
                     setTargetId(id);
                     fetchMC1(id);
                   }}
-                  className={`px-2 py-0.5 rounded text-xs font-mono transition-all ${
+                  className={`px-2 py-0.5 rounded text-xs font-mono transition-colors ${
                     targetId === id
-                      ? 'bg-indigo-500 text-white font-bold'
-                      : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10'
+                      ? 'bg-blue-600 text-white font-bold'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   {id}
@@ -105,81 +99,74 @@ export default function MC1Page() {
         </div>
       </div>
 
-      {/* Real-time C++ Metrics */}
+      {/* Metrics */}
       {data && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
-            title="Thời Gian Băm & Tra Cứu"
+            title="Thời gian băm & tra cứu"
             value={data.optimized.execution_time_ns}
-            unit="nanoseconds"
-            subtitle="Đo trực tiếp từ Native C++ Engine"
+            unit="ns"
+            subtitle="Đo trực tiếp từ C++ Engine"
             icon={faBolt}
-            variant="emerald"
           />
           <MetricCard
-            title="Số Phép So Sánh (DSA)"
+            title="Số phép so sánh (DSA)"
             value={data.optimized.comparisons ?? 0}
-            unit="phép toán"
-            subtitle="Chỉ 1 lần tính băm và định vị Bucket"
+            unit="bước"
+            subtitle="Định vị ngay ô Bucket"
             icon={faCalculator}
-            variant="indigo"
           />
           <MetricCard
-            title="Số Phép Quét Tuyến Tính (Baseline)"
+            title="Số phép quét (Baseline)"
             value={data.baseline.comparisons ?? 0}
-            unit="lần so sánh"
-            subtitle={`Phải quét qua ${data.baseline.comparisons} phần tử trong mảng`}
+            unit="bước"
+            subtitle={`Quét qua ${data.baseline.comparisons} phần tử`}
             icon={faLayerGroup}
-            variant="rose"
           />
           <MetricCard
-            title="Trạng Thái Tìm Thấy"
-            value={data.optimized.found ? 'Tìm thấy' : 'Không tồn tại'}
-            subtitle={data.optimized.found ? `Khớp cuốn sách mã ${data.target_id}` : 'Mã sách không có trong thư viện'}
+            title="Kết quả tìm kiếm"
+            value={data.optimized.found ? 'Tìm thấy' : 'Không có'}
+            subtitle={data.optimized.found ? `Khớp sách ${data.target_id}` : 'Mã không tồn tại'}
             icon={data.optimized.found ? faCheckCircle : faTimesCircle}
-            variant={data.optimized.found ? 'emerald' : 'amber'}
           />
         </div>
       )}
 
-      {/* DJB2 Hash Function Breakdown Visualizer */}
+      {/* DJB2 Hash Calculator Visualizer */}
       {data && (
-        <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <FontAwesomeIcon icon={faCalculator} className="text-indigo-400" />
-              Mô Phỏng Trực Quan Hàm Băm DJB2 (Dan Bernstein Algorithm)
+        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <FontAwesomeIcon icon={faCalculator} className="text-blue-600" />
+              Chi Tiết Hàm Băm DJB2
             </h3>
-            <span className="text-xs font-mono px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
-              Công thức: hash = ((hash &lt;&lt; 5) + hash) + c
+            <span className="text-xs font-mono px-2 py-0.5 rounded bg-gray-100 text-gray-700 border border-gray-200">
+              hash = ((hash &lt;&lt; 5) + hash) + c
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 rounded-xl bg-gray-900/80 border border-white/5 space-y-1">
-              <span className="text-xs text-gray-400 uppercase tracking-wider">Chuỗi Khóa Đầu Vào</span>
-              <div className="text-xl font-mono font-bold text-indigo-300">"{data.target_id}"</div>
-              <p className="text-[11px] text-gray-500">Ký tự được duyệt từng byte qua mã ASCII</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
+              <div className="text-[11px] text-gray-500">Chuỗi khóa đầu vào</div>
+              <div className="text-base font-mono font-bold text-blue-700">"{data.target_id}"</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-gray-900/80 border border-white/5 space-y-1">
-              <span className="text-xs text-gray-400 uppercase tracking-wider">Giá Trị Băm Nguyên Thủy (Raw Hash)</span>
-              <div className="text-xl font-mono font-bold text-emerald-400">{data.hash_info.raw_hash.toLocaleString()}</div>
-              <p className="text-[11px] text-gray-500">Khởi tạo hash=5381 nhân 33 mỗi bước</p>
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-200">
+              <div className="text-[11px] text-gray-500">Giá trị băm nguyên thủy (Raw Hash)</div>
+              <div className="text-base font-mono font-bold text-gray-900">{data.hash_info.raw_hash.toLocaleString()}</div>
             </div>
 
-            <div className="p-4 rounded-xl bg-indigo-950/60 border border-indigo-500/30 space-y-1">
-              <span className="text-xs text-indigo-300 uppercase tracking-wider font-semibold">Chỉ Số Bucket Đích (Slot)</span>
-              <div className="text-xl font-mono font-bold text-cyan-300">
+            <div className="p-3 rounded-lg bg-blue-50/60 border border-blue-200">
+              <div className="text-[11px] text-blue-700 font-medium">Chỉ số Bucket đích (Slot)</div>
+              <div className="text-base font-mono font-bold text-blue-800">
                 Bucket #{data.hash_info.bucket_index.toLocaleString()}
               </div>
-              <p className="text-[11px] text-indigo-400">Modulo Số nguyên tố 100.003</p>
             </div>
           </div>
         </div>
       )}
 
-      {/* Live Benchmark Comparison Table */}
+      {/* Comparison Table */}
       {data && (
         <ComparisonTable
           baselineName="Tìm kiếm Tuyến tính (Linear Search)"
@@ -190,12 +177,12 @@ export default function MC1Page() {
         />
       )}
 
-      {/* Found Book Card Display */}
+      {/* Found Book Card */}
       {data && data.book && (
-        <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-          <h3 className="text-lg font-bold text-white flex items-center gap-2">
-            <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-400" />
-            Kết Quả Sách Được Định Vị Trực Tiếp Từ Bộ Nhớ
+        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+          <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+            <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600" />
+            Sách Tìm Thấy Trong Bộ Nhớ
           </h3>
           <div className="max-w-md">
             <BookCard book={data.book} highlight={true} />

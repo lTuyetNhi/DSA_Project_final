@@ -4,12 +4,11 @@ import Navbar from '@/components/layout/Navbar';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 
-// Prevent FontAwesome from adding its CSS automatically since we imported it
 config.autoAddCss = false;
 
 export const metadata: Metadata = {
-  title: 'DSA Library Records & Decision Engine | Interactive Visualizer',
-  description: 'Trực quan hóa cấu trúc dữ liệu và giải thuật bộ nhớ chính kết nối trực tiếp C++ Native Engine (MC1, MC2, RQ1, RQ2, RQ3).',
+  title: 'Hệ Thống Quản Lý Thư Viện & Mô Hình Hóa Thuật Toán (DSA)',
+  description: 'Mô hình hóa và đối sánh hiệu năng các cấu trúc dữ liệu bộ nhớ chính (MC1, MC2, RQ1, RQ2, RQ3).',
 };
 
 export default function RootLayout({
@@ -18,13 +17,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className="dark">
-      <body className="bg-[#0b0f19] text-gray-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+    <html lang="vi">
+      <body className="bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased">
         <Navbar />
         <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-6">
           {children}
         </main>
-        <footer className="w-full border-t border-white/5 py-4 px-6 text-center text-xs text-gray-500 bg-gray-950/50">
+        <footer className="w-full border-t border-gray-200 py-4 px-6 text-center text-xs text-gray-500 bg-white">
           <p>
             Học phần Cấu trúc Dữ liệu và Giải thuật (261DASA230179_06) — Nhóm 06 — GVHD: ThS. Bảo Vũ Đình (T-Bao)
           </p>

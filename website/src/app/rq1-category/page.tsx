@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faLayerGroup,
   faTags,
   faBolt,
   faCheckCircle,
   faListCheck,
-  faDatabase,
+  faLayerGroup,
 } from '@fortawesome/free-solid-svg-icons';
 import ComparisonTable from '@/components/ui/ComparisonTable';
 import BookCard from '@/components/ui/BookCard';
@@ -45,20 +44,19 @@ export default function RQ1Page() {
   }, []);
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-6">
       {/* Module Header */}
-      <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 bg-gradient-to-br from-emerald-950/40 via-gray-900/90 to-gray-950">
+      <div className="p-6 rounded-xl bg-white border border-gray-200">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider mb-3">
-              <FontAwesomeIcon icon={faTags} />
-              <span>Module RQ1 — Bảng Băm Phân Cụm Thể Loại</span>
+            <div className="inline-block px-2.5 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-2">
+              Module RQ1 — Bảng băm phân cụm thể loại
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
               Gom Cụm & Lọc Toàn Bộ Sách Theo Thể Loại Trong O(1+K)
             </h1>
-            <p className="text-sm text-gray-300 mt-1 max-w-2xl">
-              Bài toán truy xuất <strong className="text-emerald-300">toàn bộ tất cả $K$ cuốn sách</strong> thuộc thể loại xác định thông qua việc băm trực tiếp tên thể loại, loại bỏ hoàn toàn chi phí quét tuyến tính $O(N)$.
+            <p className="text-xs text-gray-600 mt-1 max-w-2xl">
+              Truy xuất <strong>toàn bộ tất cả $K$ cuốn sách</strong> thuộc thể loại xác định trong một nhóm băm, không phải xếp hạng Top-K.
             </p>
           </div>
 
@@ -72,10 +70,10 @@ export default function RQ1Page() {
                   fetchRQ1(cat);
                 }}
                 disabled={loading}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   category === cat
-                    ? 'bg-emerald-500 text-gray-950 font-bold shadow-md shadow-emerald-500/20'
-                    : 'bg-white/5 text-gray-300 hover:text-white hover:bg-white/10 border border-white/5'
+                    ? 'bg-emerald-600 text-white font-bold'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 {cat}
@@ -85,45 +83,41 @@ export default function RQ1Page() {
         </div>
       </div>
 
-      {/* Real-time C++ Metrics */}
+      {/* Metrics */}
       {data && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
-            title="Thời Gian Định Vị Nhóm"
+            title="Thời gian định vị nhóm"
             value={data.optimized.execution_time_ns}
-            unit="nanoseconds"
-            subtitle="Đo trực tiếp từ Native C++ Engine"
+            unit="ns"
+            subtitle="Đo trực tiếp từ C++ Engine"
             icon={faBolt}
-            variant="emerald"
           />
           <MetricCard
-            title="Số Sách Trả Về (K)"
+            title="Số sách trả về (K)"
             value={data.books.length}
             unit="cuốn"
-            subtitle={`Lọc đầy đủ toàn bộ sách thuộc ${data.category}`}
+            subtitle={`Thể loại ${data.category}`}
             icon={faListCheck}
-            variant="cyan"
           />
           <MetricCard
-            title="Số Phép So Sánh (DSA)"
+            title="Số phép so sánh (DSA)"
             value={data.optimized.comparisons ?? 1}
-            unit="phép toán"
+            unit="bước"
             subtitle="1 lần băm nhóm + trích xuất K sách"
             icon={faTags}
-            variant="indigo"
           />
           <MetricCard
-            title="Số Lần Quét Tuyến Tính (Baseline)"
+            title="Số lần quét (Baseline)"
             value={data.baseline.comparisons ?? 10}
-            unit="lần so sánh"
-            subtitle="Phải duyệt qua toàn bộ N cuốn sách"
+            unit="bước"
+            subtitle="Phải duyệt qua toàn bộ N cuốn"
             icon={faLayerGroup}
-            variant="rose"
           />
         </div>
       )}
 
-      {/* Live Benchmark Comparison Table */}
+      {/* Comparison Table */}
       {data && (
         <ComparisonTable
           baselineName="Quét Tuyến Tính Thể Loại (Linear Category Scan)"
@@ -134,20 +128,20 @@ export default function RQ1Page() {
         />
       )}
 
-      {/* Result Books List */}
+      {/* Books List */}
       {data && (
-        <div className="glass-card p-6 rounded-2xl border border-white/10 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-400" />
+        <div className="p-5 rounded-xl bg-white border border-gray-200 space-y-3">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+            <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+              <FontAwesomeIcon icon={faCheckCircle} className="text-emerald-600" />
               Toàn Bộ Sách Thuộc Thể Loại "{data.category}" ({data.books.length} cuốn)
             </h3>
-            <span className="text-xs font-mono px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+            <span className="text-xs font-mono text-gray-500">
               Độ phức tạp: O(1 + K)
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {data.books.map((b) => (
               <BookCard key={b.book_id} book={b} highlight={true} />
             ))}
