@@ -723,9 +723,9 @@ Hình \ref{fig:seq_mc1} mô tả chi tiết luồng tương tác giữa người
 
 Trong chế độ Normal Mode, người dùng nhập mã định danh tài liệu cần tra cứu (ví dụ \texttt{b001}) để hệ thống kích hoạt cơ chế băm và truy xuất tức thời thông tin chi tiết của đầu sách như thể hiện trong Hình \ref{fig:mc1_normal}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{mc1_normal_view.jpg}
+    \includegraphics[width=0.78\linewidth]{mc1_normal_view.jpg}
     \caption{Giao diện tra cứu thông tin sách theo mã định danh bằng Hash Table (Normal Mode)}
     \label{fig:mc1_normal}
 \end{figure}
@@ -734,9 +734,9 @@ Kết quả hiển thị trên Hình \ref{fig:mc1_normal} cho thấy hệ thốn
 
 Tiếp theo, hệ thống được chuyển sang chế độ Benchmark Mode nhằm đối chiếu trực tiếp giữa thuật toán Baseline (Linear Search) và cấu trúc tối ưu (Separate Chaining Hash Table) trong trường hợp mã sách tồn tại trong kho dữ liệu (Hình \ref{fig:mc1_found}).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{mc1_benchmark_found.jpg}
+    \includegraphics[width=0.76\linewidth]{mc1_benchmark_found.jpg}
     \caption{Đối sánh thực nghiệm giữa Linear Search và Hash Table khi tìm thấy mã sách}
     \label{fig:mc1_found}
 \end{figure}
@@ -745,9 +745,9 @@ Từ kết quả đối sánh tại Hình \ref{fig:mc1_found}, cả hai phương
 
 Đối với trường hợp kiểm thử biên khi người dùng nhập một mã sách không tồn tại trong hệ thống (ví dụ \texttt{b9999}), việc đánh giá hành vi của hai thuật toán mang ý nghĩa lý thuyết rất quan trọng (Hình \ref{fig:mc1_notfound}).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{mc1_benchmark_notfound.jpg}
+    \includegraphics[width=0.78\linewidth]{mc1_benchmark_notfound.jpg}
     \caption{Đối sánh thực nghiệm giữa Linear Search và Hash Table khi mã sách không tồn tại}
     \label{fig:mc1_notfound}
 \end{figure}
@@ -771,7 +771,7 @@ Giải pháp tối ưu xây dựng một Cây đống cực đại (Max-Heap) ho
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{code_mc2_floyd_build.png}
+    \includegraphics[width=0.85\linewidth]{code_mc2_floyd_build.png}
     \caption{Hiện thực thuật toán xây dựng Max-Heap từ dưới lên theo nguyên lý Floyd}
     \label{fig:code_mc2_floyd}
 \end{figure}
@@ -785,7 +785,7 @@ Sau khi cấu trúc đống được thiết lập, phần tử có số lượt
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{seq_mc2_top_borrowed_heap.png}
+    \includegraphics[width=0.82\linewidth]{seq_mc2_top_borrowed_heap.png}
     \caption{Sơ đồ tuần tự thể hiện luồng trích xuất sách mượn nhiều nhất (MC2)}
     \label{fig:seq_mc2}
 \end{figure}
@@ -799,9 +799,9 @@ Luồng thực thi hoàn chỉnh của module MC2 được trình bày trên sơ
 
 Ở chế độ Normal Mode, hệ thống truy xuất trực tiếp phần tử tại gốc của Max-Heap và hiển thị chi tiết đầu sách dẫn đầu về lượt mượn như thể hiện trong Hình \ref{fig:mc2_normal}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{mc2_normal_view.jpg}
+    \includegraphics[width=0.78\linewidth]{mc2_normal_view.jpg}
     \caption{Kết quả trích xuất sách được mượn nhiều nhất bằng Max-Heap (Normal Mode)}
     \label{fig:mc2_normal}
 \end{figure}
@@ -810,9 +810,9 @@ Giao diện thực thi tại Hình \ref{fig:mc2_normal} ghi nhận cuốn sách 
 
 Tại chế độ Benchmark Mode (Hình \ref{fig:mc2_benchmark}), hệ thống thực hiện đo đạc song song giữa phương pháp quét tuyến tính tìm cực đại (Linear Max Scan) và cấu trúc Max-Heap.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{mc2_benchmark_max.jpg}
+    \includegraphics[width=0.76\linewidth]{mc2_benchmark_max.jpg}
     \caption{Đối sánh thực nghiệm giữa Linear Max Scan và Max-Heap trong bài toán tìm cực đại}
     \label{fig:mc2_benchmark}
 \end{figure}
@@ -864,9 +864,9 @@ Cần nhấn mạnh rằng Module RQ1 là bài toán \textbf{truy vấn và tr�
 
 Trong chế độ Normal Mode, người dùng thực hiện tra cứu thể loại \texttt{Computer Science}. Hệ thống sử dụng Bảng băm danh mục (Category Hash Table) để định vị nhóm và kết xuất toàn bộ danh sách sách thuộc thể loại này (Hình \ref{fig:rq1_normal}).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq1_normal_view.jpg}
+    \includegraphics[width=0.78\linewidth]{rq1_normal_view.jpg}
     \caption{Kết quả tra cứu toàn bộ sách thuộc thể loại Computer Science bằng Category Hash Table}
     \label{fig:rq1_normal}
 \end{figure}
@@ -875,9 +875,9 @@ Kết quả trên Hình \ref{fig:rq1_normal} hiển thị đầy đủ danh sác
 
 Tiếp tục đánh giá ở chế độ Benchmark Mode, Hình \ref{fig:rq1_found} ghi nhận trường hợp tra cứu thể loại \texttt{Database} trên tập dữ liệu thử nghiệm 10 cuốn sách.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq1_benchmark_found.jpg}
+    \includegraphics[width=0.78\linewidth]{rq1_benchmark_found.jpg}
     \caption{Đối sánh giữa Linear Scan và Category Hash khi tra cứu thể loại mẫu trên hệ thống}
     \label{fig:rq1_found}
 \end{figure}
@@ -886,9 +886,9 @@ Hình \ref{fig:rq1_found} phản ánh trường hợp thể loại \texttt{Datab
 
 Đối với trường hợp kiểm thử thể loại hoàn toàn không tồn tại trong danh mục hệ thống (ví dụ thể loại \texttt{Cooking}), kết quả đối sánh được thể hiện trong Hình \ref{fig:rq1_notfound}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq1_benchmark_notfound.jpg}
+    \includegraphics[width=0.78\linewidth]{rq1_benchmark_notfound.jpg}
     \caption{Đối sánh thực nghiệm giữa Linear Scan và Category Hash khi thể loại không tồn tại}
     \label{fig:rq1_notfound}
 \end{figure}
@@ -912,7 +912,7 @@ Giải pháp tối ưu sử dụng Cây tìm kiếm nhị phân tự cân bằng
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{code_rq2_avl_insert_balance.png}
+    \includegraphics[width=0.85\linewidth]{code_rq2_avl_insert_balance.png}
     \caption{Cài đặt cơ chế kiểm tra hệ số cân bằng và thực hiện phép quay cây AVL}
     \label{fig:code_rq2_avl}
 \end{figure}
@@ -926,7 +926,7 @@ Khi thực hiện truy vấn các phiếu mượn quá hạn trước một ngà
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{seq_rq2_overdue_avl_tracker.png}
+    \includegraphics[width=0.82\linewidth]{seq_rq2_overdue_avl_tracker.png}
     \caption{Sơ đồ tuần tự thể hiện luồng truy vết phiếu mượn quá hạn (RQ2)}
     \label{fig:seq_rq2}
 \end{figure}
@@ -940,9 +940,9 @@ Module RQ2 giải quyết bài toán nghiệp vụ cốt lõi: lọc và truy v�
 
 Trong chế độ Normal Mode, nhân viên thư viện sử dụng bộ chọn ngày tương tác để thiết lập mốc kiểm tra là ngày \texttt{2026-10-02}. Hệ thống tiến hành duyệt cây AVL và trả về danh sách các phiếu quá hạn như thể hiện trong Hình \ref{fig:rq2_normal}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq2_normal_view.jpg}
+    \includegraphics[width=0.78\linewidth]{rq2_normal_view.jpg}
     \caption{Kết quả lọc danh sách phiếu mượn quá hạn bằng Cây tự cân bằng AVL (Normal Mode)}
     \label{fig:rq2_normal}
 \end{figure}
@@ -951,9 +951,9 @@ Giao diện tại Hình \ref{fig:rq2_normal} kết xuất chính xác 3 phiếu 
 
 Chuyển sang chế độ Benchmark Mode với cùng mốc kiểm tra \texttt{2026-10-02}, hệ thống tiến hành đo đạc đối chứng giữa phương pháp quét tuyến tính (Linear Scan) và Cây tự cân bằng AVL (Hình \ref{fig:rq2_overdue}).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq2_benchmark_overdue.jpg}
+    \includegraphics[width=0.76\linewidth]{rq2_benchmark_overdue.jpg}
     \caption{Đối sánh giữa Linear Scan và AVL Tree khi tồn tại các phiếu mượn quá hạn}
     \label{fig:rq2_overdue}
 \end{figure}
@@ -962,9 +962,9 @@ Kết quả đối sánh tại Hình \ref{fig:rq2_overdue} xác nhận cả hai 
 
 Để kiểm tra trường hợp biên khi mốc thời gian thiết lập nằm sâu trong quá khứ và không có bất kỳ phiếu nào bị trễ hạn (ví dụ mốc ngày \texttt{2026-01-01}), kịch bản đối sánh được thực thi như thể hiện trong Hình \ref{fig:rq2_no_overdue}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq2_benchmark_no_overdue.jpg}
+    \includegraphics[width=0.78\linewidth]{rq2_benchmark_no_overdue.jpg}
     \caption{Đối sánh giữa Linear Scan và AVL Tree tại mốc thời gian không có phiếu quá hạn}
     \label{fig:rq2_no_overdue}
 \end{figure}
@@ -988,7 +988,7 @@ Giải pháp tối ưu xây dựng một Bảng băm chỉ mục ngược (Inver
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{code_rq3_inverted_index_search.png}
+    \includegraphics[width=0.85\linewidth]{code_rq3_inverted_index_search.png}
     \caption{Hiện thực hàm tra cứu từ khóa trong Bảng băm chỉ mục ngược}
     \label{fig:code_rq3_search}
 \end{figure}
@@ -1002,7 +1002,7 @@ Khi độc giả nhập từ khóa tìm kiếm, hệ thống chuẩn hóa từ k
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth]{seq_rq3_inverted_title_search.png}
+    \includegraphics[width=0.82\linewidth]{seq_rq3_inverted_title_search.png}
     \caption{Sơ đồ tuần tự thể hiện luồng tìm kiếm tựa sách theo từ khóa (RQ3)}
     \label{fig:seq_rq3}
 \end{figure}
@@ -1016,9 +1016,9 @@ Module RQ3 hỗ trợ tìm kiếm tài liệu linh hoạt theo từ khóa xuất
 
 Ở chế độ Normal Mode, người dùng nhập từ khóa tìm kiếm \texttt{"clean"}. Hệ thống bóc tách từ khóa, tra cứu trong Bảng băm chỉ mục ngược và hiển thị đầu sách tương ứng (Hình \ref{fig:rq3_normal}).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq3_normal_view.jpg}
+    \includegraphics[width=0.78\linewidth]{rq3_normal_view.jpg}
     \caption{Kết quả tìm kiếm sách theo từ khóa bằng Bảng băm chỉ mục ngược (Normal Mode)}
     \label{fig:rq3_normal}
 \end{figure}
@@ -1027,9 +1027,9 @@ Hình \ref{fig:rq3_normal} cho thấy hệ thống trả về đúng cuốn sác
 
 Khi chuyển sang chế độ Benchmark Mode với từ khóa tìm kiếm \texttt{"data"} (Hình \ref{fig:rq3_found}), hệ thống thực hiện đối sánh giữa phương pháp quét xâu con vét cạn (Linear Title Scan) và Bảng băm chỉ mục ngược (Prefix Title Index).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq3_benchmark_found.jpg}
+    \includegraphics[width=0.76\linewidth]{rq3_benchmark_found.jpg}
     \caption{Đối sánh giữa Linear Title Scan và Inverted Index khi tìm thấy từ khóa trong tiêu đề}
     \label{fig:rq3_found}
 \end{figure}
@@ -1038,9 +1038,9 @@ Kết quả đối chứng tại Hình \ref{fig:rq3_found} cho thấy cả hai g
 
 Cuối cùng, trường hợp kiểm thử khi độc giả nhập một từ khóa hoàn toàn không xuất hiện trong bất kỳ tựa sách nào (ví dụ \texttt{"quantum\_xyz"}) được thể hiện trong Hình \ref{fig:rq3_notfound}.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{rq3_benchmark_notfound.jpg}
+    \includegraphics[width=0.78\linewidth]{rq3_benchmark_notfound.jpg}
     \caption{Đối sánh giữa Linear Title Scan và Inverted Index khi từ khóa không tồn tại}
     \label{fig:rq3_notfound}
 \end{figure}
