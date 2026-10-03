@@ -1,9 +1,12 @@
 #ifndef FILE_STORE_H
 #define FILE_STORE_H
 
-#include "../models/Models.h"
 #include <vector>
 #include <string>
+#include "../models/Book.h"
+#include "../models/Reader.h"
+#include "../models/BorrowRecord.h"
+#include "../models/WaitlistEntry.h"
 
 class FileStore {
 public:

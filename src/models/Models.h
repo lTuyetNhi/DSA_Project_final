@@ -1,9 +1,9 @@
 #ifndef MODELS_H
 #define MODELS_H
 
-#include "Book.h"
-#include "Reader.h"
-#include "BorrowRecord.h"
-#include "WaitlistEntry.h"
+#include "Book.h"          // IWYU pragma: export
+#include "Reader.h"        // IWYU pragma: export
+#include "BorrowRecord.h"  // IWYU pragma: export
+#include "WaitlistEntry.h" // IWYU pragma: export
 
 #endif // MODELS_H
