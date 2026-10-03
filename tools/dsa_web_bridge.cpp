@@ -94,6 +94,22 @@ void handleMC1(const string& targetId) {
     auto baseRes = LinearSearch::search(books, targetId);
     auto optRes = ht.search(targetId);
 
+    // 1000 Workload benchmark
+    const int WORKLOAD = 1000;
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        LinearSearch::search(books, targetId);
+    }
+    auto end = high_resolution_clock::now();
+    long long baseWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
+    start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        ht.search(targetId);
+    }
+    end = high_resolution_clock::now();
+    long long optWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
     unsigned long hashVal = 5381;
     for (char c : targetId) {
         hashVal = ((hashVal << 5) + hashVal) + (unsigned char)c;
@@ -103,6 +119,7 @@ void handleMC1(const string& targetId) {
     cout << "{"
          << "\"status\":\"success\","
          << "\"module\":\"MC1\","
+         << "\"module_name\":\"MC1: Tra cứu theo Mã Sách (Exact-Key Lookup)\","
          << "\"target_id\":\"" << escapeJson(targetId) << "\","
          << "\"hash_info\":{"
          << "\"raw_hash\":" << hashVal << ","
@@ -113,13 +130,19 @@ void handleMC1(const string& targetId) {
          << "\"found\":" << (baseRes.found ? "true" : "false") << ","
          << "\"comparisons\":" << baseRes.comparisons << ","
          << "\"execution_time_ns\":" << baseRes.executionTime << ","
+         << "\"workload_1000_ns\":" << baseWorkloadNs << ","
+         << "\"memory_label\":\"0 MB (O(1))\","
+         << "\"result_label\":\"" << (baseRes.found ? "Tìm thấy 1 sách" : "Không tìm thấy") << "\","
          << "\"complexity\":\"O(N)\""
          << "},"
          << "\"optimized\":{"
          << "\"found\":" << (optRes.found ? "true" : "false") << ","
          << "\"comparisons\":" << optRes.comparisons << ","
          << "\"execution_time_ns\":" << optRes.executionTime << ","
-         << "\"complexity\":\"O(1)\""
+         << "\"workload_1000_ns\":" << optWorkloadNs << ","
+         << "\"memory_label\":\"~49 MB (Hash Table 100.003 slots)\","
+         << "\"result_label\":\"" << (optRes.found ? "Tìm thấy 1 sách" : "Không tìm thấy") << "\","
+         << "\"complexity\":\"O(1) Average\""
          << "},"
          << "\"book\":" << (optRes.found ? bookToJson(optRes.book) : "null")
          << "}" << endl;
@@ -135,7 +158,21 @@ void handleMC2(int topK) {
     mh.build(books);
     auto optRes = mh.getMax();
 
-    // Sort books descending by borrow_count for top K presentation
+    const int WORKLOAD = 1000;
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        LinearMaxScan::findMax(books);
+    }
+    auto end = high_resolution_clock::now();
+    long long baseWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
+    start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        mh.getMax();
+    }
+    end = high_resolution_clock::now();
+    long long optWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
     vector<Book> sortedBooks = books;
     sort(sortedBooks.begin(), sortedBooks.end(), [](const Book& a, const Book& b) {
         return a.borrow_count > b.borrow_count;
@@ -144,18 +181,25 @@ void handleMC2(int topK) {
     cout << "{"
          << "\"status\":\"success\","
          << "\"module\":\"MC2\","
+         << "\"module_name\":\"MC2: Sách Mượn Nhiều Nhất (Max-Heap Priority Peak)\","
          << "\"top_k\":" << topK << ","
          << "\"baseline\":{"
          << "\"found\":" << (baseRes.found ? "true" : "false") << ","
          << "\"comparisons\":" << baseRes.comparisons << ","
          << "\"execution_time_ns\":" << baseRes.executionTime << ","
+         << "\"workload_1000_ns\":" << baseWorkloadNs << ","
+         << "\"memory_label\":\"0 MB (O(1))\","
+         << "\"result_label\":\"" << (baseRes.found ? "Tìm thấy sách Max" : "Rỗng") << "\","
          << "\"complexity\":\"O(N)\""
          << "},"
          << "\"optimized\":{"
          << "\"found\":" << (optRes.found ? "true" : "false") << ","
          << "\"comparisons\":" << optRes.comparisons << ","
          << "\"execution_time_ns\":" << optRes.executionTime << ","
-         << "\"complexity\":\"O(1) peek\""
+         << "\"workload_1000_ns\":" << optWorkloadNs << ","
+         << "\"memory_label\":\"Mảng 1 chiều liên tục trong RAM\","
+         << "\"result_label\":\"" << (optRes.found ? "Tìm thấy sách Max" : "Rỗng") << "\","
+         << "\"complexity\":\"O(1) Peek Root\""
          << "},"
          << "\"top_books\":[";
     for (int i = 0; i < topK && i < (int)sortedBooks.size(); ++i) {
@@ -173,20 +217,42 @@ void handleRQ1(const string& category) {
     auto baseRes = LinearCategoryScan::search(books, category);
     auto optRes = cht.search(category);
 
+    const int WORKLOAD = 1000;
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        LinearCategoryScan::search(books, category);
+    }
+    auto end = high_resolution_clock::now();
+    long long baseWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
+    start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        cht.search(category);
+    }
+    end = high_resolution_clock::now();
+    long long optWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
     cout << "{"
          << "\"status\":\"success\","
          << "\"module\":\"RQ1\","
+         << "\"module_name\":\"RQ1: Lọc Theo Thể Loại (Category Index View)\","
          << "\"category\":\"" << escapeJson(category) << "\","
          << "\"baseline\":{"
          << "\"count\":" << baseRes.books.size() << ","
          << "\"comparisons\":" << baseRes.comparisons << ","
          << "\"execution_time_ns\":" << baseRes.executionTime << ","
+         << "\"workload_1000_ns\":" << baseWorkloadNs << ","
+         << "\"memory_label\":\"0 MB (O(1))\","
+         << "\"result_label\":\"Khớp " << baseRes.books.size() << " sách\","
          << "\"complexity\":\"O(N)\""
          << "},"
          << "\"optimized\":{"
          << "\"count\":" << optRes.books.size() << ","
          << "\"comparisons\":" << optRes.comparisons << ","
          << "\"execution_time_ns\":" << optRes.executionTime << ","
+         << "\"workload_1000_ns\":" << optWorkloadNs << ","
+         << "\"memory_label\":\"Category Hash Buckets & Linked Lists\","
+         << "\"result_label\":\"Khớp " << optRes.books.size() << " sách\","
          << "\"complexity\":\"O(1 + K)\""
          << "},"
          << "\"books\":[";
@@ -205,20 +271,42 @@ void handleRQ2(const string& currentDate) {
     auto baseRes = LinearOverdueScan::search(records, currentDate);
     auto optRes = avl.findOverdue(currentDate);
 
+    const int WORKLOAD = 1000;
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        LinearOverdueScan::search(records, currentDate);
+    }
+    auto end = high_resolution_clock::now();
+    long long baseWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
+    start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        avl.findOverdue(currentDate);
+    }
+    end = high_resolution_clock::now();
+    long long optWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
     cout << "{"
          << "\"status\":\"success\","
          << "\"module\":\"RQ2\","
+         << "\"module_name\":\"RQ2: Lọc Khoảng Phiếu Quá Hạn (AVL Tree Range View)\","
          << "\"current_date\":\"" << escapeJson(currentDate) << "\","
          << "\"baseline\":{"
          << "\"count\":" << baseRes.records.size() << ","
          << "\"checks\":" << baseRes.checks << ","
          << "\"execution_time_ns\":" << baseRes.executionTime << ","
+         << "\"workload_1000_ns\":" << baseWorkloadNs << ","
+         << "\"memory_label\":\"0 MB (O(1))\","
+         << "\"result_label\":\"" << baseRes.records.size() << " phiếu quá hạn\","
          << "\"complexity\":\"O(N)\""
          << "},"
          << "\"optimized\":{"
          << "\"count\":" << optRes.records.size() << ","
          << "\"checks\":" << optRes.checks << ","
          << "\"execution_time_ns\":" << optRes.executionTime << ","
+         << "\"workload_1000_ns\":" << optWorkloadNs << ","
+         << "\"memory_label\":\"Cây AVL Nút Liên Kết\","
+         << "\"result_label\":\"" << optRes.records.size() << " phiếu quá hạn\","
          << "\"complexity\":\"O(log N + K)\""
          << "},"
          << "\"overdue_records\":[";
@@ -237,20 +325,42 @@ void handleRQ3(const string& keyword) {
     auto baseRes = LinearTitleScan::search(books, keyword);
     auto optRes = cts.search(keyword);
 
+    const int WORKLOAD = 1000;
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        LinearTitleScan::search(books, keyword);
+    }
+    auto end = high_resolution_clock::now();
+    long long baseWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
+    start = high_resolution_clock::now();
+    for (int i = 0; i < WORKLOAD; ++i) {
+        cts.search(keyword);
+    }
+    end = high_resolution_clock::now();
+    long long optWorkloadNs = duration_cast<nanoseconds>(end - start).count();
+
     cout << "{"
          << "\"status\":\"success\","
          << "\"module\":\"RQ3\","
+         << "\"module_name\":\"RQ3: Tìm Kiếm Theo Tiêu Đề (Inverted Index Search)\","
          << "\"keyword\":\"" << escapeJson(keyword) << "\","
          << "\"baseline\":{"
          << "\"count\":" << baseRes.books.size() << ","
          << "\"checks\":" << baseRes.booksChecked << ","
          << "\"execution_time_ns\":" << baseRes.executionTime << ","
+         << "\"workload_1000_ns\":" << baseWorkloadNs << ","
+         << "\"memory_label\":\"0 MB (O(1))\","
+         << "\"result_label\":\"Khớp " << baseRes.books.size() << " sách\","
          << "\"complexity\":\"O(N * M)\""
          << "},"
          << "\"optimized\":{"
          << "\"count\":" << optRes.books.size() << ","
          << "\"checks\":" << optRes.booksChecked << ","
          << "\"execution_time_ns\":" << optRes.executionTime << ","
+         << "\"workload_1000_ns\":" << optWorkloadNs << ","
+         << "\"memory_label\":\"Inverted Index Hash Table & Posting Lists\","
+         << "\"result_label\":\"Khớp " << optRes.books.size() << " sách\","
          << "\"complexity\":\"O(1 + K)\""
          << "},"
          << "\"matched_books\":[";
@@ -264,7 +374,6 @@ void handleRQ3(const string& keyword) {
 void handleBenchmark(int size) {
     if (size <= 0) size = 10000;
     
-    // Generate synthetic dataset
     vector<Book> synBooks;
     synBooks.reserve(size);
     for (int i = 0; i < size; ++i) {
@@ -385,10 +494,10 @@ void handleBenchmark(int size) {
 
 int main(int argc, char* argv[]) {
     string mode = "data";
-    string targetId = "BK001";
-    string category = "Cong nghe";
+    string targetId = "B001";
+    string category = "Software Engineering";
     string date = "2026-10-02";
-    string keyword = "Lap trinh";
+    string keyword = "Code";
     int topK = 3;
     int size = 10000;
 

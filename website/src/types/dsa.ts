@@ -31,12 +31,35 @@ export interface AlgorithmMetrics {
   comparisons?: number;
   checks?: number;
   execution_time_ns: number;
+  workload_1000_ns?: number;
+  memory_label?: string;
+  result_label?: string;
   complexity: string;
+}
+
+export interface ModuleResponse {
+  status: string;
+  module: string;
+  module_name: string;
+  target_id?: string;
+  category?: string;
+  current_date?: string;
+  keyword?: string;
+  top_k?: number;
+  hash_info?: HashInfo;
+  baseline: AlgorithmMetrics;
+  optimized: AlgorithmMetrics;
+  book?: Book | null;
+  books?: Book[];
+  top_books?: Book[];
+  overdue_records?: BorrowRecord[];
+  matched_books?: Book[];
 }
 
 export interface MC1Response {
   status: string;
   module: 'MC1';
+  module_name: string;
   target_id: string;
   hash_info: HashInfo;
   baseline: AlgorithmMetrics;
@@ -47,6 +70,7 @@ export interface MC1Response {
 export interface MC2Response {
   status: string;
   module: 'MC2';
+  module_name: string;
   top_k: number;
   baseline: AlgorithmMetrics;
   optimized: AlgorithmMetrics;
@@ -56,6 +80,7 @@ export interface MC2Response {
 export interface RQ1Response {
   status: string;
   module: 'RQ1';
+  module_name: string;
   category: string;
   baseline: AlgorithmMetrics;
   optimized: AlgorithmMetrics;
@@ -65,6 +90,7 @@ export interface RQ1Response {
 export interface RQ2Response {
   status: string;
   module: 'RQ2';
+  module_name: string;
   current_date: string;
   baseline: AlgorithmMetrics;
   optimized: AlgorithmMetrics;
@@ -74,6 +100,7 @@ export interface RQ2Response {
 export interface RQ3Response {
   status: string;
   module: 'RQ3';
+  module_name: string;
   keyword: string;
   baseline: AlgorithmMetrics;
   optimized: AlgorithmMetrics;
@@ -94,10 +121,4 @@ export interface BenchmarkResponse {
   status: string;
   dataset_size: number;
   results: BenchmarkItem[];
-}
-
-export interface InitialDataResponse {
-  status: string;
-  books: Book[];
-  borrow_records: BorrowRecord[];
 }
