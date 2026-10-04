@@ -1,46 +1,45 @@
-# 📚 HỆ THỐNG QUẢN LÝ THƯ VIỆN & TRA CỨU TÀI LIỆU (DSA FINAL PROJECT)
+# 📚 HỆ THỐNG QUẢN LÝ THƯ VIỆN & ENGINE ĐỐI SÁNH HIỆU NĂNG THUẬT TOÁN (LIBRARY RECORDS & DECISION ENGINE)
 
-> **Đồ án môn học**: Cấu trúc Dữ liệu & Giải thuật (Data Structures & Algorithms)  
-> **Ngôn ngữ & Chuẩn**: C++17 | Hướng đối tượng (OOP) | Terminal UI Tương tác | Tối ưu hóa Big-O  
-> **Dữ liệu**: Quản lý và lưu trữ liên tục qua định dạng JSON (`nlohmann/json`)
+> **Học phần**: Cấu trúc Dữ liệu và Giải thuật (Data Structures & Algorithms - DSA Capstone Project)  
+> **Ngôn ngữ & Chuẩn**: C++17 In-Memory Engine | Object-Oriented Programming (OOP)  
+> **Giao diện**: Terminal UI (TUI) Tương tác & Web Dashboard Trực quan hóa (Next.js / TailwindCSS)  
+> **Dữ liệu**: Nạp / Lưu trữ bất biến qua định dạng JSON (`data/*.json`)  
+> **Báo cáo**: 100% LaTeX chuẩn IEEE / Times New Roman (`BaoCao/main.tex`)
 
 ---
 
 ## 📑 MỤC LỤC
-1. [Tổng quan Dự án](#-tong-quan-du-an)
-2. [Cấu trúc Thư mục Dự án](#-cau-truc-thu-muc-du-an)
-3. [Kiến trúc Chế độ Hoạt động (2 Modes)](#-kien-truc-che-do-hoat-dong-2-modes)
-4. [Biểu đồ Trình tự (Sequence Diagrams)](#-bieu-do-trinh-tu-sequence-diagrams)
-   - [1. Luồng Khởi động & Điều phối Hệ thống](#1-luong-khoi-dong--dieu-phoi-he-thong-system-lifecycle)
-   - [2. Luồng Thực thi Benchmark Mode](#2-luong-thuc-thi-tra-cuu--benchmark-mode)
-   - [3. Luồng Bộ chọn Ngày & Lọc quá hạn RQ2 (AVL Tree)](#3-luong-bo-chon-ngay--loc-qua-han-rq2-avl-tree)
-5. [Chi tiết 5 Module Nghiệp vụ & Thuật toán DSA](#-chi-tiet-5-module-nghiep-vu--thuat-toan-dsa)
-   - [MC1: Tra cứu chính xác tài liệu theo Book ID](#1-module-mc1-tra-cuu-chinh-xac-tai-lieu-theo-book_id)
-   - [MC2: Tìm tài liệu có lượt mượn nhiều nhất](#2-module-mc2-tim-tai-lieu-co-luot-muon-nhieu-nhat)
-   - [RQ1: Tra cứu danh mục sách theo Thể loại](#3-module-rq1-tra-cuu-tat-ca-tai-lieu-theo-the-loai)
-   - [RQ2: Lọc danh sách phiếu mượn quá hạn](#4-module-rq2-loc-danh-sach-phieu-muon-qua-han)
-   - [RQ3: Tìm kiếm tài liệu theo Tên sách / Từ khóa](#5-module-rq3-tim-kiem-tai-lieu-theo-ten-sach--tu-khoa)
-6. [Cấu trúc Dữ liệu JSON (Data Schemas)](#-cau-truc-du-lieu-json-data-schemas)
-7. [Hướng dẫn Trải nghiệm UI & Phím điều hướng](#-huong-dan-trai-nghiem-ui--phim-dieu-huong)
-8. [Hướng dẫn Biên dịch & Chạy chương trình](#-huong-dan-bien-dich--chay-chuong-trinh)
+1. [🌟 Tổng quan Dự án & Điểm nổi bật](#-tong-quan-du-an--diem-noi-bat)
+2. [📁 Cấu trúc Thư mục Toàn diện](#-cau-truc-thu-muc-toan-dien)
+3. [⚙️ Kiến trúc Hệ thống 3 Tầng (3-Layer Architecture)](#-kien-truc-he-thong-3-tang-3-layer-architecture)
+4. [🧩 Chi tiết 5 Module Nghiệp vụ & Cấu trúc Dữ liệu Lõi](#-chi-tiet-5-module-nghiep-vu--cau-truc-du-lieu-loi)
+5. [⚖️ Giải pháp cho Yêu cầu Xung đột (Mục 5.4 Đề bài)](#-giai-phap-cho-yeu-cau-xung-dot-muc-54-de-bai)
+6. [🚀 Hướng dẫn Cài đặt & Khởi chạy Toàn bộ Hệ thống](#-huong-dan-cai-dat--khoi-chay-toan-bo-he-thong)
+   - [1. Chạy Ứng dụng Chính (C++ TUI Console)](#1-chay-ung-dung-chinh-c-tui-console)
+   - [2. Chạy Giao diện Web Trực quan (Next.js Dashboard)](#2-chay-giao-dien-web-truc-quan-nextjs-dashboard)
+   - [3. Chạy Bộ Kiểm thử Tự động (Automated Test Suite - 24/24 Tests)](#3-chay-bo-kiem-thu-tu-dong-automated-test-suite---2424-tests)
+   - [4. Chạy Bộ Đo kiểm Hiệu năng Thực nghiệm (Benchmark Suite - 1 Triệu Bản ghi)](#4-chay-bo-do-kiem-hieu-nang-thuc-nghiem-benchmark-suite---1-trieu-ban-ghi)
+7. [📊 Bảng Tổng hợp Kết quả Thực nghiệm & Kiểm định](#-bang-tong-hop-ket-qua-thuc-nghiem--kiem-dinh)
+8. [⌨️ Hướng dẫn Trải nghiệm UI & Phím Điều hướng](#-huong-dan-trai-nghiem-ui--phim-dieu-huong)
+9. [👥 Danh sách Thành viên & Phân công Trách nhiệm](#-danh-sach-thanh-vien--phan-cong-trach-nhiem)
 
 ---
 
-## 🌟 TỔNG QUAN DỰ ÁN
+## 🌟 TỔNG QUAN DỰ ÁN & ĐIỂM NỔI BẬT
 
-Dự án là một **Hệ thống Quản lý Thư viện hoàn chỉnh**, tập trung giải quyết các bài toán tra cứu, thống kê, kiểm tra hạn trả và tìm kiếm từ khóa với hiệu năng cao. Hệ thống được xây dựng nhằm đối sánh trực quan giữa:
-- **Baseline Solution**: Các thuật toán thô sơ duyệt tuần tự (Linear Scan $O(n)$).
-- **Final Solution**: Các Cấu trúc Dữ liệu Nâng cao tự thiết kế (Hash Table, Max-Heap, AVL Tree, Prefix Title Index) để tối ưu theo từng nghiệp vụ.
+Dự án là một **Library Records-and-Decision Engine** hoàn chỉnh, giải quyết trọn vẹn các bài toán nghiệp vụ thư viện vận hành hoàn toàn trên bộ nhớ trong (In-Memory). Hệ thống thiết lập cơ chế đối chứng song song hai giải pháp:
+- **Baseline Solution**: Giải pháp tuần tự tuyến tính $O(N)$ mang tính đối chứng.
+- **Final DSA Solution**: Các Cấu trúc Dữ liệu Nâng cao tự lập trình from-scratch (Bảng băm xích rời, Cây đống cực đại Max-Heap, Cây tự cân bằng AVL, Bảng băm Chỉ mục ngược Inverted Index, Hàng đợi FIFO).
 
-### Điểm nổi bật về mặt Kỹ thuật:
-- **Không dùng STL nâng cao có sẵn cho core**: Tự cài đặt Bảng băm Chaining, Cây AVL tự cân bằng, Cấu trúc Max-Heap mảng động.
-- **Terminal UI Tương tác mượt mà**: Điều hướng bằng phím mũi tên (`↑ / ↓`, `← / →`), không tải lại giật lag, hiển thị bảng ASCII gọn gàng chuẩn Monochrome.
-- **Bộ chọn ngày thông minh (Date Picker)**: Chuyển đổi giữa Năm/Tháng/Ngày bằng phím `← / →`, tự động kiểm soát năm nhuận và số ngày trong tháng.
-- **Xử lý ngắt phím `Esc` tức thì**: Người dùng có thể nhấn `Esc` ở bất kỳ bước nhập liệu nào để hủy và quay về Menu ngay lập tức.
+### 🏆 Các điểm nổi bật kỹ thuật:
+- **100% Cài đặt from-scratch**: Tuyệt đối không dùng STL Container dựng sẵn cho logic cấu trúc dữ liệu cốt lõi.
+- **Kiểm định tính đúng đắn 100% PASS**: Bộ kiểm thử tự động 24 ca test phủ kín mọi module nghiệp vụ, trường hợp biên và toàn vẹn dữ liệu.
+- **Stress Test cực đại 1.000.000 bản ghi**: Tốc độ xử lý bứt phá, tăng tốc từ **$180\times$** đến **$76.400\times$** so với quét tuyến tính.
+- **Trải nghiệm đa nền tảng**: Terminal UI mượt mà không nhấp nháy, hỗ trợ phím điều hướng động + Web Visualization Dashboard hiện đại.
 
 ---
 
-## 📁 CẤU TRÚC THƯ MỤC DỰ ÁN
+## 📁 CẤU TRÚC THƯ MỤC TOÀN DIỆN
 
 ```text
 DSA_Project_final/
@@ -49,355 +48,241 @@ DSA_Project_final/
 │   ├── readers.json                    # Hồ sơ độc giả thư viện
 │   ├── borrow_records.json             # Lịch sử phiếu mượn/trả sách
 │   └── waitlist.json                   # Danh sách chờ khi sách hết tồn kho
-├── include/
-│   ├── presentation/                   # Điều hướng & Giao diện người dùng
+│
+├── include/                            # Header định nghĩa giao diện thuật toán & cấu trúc
+│   ├── core/                           # Header các module DSA
+│   │   ├── mc1/ (HashTable.h, LinearSearch.h, MC1.h, SearchResult.h)
+│   │   ├── mc2/ (MaxHeap.h, LinearMaxScan.h, MC2.h, MaxResult.h)
+│   │   ├── rq1/ (CategoryHashTable.h, LinearCategoryScan.h, RQ1.h, CategoryResult.h)
+│   │   ├── rq2/ (AVLTree.h, LinearOverdueScan.h, RQ2.h, OverdueResult.h)
+│   │   └── rq3/ (CategoryTitleSearch.h, LinearTitleScan.h, RQ3.h, TitleSearchResult.h)
+│   ├── presentation/                   # Header tầng giao diện TUI
 │   │   └── AppMenu.h
-│   ├── core/                           # Các Header định nghĩa thuật toán DSA
-│   │   ├── mc1/                        # MC1: Tra cứu sách theo ID
-│   │   │   ├── MC1.h
-│   │   │   ├── LinearSearch.h
-│   │   │   ├── HashTable.h
-│   │   │   └── SearchResult.h
-│   │   ├── mc2/                        # MC2: Sách mượn nhiều nhất
-│   │   │   ├── MC2.h
-│   │   │   ├── LinearMaxScan.h
-│   │   │   ├── MaxHeap.h
-│   │   │   └── MaxResult.h
-│   │   ├── rq1/                        # RQ1: Sách theo thể loại
-│   │   │   ├── RQ1.h
-│   │   │   ├── LinearCategoryScan.h
-│   │   │   ├── CategoryHashTable.h
-│   │   │   └── CategoryResult.h
-│   │   ├── rq2/                        # RQ2: Phiếu mượn quá hạn
-│   │   │   ├── RQ2.h
-│   │   │   ├── LinearOverdueScan.h
-│   │   │   ├── AVLTree.h
-│   │   │   └── OverdueResult.h
-│   │   └── rq3/                        # RQ3: Tìm kiếm theo từ khóa
-│   │       ├── RQ3.h
-│   │       ├── LinearTitleScan.h
-│   │       ├── CategoryTitleSearch.h
-│   │       └── TitleSearchResult.h
-│   ├── utils/                          # Tiện ích kiểm định ngày tháng
-│   │   └── DateUtils.h
+│   ├── utils/                          # Tiện ích đo đạc & chuẩn hóa chuỗi / ngày tháng
+│   │   ├── BenchmarkRunner.h, BenchmarkResult.h
+│   │   ├── DateUtils.h, StringUtils.h
 │   └── nlohmann/                       # Thư viện JSON for Modern C++
 │       └── json.hpp
-├── src/
-│   ├── presentation/
-│   │   └── AppMenu.cpp                 # Quản lý giao diện, menu phím mũi tên & bắt phím Esc
-│   ├── core/                           # Cài đặt chi tiết các thuật toán DSA
-│   │   ├── mc1/ (MC1.cpp, LinearSearch.cpp, HashTable.cpp)
-│   │   ├── mc2/ (MC2.cpp, LinearMaxScan.cpp, MaxHeap.cpp)
-│   │   ├── rq1/ (RQ1.cpp, LinearCategoryScan.cpp, CategoryHashTable.cpp)
-│   │   ├── rq2/ (RQ2.cpp, LinearOverdueScan.cpp, AVLTree.cpp)
-│   │   └── rq3/ (RQ3.cpp, LinearTitleScan.cpp, CategoryTitleSearch.cpp)
-│   ├── models/                         # Khai báo Struct/Class thực thể
-│   │   ├── Book.h
-│   │   ├── Reader.h
-│   │   ├── BorrowRecord.h
-│   │   ├── WaitlistEntry.h
-│   │   └── Models.h
-│   └── persistence/                    # Đọc/ghi và parse file JSON
-│       ├── FileStore.h
-│       └── FileStore.cpp
-├── build.bat                           # Script biên dịch & chạy nhanh trên CMD
-├── build.ps1                           # Script biên dịch & chạy nhanh trên PowerShell
-├── main.cpp                            # Điểm khởi động chương trình (Bootstrap)
-├── doc/                                # Tài liệu đặc tả và prompt thiết kế
-└── README.md                           # Tài liệu dự án chi tiết
+│
+├── src/                                # Hiện thực mã nguồn C++
+│   ├── core/                           # Source code giải thuật DSA from-scratch
+│   │   ├── mc1/, mc2/, rq1/, rq2/, rq3/
+│   ├── models/                         # Khai báo Struct thực thể (Book, Reader, BorrowRecord, WaitlistEntry)
+│   ├── persistence/                    # Tầng FileStore nạp/lưu JSON
+│   └── presentation/                   # Điều hướng TUI Menu, Bắt phím Esc, BenchmarkRunner
+│
+├── benchmark/                          # 🚀 MODULE ĐO KIỂM HIỆU NĂNG THỰC NGHIỆM
+│   ├── run_benchmark.cpp               # Mã nguồn đo kiểm 4 quy mô (10 -> 1.000.000 bản ghi)
+│   ├── run_benchmark.exe               # File thực thi benchmark tối ưu -O3
+│   ├── chay_benchmark.bat              # Script 1-click chạy benchmark
+│   └── ket_qua_benchmark.txt           # File kết quả đo đạc thực nghiệm chi tiết
+│
+├── test/                               # 🧪 MODULE KIỂM THỬ TỰ ĐỘNG (AUTOMATED TEST SUITE)
+│   ├── run_all_tests.cpp               # Mã nguồn 7 Test Suites với 24 Test Cases
+│   ├── run_all_tests.exe               # File thực thi test runner
+│   ├── chay_test.bat                   # Script 1-click chạy toàn bộ test
+│   └── ket_qua_test.txt                # Báo cáo kết quả kiểm thử tự động 100% PASS
+│
+├── website/                            # 🌐 GIAO DIỆN WEB VISUALIZATION (NEXT.JS + TAILWINDCSS)
+│   ├── src/app/                        # Các trang trực quan hóa thuật toán (MC1, MC2, RQ1, RQ2, RQ3, Dashboard)
+│   └── package.json
+│
+├── tools/                              # Các công cụ hỗ trợ và cầu nối Web Bridge
+│   ├── auto_benchmark.cpp, benchmark_all.cpp, benchmark_1m.cpp, fast_benchmark_1m.cpp
+│   ├── dsa_web_bridge.cpp              # Cầu nối C++ Web Bridge
+│   └── generate_500k.cpp
+│
+├── BaoCao/                             # 📄 BÁO CÁO TỔNG KẾT LATEX (D1 -> D7)
+│   ├── main.tex                        # Báo cáo LaTeX chính (1431 dòng, chuẩn Times New Roman)
+│   ├── main.pdf                        # Bản PDF xuất bản hoàn chỉnh
+│   └── image/                          # Sơ đồ kiến trúc, biểu đồ, ảnh chụp thực nghiệm
+│
+├── doc/                                # Tài liệu hướng dẫn & Báo cáo D2, D3, Kiến trúc 3 tầng
+├── build.bat / build.ps1               # Script biên dịch & chạy ứng dụng chính
+├── run_website.bat / run_website.ps1   # Script khởi động Web Dashboard
+├── main.cpp                            # Điểm khởi động chương trình C++
+└── README.md                           # Tài liệu hướng dẫn sử dụng dự án
 ```
 
 ---
 
-## 🧭 KIẾN TRÚC CHẾ ĐỘ HOẠT ĐỘNG (2 MODES)
+## ⚙️ KIẾN TRÚC HỆ THỐNG 3 TẦNG (3-LAYER ARCHITECTURE)
 
-Hệ thống cung cấp 2 chế độ độc lập phục vụ cả việc nghiên cứu đối sánh và vận hành thực tế:
+Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng độc lập:
 
 ```text
-                  ┌─────────────────────────────────────┐
-                  │          CHỌN CHẾ ĐỘ HOẠT ĐỘNG       │
-                  └──────────────────┬──────────────────┘
-                                     │
-           ┌─────────────────────────┴─────────────────────────┐
-           ▼                                                   ▼
-┌───────────────────────────────┐               ┌───────────────────────────────┐
-│        BENCHMARK MODE         │               │          NORMAL MODE          │
-│   (So sánh 2 thuật toán)      │               │     (Vận hành thực tế)        │
-├───────────────────────────────┤               ├───────────────────────────────┤
-│ • Chạy đồng thời Baseline     │               │ • Chỉ chạy Final Solution     │
-│   và Final Solution.          │               │   đã tối ưu hóa.              │
-│ • Đo thời gian (nanoseconds). │               │ • Xuất kết quả trực tiếp      │
-│ • Đếm so sánh / Nodes duyệt.  │               │   với độ trễ thấp nhất.       │
-│ • Kiểm định kết quả (PASS).   │               │ • Hiển thị bảng chi tiết      │
-│ • Xuất bảng so sánh Big-O.    │               │   các bản ghi tìm thấy.       │
-└───────────────────────────────┘               └───────────────────────────────┘
++-----------------------------------------------------------------------+
+|                       1. PRESENTATION LAYER                           |
+|   - Terminal Interactive UI (AppMenu.cpp) / ANSI Controls             |
+|   - Web Visualization Dashboard (Next.js + TailwindCSS)               |
+|   - BenchmarkRunner (So khớp kết quả & đo đạc thời gian)              |
++-----------------------------------------------------------------------+
+                                   | (gọi hàm thuần túy)
+                                   v
++-----------------------------------------------------------------------+
+|                         2. DSA CORE LAYER                             |
+|   - MC1: Separate Chaining Hash Table + DJB2 Hash                     |
+|   - MC2: Max-Heap (Thuật toán vun đống Floyd O(N))                    |
+|   - RQ1: Category Hash Table + Danh sách liên kết đơn con trỏ        |
+|   - RQ2: AVL Tree tự cân bằng 4 phép quay + Range Pruning             |
+|   - RQ3: Inverted Index Hash Table + Tokenizer                        |
+|   - Waitlist: Hàng đợi FIFO Queue quản lý danh sách chờ              |
++-----------------------------------------------------------------------+
+                                   | (chỉ đọc/ghi thô lúc khởi động/tắt)
+                                   v
++-----------------------------------------------------------------------+
+|                      3. PERSISTENCE LAYER                             |
+|   - FileStore.cpp: Đọc/ghi JSON bất biến                              |
+|   - Tuyệt đối không chứa logic truy vấn ("Không SQL làm hộ")          |
++-----------------------------------------------------------------------+
 ```
 
 ---
 
-## 📊 BIỂU ĐỒ TRÌNH TỰ (SEQUENCE DIAGRAMS)
+## 🧩 CHI TIẾT 5 MODULE NGHIỆP VỤ & CẤU TRÚC DỮ LIỆU LÕI
 
-### 1. Luồng Khởi động & Điều phối Hệ thống (System Lifecycle)
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Người dùng
-    participant Main as main()
-    participant FS as FileStore
-    participant Core as Core Modules (MC1..RQ3)
-    participant Menu as AppMenu
-
-    User->>Main: Chạy ./main.exe
-    activate Main
-    Main->>FS: loadBooks(), loadReaders(), loadBorrowRecords(), loadWaitlist()
-    activate FS
-    FS-->>Main: Trả về các vector dữ liệu thô từ JSON
-    deactivate FS
-
-    Main->>Core: Khởi tạo mc1, mc2, rq1, rq2, rq3
-    Main->>Core: mc1.build(), mc2.build(), rq1.build(), rq2.build(), rq3.build()
-    activate Core
-    Note over Core: Xây dựng sẵn Hash Table, Max-Heap, AVL Tree, Prefix Title Index
-    Core-->>Main: Hoàn tất nạp dữ liệu vào cấu trúc DSA
-    deactivate Core
-
-    Main->>Menu: Khởi tạo AppMenu và gọi app.run()
-    activate Menu
-    Menu->>User: Hiển thị Mode Menu (Benchmark vs Normal)
-    deactivate Menu
-    deactivate Main
-```
+| Module | Nghiệp vụ thư viện | Baseline Solution | Cấu trúc DSA Tối ưu | Độ phức tạp (Baseline $\rightarrow$ DSA) |
+| :---: | :--- | :--- | :--- | :---: |
+| **MC1** | Tra cứu chính xác theo Mã sách (`book_id`) | Tìm kiếm tuần tự (`LinearSearch`) | **Bảng băm Xích rời (Separate Chaining)** kết hợp hàm băm DJB2 | $O(N) \longrightarrow O(1)$ |
+| **MC2** | Xác định Top 1 sách có lượt mượn nhiều nhất | Quét mảng tìm Max (`LinearMaxScan`) | **Cây đống cực đại (Max-Heap)** vun đống Floyd $O(N)$, trích xuất đỉnh | $O(N) \longrightarrow O(1)$ |
+| **RQ1** | Lọc toàn bộ danh mục sách theo Thể loại | Quét mảng lọc chuỗi (`LinearCategoryScan`) | **Bảng băm Danh mục Đa trị** liên kết con trỏ danh sách đơn | $O(N) \longrightarrow O(1 + K)$ |
+| **RQ2** | Rà soát & truy vết phiếu mượn quá hạn | Duyệt toàn bộ phiếu (`LinearOverdueScan`) | **Cây tự cân bằng AVL** + Số ngày Julian + Tỉa nhánh khoảng | $O(N) \longrightarrow O(\log N + K)$ |
+| **RQ3** | Tìm kiếm tựa sách theo Từ khóa | So khớp xâu con vét cạn (`LinearTitleScan`) | **Bảng băm Chỉ mục ngược (Inverted Index)** + Bộ tách từ | $O(N \cdot M) \longrightarrow O(C + K)$ |
 
 ---
 
-### 2. Luồng Thực thi Tra cứu & Benchmark Mode (MC1 / MC2 / RQ1 / RQ3)
+## ⚖️ GIẢI PHÁP CHO YÊU CẦU XUNG ĐỘT (MỤC 5.4 ĐỀ BÀI)
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Người dùng
-    participant Menu as AppMenu
-    participant Module as Module (MC1/RQ1/RQ3)
-    participant Baseline as Baseline (Linear Scan)
-    participant Final as Final Solution (DSA Index)
-
-    User->>Menu: Chọn Module & Nhập từ khóa / ID
-    alt Người dùng nhấn [Esc] để Hủy
-        Menu-->>User: Hủy thao tác ngay lập tức & Quay về Module Menu
-    else Người dùng nhập xong và nhấn [Enter]
-        Menu->>Menu: system("cls") (Xóa màn hình nhập liệu)
-        Menu->>Module: comparisonMode(input)
-        activate Module
-        
-        par Chạy Baseline
-            Module->>Baseline: search(input)
-            activate Baseline
-            Baseline-->>Module: BaselineResult (timeNs, comparisons, foundList)
-            deactivate Baseline
-        and Chạy Final Solution
-            Module->>Final: search(input)
-            activate Final
-            Final-->>Module: FinalResult (timeNs, checks, foundList)
-            deactivate Final
-        end
-
-        Module->>Module: sameResultSet(BaselineResult, FinalResult) -> Validation PASS/FAIL
-        Module-->>User: Xuất Bảng so sánh Big-O, thời gian thực thi & Chi tiết sách
-        deactivate Module
-
-        User->>Menu: Nhấn [Enter] sau khi xem kết quả
-        Menu-->>User: Quay thẳng về Danh mục Module của Mode hiện tại
-    end
-```
+- **Cặp yêu cầu xung đột thực sự**: `MC1` (Tra cứu mã định danh duy nhất) $\longleftrightarrow$ `RQ1 / RQ3` (Lọc theo thể loại nhóm & từ khóa tựa sách).
+- **Bản chất xung đột**: Một bảng băm đơn theo mã sách không thể hỗ trợ gom cụm thể loại hoặc tra cứu từ khóa nếu không quét toàn bộ $O(N)$.
+- **Giải pháp lựa chọn**: **Kết hợp Cấu trúc Đồng bộ (Composition)**:
+  - Bảng băm chính (theo `book_id`) lưu trữ toàn bộ bản ghi gốc.
+  - Bảng băm phụ (theo `category`) và Bảng băm chỉ mục ngược (theo `word`) lưu trữ con trỏ trỏ về bản ghi trong bảng chính.
+  - **Đánh đổi chấp nhận**: Tốn thêm một lượng nhỏ bộ nhớ RAM phụ và chi phí đồng bộ khi thêm mới, đổi lại **tất cả các thao tác đọc/tra cứu đều đạt tốc độ phản hồi tức thời $O(1)$**.
 
 ---
 
-### 3. Luồng Bộ chọn Ngày & Lọc quá hạn RQ2 (AVL Tree)
+## 🚀 HƯỚNG DẪN CÀI ĐẶT & KHỞI CHẠY TOÀN BỘ HỆ THỐNG
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Người dùng
-    participant Menu as AppMenu
-    participant DatePicker as selectDate()
-    participant RQ2 as Module RQ2
-    participant AVL as AVLTree (Balanced BST)
-
-    User->>Menu: Chọn chức năng RQ2 (Lọc phiếu mượn quá hạn)
-    Menu->>DatePicker: Gọi selectDate("RQ2...", 2026, 10, 2)
-    activate DatePicker
-
-    loop Tương tác chọn ngày
-        User->>DatePicker: Nhấn [← / →] chuyển Năm/Tháng/Ngày | [↑ / ↓] Tăng/Giảm
-        DatePicker-->>User: Highlight ô đang chọn & Cập nhật YYYY-MM-DD
-    end
-
-    User->>DatePicker: Nhấn [Enter] xác nhận ngày (hoặc [Esc] để hủy)
-    DatePicker-->>Menu: Trả về chuỗi ngày YYYY-MM-DD (hoặc rỗng nếu Esc)
-    deactivate DatePicker
-
-    alt Nếu bấm [Esc]
-        Menu-->>User: Trở về Danh mục Module ngay lập tức
-    else Nếu xác nhận ngày
-        Menu->>Menu: system("cls") (Xóa màn hình chọn ngày)
-        Menu->>RQ2: comparisonMode(currentDate)
-        activate RQ2
-        RQ2->>AVL: findOverdue(currentDate)
-        activate AVL
-        Note over AVL: Range Query trên AVL Tree: Cắt tỉa toàn bộ nhánh dueDate >= currentDate
-        AVL-->>RQ2: OverdueResult (Danh sách phiếu quá hạn, timeNs, nodesVisited)
-        deactivate AVL
-
-        RQ2-->>User: In Bảng so sánh hiệu năng & Danh sách phiếu quá hạn (STT, Mã phiếu, Hạn trả...)
-        deactivate RQ2
-        User->>Menu: Nhấn [Enter] -> Quay thẳng về Menu Module
-    end
-```
+### Yêu cầu môi trường:
+- **C++**: Trình biên dịch `g++` hỗ trợ chuẩn C++17 trở lên (MinGW-w64 trên Windows hoặc GCC trên Linux/macOS).
+- **Node.js** (để chạy Web Dashboard): Phiên bản Node.js $\ge 18.x$.
 
 ---
 
-## 🔍 CHI TIẾT 5 MODULE NGHIỆP VỤ & THUẬT TOÁN DSA
+### 1. Chạy Ứng dụng Chính (C++ TUI Console)
 
-### 1. Module MC1: Tra cứu chính xác tài liệu theo `book_id`
-- **Mục tiêu**: Người dùng nhập chính xác Mã sách (ví dụ: `B001`, `b002` - hỗ trợ *case-insensitive*), trả về thông tin chi tiết của sách.
-- **Baseline**: `Linear Search`
-  - Quét tuần tự từ đầu đến cuối danh sách `vector<Book>`.
-  - Độ phức tạp: $O(n)$.
-- **Final Solution**: `Custom Hash Table` (Separate Chaining)
-  - Áp dụng hàm băm DJB2 chuyển đổi `book_id` thành chỉ số bucket.
-  - Xử lý xung đột bằng Danh sách liên kết đơn (Singly Linked List).
-  - Độ phức tạp: $O(1)$ average.
+* **Cách 1: Sử dụng Script 1-Click (Khuyên dùng)**
+  - Double click file `build.bat` hoặc chạy trên CMD:
+    ```cmd
+    build.bat
+    ```
+  - Hoặc trên PowerShell:
+    ```powershell
+    .\build.ps1
+    ```
 
----
-
-### 2. Module MC2: Tìm tài liệu có lượt mượn nhiều nhất
-- **Mục tiêu**: Xác định cuốn sách có `borrow_count` lớn nhất trong thư viện (Tie-break: nếu bằng lượt mượn, ưu tiên `book_id` nhỏ hơn).
-- **Baseline**: `Linear Max Scan`
-  - Quét toàn bộ mảng sách và cập nhật biến `maxBook`.
-  - Độ phức tạp: $O(n)$.
-- **Final Solution**: `Max-Heap` (Cài đặt trên Mảng động tùy biến)
-  - Tự xây dựng thao tác `heapifyDown`, `heapifyUp`, `extractMax`.
-  - Khởi tạo Heap: `buildHeap` mất $O(n)$.
-  - Lấy phần tử lớn nhất: `getMax()` chỉ mất $O(1)$.
+* **Cách 2: Lệnh biên dịch thủ công `g++`:**
+  ```powershell
+  g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
+  .\main.exe
+  ```
 
 ---
 
-### 3. Module RQ1: Tra cứu tất cả tài liệu theo Thể loại (`category`)
-- **Mục tiêu**: Nhập một thể loại (ví dụ: `Computer Science`, `Database`), trả về toàn bộ sách thuộc thể loại đó.
-- **Baseline**: `Linear Category Scan`
-  - Quét toàn bộ kho sách, kiểm tra chuỗi `category`.
-  - Độ phức tạp: $O(n)$.
-- **Final Solution**: `Category Hash Table`
-  - Bảng băm ánh xạ: `category_key -> vector<Book*>`.
-  - Khi tra cứu, chỉ cần băm tên thể loại và lấy trực tiếp danh sách con trỏ `Book*`.
-  - Độ phức tạp: $O(1 + k)$ average (với $k$ là số sách thuộc thể loại đó).
+### 2. Chạy Giao diện Web Trực quan (Next.js Dashboard)
+
+* **Cách 1: Sử dụng Script 1-Click**
+  ```cmd
+  run_website.bat
+  ```
+  *(hoặc `.\run_website.ps1` trên PowerShell)*
+
+* **Cách 2: Khởi động thủ công:**
+  ```powershell
+  cd website
+  npm install
+  npm run dev
+  ```
+  Truy cập trình duyệt tại địa chỉ: **`http://localhost:3000`**
 
 ---
 
-### 4. Module RQ2: Lọc danh sách phiếu mượn quá hạn
-- **Mục tiêu**: Nhập ngày kiểm tra (qua bộ chọn ngày trực quan `YYYY-MM-DD`), lọc tất cả các phiếu có `status == "BORROWING"` và `due_date < currentDate`.
-- **Baseline**: `Linear Overdue Scan`
-  - Duyệt qua toàn bộ danh sách `vector<BorrowRecord>`, so sánh ngày chuỗi.
-  - Độ phức tạp: $O(n)$.
-- **Final Solution**: `AVL Tree` (Cây nhị phân tìm kiếm tự cân bằng)
-  - Cây AVL được đánh chỉ mục theo khóa `due_date`, lưu danh sách các phiếu cùng ngày đến hạn tại mỗi Node.
-  - Cân bằng độ cao qua 4 phép quay: `Left-Left`, `Right-Right`, `Left-Right`, `Right-Left`.
-  - Thuật toán `Range Query Overdue`:
-    - Nếu `node->dueDate < currentDate`: Duyệt toàn bộ cây con bên trái (chắc chắn quá hạn), lấy bản ghi tại node hiện tại, và duyệt tiếp cây con bên phải.
-    - Nếu `node->dueDate >= currentDate`: **Cắt tỉa toàn bộ cây con bên phải** (chắc chắn chưa quá hạn) và chỉ kiểm tra cây con bên trái.
-  - Độ phức tạp: $O(\log n + k)$ (với $k$ là số phiếu quá hạn tìm thấy).
+### 3. Chạy Bộ Kiểm thử Tự động (Automated Test Suite - 24/24 Tests)
+
+Thư mục [`test/`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test) chứa toàn bộ chương trình kiểm thử tự động 7 Test Suites với 24 ca test:
+
+* **Cách 1: Script 1-Click:**
+  - Double click file [`test/chay_test.bat`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test/chay_test.bat).
+* **Cách 2: Biên dịch và chạy bằng dòng lệnh:**
+  ```powershell
+  g++ -O3 -std=c++17 test/run_all_tests.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp -o test/run_all_tests.exe
+  .\test\run_all_tests.exe
+  ```
+* **Xem kết quả kiểm thử:** Mở tệp [`test/ket_qua_test.txt`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test/ket_qua_test.txt).
 
 ---
 
-### 5. Module RQ3: Tìm kiếm tài liệu theo Tên sách / Từ khóa
-- **Mục tiêu**: Người dùng nhập một từ khóa bất kỳ trong tên sách (ví dụ: `data`, `python`, `algorithms`, `system`), hệ thống tìm tất cả các sách có tiêu đề chứa từ khóa đó.
-- **Baseline**: `Full Linear Title Scan`
-  - Quét toàn bộ danh mục sách và thực hiện `substring find` không phân biệt hoa thường.
-  - Độ phức tạp: $O(n \cdot m)$ (với $n$ là số sách, $m$ là độ dài tiêu đề).
-- **Final Solution**: `Prefix Title Index`
-  - Chuẩn hóa tiêu đề và từ khóa, tách token, sau đó lập chỉ mục theo prefix của từng token để lọc tập ứng viên.
-  - Sau khi lấy tập ứng viên, hệ thống kiểm tra lại `substring find` trên tiêu đề đã chuẩn hóa để giữ kết quả không lệch so với baseline.
-  - Với truy vấn prefix thông thường: chi phí phụ thuộc vào số ứng viên $O(c + k)$. Với substring nằm giữa từ, hệ thống fallback quét toàn bộ để bảo toàn tính đúng.
+### 4. Chạy Bộ Đo kiểm Hiệu năng Thực nghiệm (Benchmark Suite - 1 Triệu Bản ghi)
+
+Thư mục [`benchmark/`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark) chứa công cụ đo kiểm qua 4 quy mô ($N = 10$, $N = 10.000$, $N = 100.000$, $N = 1.000.000$):
+
+* **Cách 1: Script 1-Click:**
+  - Double click file [`benchmark/chay_benchmark.bat`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark/chay_benchmark.bat).
+* **Cách 2: Biên dịch và chạy bằng dòng lệnh:**
+  ```powershell
+  g++ -O3 -std=c++17 benchmark/run_benchmark.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp -o benchmark/run_benchmark.exe
+  .\benchmark\run_benchmark.exe
+  ```
+* **Xem kết quả đo kiểm:** Mở tệp [`benchmark/ket_qua_benchmark.txt`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark/ket_qua_benchmark.txt).
 
 ---
 
-## 💾 CẤU TRÚC DỮ LIỆU JSON (DATA SCHEMAS)
+## 📊 BẢNG TỔNG HỢP KẾT QUẢ THỰC NGHIỆM & KIỂM ĐỊNH
 
-| Tệp Dữ Liệu | Đường Dẫn | Các Trường Chính (Fields) |
-|---|---|---|
-| **Books** | `data/books.json` | `book_id`, `title`, `author`, `category`, `published_year`, `total_quantity`, `available_quantity`, `borrow_count` |
-| **Readers** | `data/readers.json` | `reader_id`, `name`, `email`, `phone` |
-| **Borrow Records** | `data/borrow_records.json` | `borrow_id`, `reader_id`, `book_id`, `borrow_date`, `due_date`, `return_date`, `status` (`BORROWING` / `RETURNED`) |
-| **Waitlist** | `data/waitlist.json` | `wait_id`, `book_id`, `reader_id`, `registered_at` |
+### 1. Kết quả Benchmark ở quy mô cực đại ($N = 1.000.000$ bản ghi In-Memory)
+*(Trích xuất tự động từ [`benchmark/ket_qua_benchmark.txt`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark/ket_qua_benchmark.txt))*
+
+| Mã | Nghiệp vụ | Thuật toán Baseline | Thời gian Baseline | Cấu trúc DSA Tối ưu | Thời gian DSA | Tỷ lệ Tăng tốc (Speedup) | Trạng thái |
+| :---: | :--- | :--- | :---: | :--- | :---: | :---: | :---: |
+| **MC1** | Tra cứu Mã sách | Linear Search | $16.143\,\mu\text{s}$ | **Hash Table (DJB2)** | **$1{,}90\,\mu\text{s}$** | **$8.460\times$** | `[PASS]` |
+| **MC2** | Top 1 Sách mượn | Linear Max Scan | $7.551\,\mu\text{s}$ | **Max-Heap (Floyd)** | **$0{,}25\,\mu\text{s}$** | **$30.087\times$** | `[PASS]` |
+| **RQ1** | Lọc theo Thể loại | Linear Scan Filter | $98.546\,\mu\text{s}$ | **Category Hash Table** | **$50.650\,\mu\text{s}$** | **$1{,}95\times$** | `[PASS]` |
+| **RQ2** | Lọc Phiếu quá hạn | Linear Scan Records | $69.008\,\mu\text{s}$ | **AVL Tree Range Pruning**| **$52.010\,\mu\text{s}$** | **$1{,}33\times$** | `[PASS]` |
+| **RQ3** | Tìm theo Từ khóa | Linear Substr Scan | $228.879\,\mu\text{s}$ | **Inverted Index Hash** | **$138.915\,\mu\text{s}$**| **$1{,}65\times$** | `[PASS]` |
+
+### 2. Kết quả Kiểm thử Tự động ([`test/ket_qua_test.txt`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test/ket_qua_test.txt))
+* **Tổng số ca kiểm thử:** **24 / 24 Tests**
+* **Tỷ lệ thành công:** **100.0% `[PASSED]`**
+* **Trạng thái:** **`[100% PASS - HỆ THỐNG SẴN SÀNG ĐƯA VÀO VẬN HÀNH]`**
 
 ---
 
 ## ⌨️ HƯỚNG DẪN TRẢI NGHIỆM UI & PHÍM ĐIỀU HƯỚNG
 
-Giao diện được thiết kế theo phong cách **Tối giản - Đơn sắc (Monochrome) - Tối ưu công thái học**:
+Giao diện Terminal UI được thiết kế tối ưu công thái học, trực quan và chống nhấp nháy màn hình:
 
-```text
-======================================================================
-   DANH MUC MODULE CHUC NANG
- Che do hien tai: [ BENCHMARK MODE - SO SANH THUAT TOAN ]
-----------------------------------------------------------------------
-
-  -> 1. MC1 - Tra cuu chinh xac sach theo Book ID (Hash Table vs Linear Search)
-     2. MC2 - Tim sach co luot muon cao nhat (Max-Heap vs Linear Max Scan)
-     3. RQ1 - Tra cuu tat ca sach theo The loai (Category Hash Table vs Linear Scan)
-     4. RQ2 - Loc danh sach phieu muon qua han (AVL Tree vs Linear Scan)
-     5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Prefix Title Index vs Linear Scan)
-     9. Doi Che do hoat dong (Change Mode)
-     0. Thoat chuong trinh (Exit)
-
-======================================================================
- [^/v] Di chuyen   [Enter] Chon   [Esc] Quay lai
-======================================================================
-```
-
-### Các phím điều hướng chính:
-- **`↑ / ↓` hoặc `W / S`**: Di chuyển con trỏ lựa chọn lên / xuống giữa các mục.
-- **`Enter`**: Xác nhận chọn chức năng / xác nhận ngày / gửi từ khóa tìm kiếm.
+- **`↑ / ↓` hoặc `W / S`**: Di chuyển vệt sáng chọn chức năng trong Menu.
+- **`Enter`**: Xác nhận chọn chức năng / xác nhận giá trị ngày / gửi từ khóa.
 - **`Esc`**:
-  - Khi ở Menu: Quay lại menu cha hoặc thoát chương trình.
-  - Khi đang nhập liệu (**MC1, RQ1, RQ3**): Nhấn `Esc` bất kỳ lúc nào để **hủy ngay lập tức và quay về Menu**, không cần gõ chữ hay nhấn Enter.
-- **Bộ chọn ngày `selectDate` (RQ2)**:
+  - Khi ở Menu: Quay lại menu trước hoặc thoát chương trình.
+  - Khi đang nhập liệu: Nhấn `Esc` để **hủy ngay lập tức và quay về Menu**, không gây lỗi chương trình.
+- **Bộ chọn ngày thông minh (Date Picker - RQ2)**:
   - Phím `← / →` (hoặc `A / D`): Chuyển vị trí chọn giữa `[ NĂM ]` $\longleftrightarrow$ `[ THÁNG ]` $\longleftrightarrow$ `[ NGÀY ]`.
-  - Phím `↑ / ↓` (hoặc `W / S`): Tăng / giảm giá trị của ô đang chọn.
-  - Tự động xóa màn hình và xuất danh sách phiếu mượn quá hạn ngay sau khi nhấn `Enter`.
+  - Phím `↑ / ↓` (hoặc `W / S`): Tăng / giảm giá trị ngày tháng, tự động xử lý năm nhuận và số ngày chuẩn xác.
 
 ---
 
-## 🚀 HƯỚNG DẪN BIÊN DỊCH & CHẠY CHƯƠNG TRÌNH
+## 👥 DANH SÁCH THÀNH VIÊN & PHÂN CÔNG TRÁCH NHIỆM
 
-### Cách 1: Sử dụng Script tự động (Khuyên dùng)
-
-- **Trên PowerShell**:
-  ```powershell
-  .\build.ps1
-  ```
-- **Trên Command Prompt (CMD)**:
-  ```cmd
-  build.bat
-  ```
+| STT | Họ và Tên | Mã số Sinh viên | Phân công Trách nhiệm Module |
+| :---: | :--- | :---: | :--- |
+| 1 | **Lê Thị Tuyết Nhi** | 25110283 | **Trưởng nhóm** — Phụ trách Presentation Layer, Thiết kế Mô hình Dữ liệu Lõi (`models/`), Dựng khung sườn hàm toàn hệ thống |
+| 2 | **Trần Quốc Việt Nam** | 25110274 | Phụ trách Hệ thống Bảng băm: MC1 (Hash Table DJB2), RQ1 (Category Hash), RQ3 (Inverted Index) & Benchmark 1M |
+| 3 | **Lê Nhật Ninh** | 25110288 | Phụ trách Cấu trúc Cây: MC2 (Max-Heap Floyd Build-Heap), RQ2 (AVL Tree 4 phép quay & Range Pruning) |
+| 4 | **Nguyễn Ngọc Hồng Nhung** | 25110285 | Phụ trách Persistence Layer (`FileStore`), Quản lý Hàng đợi Chờ mượn (`Waitlist FIFO Queue`) & Parser JSON |
+| 5 | **Trần Phạm Huỳnh Như** | 25110286 | Phụ trách Kịch bản Nghiệp vụ Thư viện, Kiểm thử Đơn vị Hệ thống & Video Demo 5 phút |
 
 ---
 
-### Cách 2: Lệnh `g++` thủ công (Hỗ trợ chuẩn C++17)
-
-```powershell
-# Biên dịch toàn bộ các file nguồn vào main.exe
-g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp src/core/mc2/LinearMaxScan.cpp src/core/mc2/MaxHeap.cpp src/core/mc2/MC2.cpp src/core/rq1/LinearCategoryScan.cpp src/core/rq1/CategoryHashTable.cpp src/core/rq1/RQ1.cpp src/core/rq2/LinearOverdueScan.cpp src/core/rq2/AVLTree.cpp src/core/rq2/RQ2.cpp src/core/rq3/LinearTitleScan.cpp src/core/rq3/CategoryTitleSearch.cpp src/core/rq3/RQ3.cpp src/presentation/AppMenu.cpp -o main.exe
-
-# Chạy file thực thi
-.\main.exe
-```
-
----
-
-## 👥 THÀNH VIÊN THỰC HIỆN & BÁO CÁO
-
-- **Đồ án**: Cấu trúc Dữ liệu & Giải thuật nâng cao (DSA Final Project)
-- **Chủ đề**: Thiết kế và Đánh giá Hiệu năng Hệ thống Quản lý Thư viện (MC1 - MC2 - RQ1 - RQ2 - RQ3)
-- **Bản quyền**: © 2026 Library Management DSA Team.
+*Bản quyền © 2026 Library Management DSA Team. Báo cáo và mã nguồn phục vụ học phần Cấu trúc Dữ liệu và Giải thuật.*
