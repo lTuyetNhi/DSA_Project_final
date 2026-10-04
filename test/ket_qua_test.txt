@@ -1,0 +1,61 @@
+
+======================================================================
+ SUITE 1: KIEM THU MODULE MC1 (BANG BAM VA TRA CUU MA SACH)
+======================================================================
+  [PASSED] TC-MC1-01  | MC1 - Hash Table   | Tra cuu dung ma sach ton tai
+  [PASSED] TC-MC1-02  | MC1 - Hash Table   | Tra cuu ma sach khong ton tai tra ve found=false
+  [PASSED] TC-MC1-03  | MC1 - Hash Table   | Kiem tra Separate Chaining khi xay ra va cham bam
+  [PASSED] TC-MC1-04  | MC1 - Equivalence  | Doi chung ket qua khop tuyet doi voi Baseline Linear Search
+
+======================================================================
+ SUITE 2: KIEM THU MODULE MC2 (MAX-HEAP VA TOP SACH MUON NHIEU NHAT)
+======================================================================
+  [PASSED] TC-MC2-01  | MC2 - Max-Heap     | Trich xuat dung sach co luot muon cao nhat tai nut goc
+  [PASSED] TC-MC2-02  | MC2 - Max-Heap     | Truy xuat tren Max-Heap rong an toan khong loi
+  [PASSED] TC-MC2-03  | MC2 - Equivalence  | Doi chung ket qua khop tuyet doi voi Baseline Linear Max Scan
+  [PASSED] TC-MC2-04  | MC2 - Max-Heap     | Xu ly chinh xac truong hop cac sach co cung luot muon cuc dai
+
+======================================================================
+ SUITE 3: KIEM THU MODULE RQ1 (BANG BAM DANH MUC VA LOC THE LOAI)
+======================================================================
+  [PASSED] TC-RQ1-01  | RQ1 - Category Hash | Loc dung so luong sach thuoc the loai Programming (2 sach)
+  [PASSED] TC-RQ1-02  | RQ1 - Category Hash | Loc the loai khong ton tai tra ve danh sach rong
+  [PASSED] TC-RQ1-03  | RQ1 - Equivalence  | Doi chung so luong va noi dung sach khop tuyet doi voi Baseline
+
+======================================================================
+ SUITE 4: KIEM THU MODULE RQ2 (CAY AVL VA TRUY VET PHIEU QUA HAN)
+======================================================================
+  [PASSED] TC-RQ2-01  | RQ2 - AVL Tree     | Loc dung cac phieu chua tra co han truoc ngay kiem tra
+  [PASSED] TC-RQ2-02  | RQ2 - AVL Tree     | Moc thoi gian khong co phieu qua han tra ve dung records rong
+  [PASSED] TC-RQ2-03  | RQ2 - Equivalence  | Doi chung danh sach phieu qua han khop tuyet doi voi Baseline
+  [PASSED] TC-RQ2-04  | RQ2 - AVL Rotations | Cay AVL tu can bang chinh xac khi nap du lieu co thu tu tang dan
+
+======================================================================
+ SUITE 5: KIEM THU MODULE RQ3 (CHI MUC NGUOC VA TIM KIEM TU KHOA)
+======================================================================
+  [PASSED] TC-RQ3-01  | RQ3 - Inverted Index | Tim kiem tu khoa 'algorithms' xuat hien trong 2 cuon sach
+  [PASSED] TC-RQ3-02  | RQ3 - Inverted Index | Tim kiem chu hoa 'DATA' tra ve dung sach chua tu 'Data'
+  [PASSED] TC-RQ3-03  | RQ3 - Inverted Index | Tu khoa khong ton tai tra ve dung danh sach rong
+  [PASSED] TC-RQ3-04  | RQ3 - Equivalence  | Doi chung ket qua tim tu khoa khop tuyet doi voi Baseline Scan
+
+======================================================================
+ SUITE 6: KIEM THU HANG DOI DANH SACH CHO MUON SACH (FIFO WAITLIST)
+======================================================================
+  [PASSED] TC-WL-01   | Queue - FIFO       | Doc gia vao hang cho truoc nhat duoc uu tien muon sach dau tien
+  [PASSED] TC-WL-02   | Queue - FIFO       | Cap nhat hang cho chinh xac sau khi doc gia dau tien duoc phuc vu
+
+======================================================================
+ SUITE 7: KIEM THU TANG LUU TRU FILE VA TOAN VEN DU LIEU (PERSISTENCE)
+======================================================================
+  [PASSED] TC-FS-01   | Persistence        | Nap danh sach sach hop le tu tep books.json
+  [PASSED] TC-FS-02   | Persistence        | Nap danh sach phieu muon hop le tu borrow_records.json
+  [PASSED] TC-FS-03   | StringUtils        | Chuan hoa chuoi tim kiem xoa khoang trang va chuyen chu thuong
+
+======================================================================
+                     TONG KET KIEM THU HE THONG (TEST REPORT)          
+======================================================================
+Tong so ca kiem thu (Total Tests):  24
+So ca kiem thu THANH CONG (Passed):  24 (100.0%)
+So ca kiem thu THAT BAI (Failed):    0
+Danh gia chung (Overall Status):     [100% PASS - HE THONG SAN SANG DUA VAO VAN HANH]
+======================================================================
