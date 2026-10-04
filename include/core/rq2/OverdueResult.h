@@ -5,18 +5,20 @@
 #include <string>
 #include "../../../src/models/BorrowRecord.h"
 
+using namespace std;
+
 // Kết quả lọc danh sách phiếu mượn quá hạn (không dùng con trỏ)
 struct OverdueResult {
-    std::vector<BorrowRecord> records;  // Danh sách phiếu quá hạn
+    vector<BorrowRecord> records;       // Danh sách phiếu quá hạn
     bool found = false;                 // Có phiếu quá hạn hay không
     long long executionTime = 0;        // Thời gian chạy (nanoseconds)
     long long checks = 0;               // Số lượt kiểm tra
-    std::string method;                 // Tên giải thuật
-    std::string bigO;                   // Độ phức tạp lý thuyết
+    string method;                      // Tên giải thuật
+    string bigO;                        // Độ phức tạp lý thuyết
 
     OverdueResult() = default;
 
-    OverdueResult(const std::vector<BorrowRecord>& rList, bool isFound, long long timeNs, long long chk, const std::string& m, const std::string& bo)
+    OverdueResult(const vector<BorrowRecord>& rList, bool isFound, long long timeNs, long long chk, const string& m, const string& bo)
         : records(rList), found(isFound), executionTime(timeNs), checks(chk), method(m), bigO(bo) {}
 };
 

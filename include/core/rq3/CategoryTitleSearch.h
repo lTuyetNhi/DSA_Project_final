@@ -7,29 +7,31 @@
 #include "TitleSearchResult.h"
 #include "../../../src/models/Book.h"
 
+using namespace std;
+
 struct TitleEntry {
-    std::string word;
-    std::vector<int> bookIndices;
+    string word;
+    vector<int> bookIndices;
 };
 
 class CategoryTitleSearch {
 private:
-    static const std::size_t TABLE_SIZE = 200003;
-    std::vector<std::vector<TitleEntry>> table;
-    const std::vector<Book>* allBooks = nullptr;
-    std::vector<std::string> normalizedTitles;
+    static const size_t TABLE_SIZE = 200003;
+    vector<vector<TitleEntry>> table;
+    const vector<Book>* allBooks = nullptr;
+    vector<string> normalizedTitles;
 
-    std::size_t hashFunction(const std::string& key) const;
-    void insertPrefix(const std::string& prefix, int bookIndex);
-    const std::vector<int>* findCandidateIndices(const std::string& prefix) const;
+    size_t hashFunction(const string& key) const;
+    void insertPrefix(const string& prefix, int bookIndex);
+    const vector<int>* findCandidateIndices(const string& prefix) const;
 
 public:
     CategoryTitleSearch();
 
     void clear();
-    void build(const std::vector<Book>& books);
-    TitleSearchResult search(const std::string& keyword) const;
-    size_t count(const std::string& keyword, long long* booksChecked = nullptr) const;
+    void build(const vector<Book>& books);
+    TitleSearchResult search(const string& keyword) const;
+    size_t count(const string& keyword, long long* booksChecked = nullptr) const;
 };
 
 #endif // CATEGORY_TITLE_SEARCH_H

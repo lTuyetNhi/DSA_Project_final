@@ -4,17 +4,19 @@
 #include <string>
 #include <cctype>
 
+using namespace std;
+
 class StringUtils {
 public:
     // Chuyển chuỗi sang chữ thường (hỗ trợ tìm kiếm không phân biệt hoa thường)
-    static std::string toLower(std::string s) {
+    static string toLower(string s) {
         for (char& c : s) {
             c = static_cast<char>(tolower(static_cast<unsigned char>(c)));
         }
         return s;
     }
 
-    static void normalizeSearchText(const std::string& s, std::string& normalized) {
+    static void normalizeSearchText(const string& s, string& normalized) {
         normalized.clear();
         if (normalized.capacity() < s.size()) normalized.reserve(s.size());
         bool separatorPending = false;
@@ -37,8 +39,8 @@ public:
         }
     }
 
-    static std::string normalizeSearchText(const std::string& s) {
-        std::string normalized;
+    static string normalizeSearchText(const string& s) {
+        string normalized;
         normalizeSearchText(s, normalized);
         return normalized;
     }

@@ -73,7 +73,7 @@ void CategoryTitleSearch::build(const vector<Book>& books) {
         stringstream ss(normalizedTitle);
         string word;
         while (ss >> word) {
-            const bool numericToken = !word.empty() && all_of(word.begin(), word.end(), [](unsigned char c) { return std::isdigit(c) != 0; });
+            const bool numericToken = !word.empty() && all_of(word.begin(), word.end(), [](unsigned char c) { return isdigit(c) != 0; });
             if (numericToken || word.size() < 2) continue;
             // Lập chỉ mục các từ hoàn chỉnh vào bảng băm chỉ mục ngược
             insertPrefix(word, static_cast<int>(i));

@@ -5,29 +5,31 @@
 #include <string>
 #include "CategoryResult.h"
 
+using namespace std;
+
 // Mục lưu trữ gom nhóm sách theo thể loại
 struct CategoryEntry {
-    std::string category;       // Tên thể loại (đã chuẩn hóa)
-    std::vector<Book> books;    // Danh sách các cuốn sách thuộc thể loại này
+    string category;            // Tên thể loại (đã chuẩn hóa)
+    vector<Book> books;         // Danh sách các cuốn sách thuộc thể loại này
 };
 
 // Bảng băm đa trị gom nhóm sách theo thể loại (không dùng con trỏ)
 class CategoryHashTable {
 private:
-    std::vector<std::vector<CategoryEntry>> buckets; // Mảng các ô chứa danh sách thể loại
-    int capacity;                                    // Kích thước bảng băm
+    vector<vector<CategoryEntry>> buckets; // Mảng các ô chứa danh sách thể loại
+    int capacity;                          // Kích thước bảng băm
 
-    int hashFunction(const std::string& key) const;
+    int hashFunction(const string& key) const;
 
 public:
     explicit CategoryHashTable(int cap = 1009);
 
-    void build(const std::vector<Book>& books);
+    void build(const vector<Book>& books);
     void insert(const Book& book);
-    CategoryResult search(const std::string& category) const;
-    CategoryResult searchPage(const std::string& category, size_t offset, size_t limit) const;
-    size_t count(const std::string& category) const;
-    std::vector<Book> getBooksInCategory(const std::string& category) const;
+    CategoryResult search(const string& category) const;
+    CategoryResult searchPage(const string& category, size_t offset, size_t limit) const;
+    size_t count(const string& category) const;
+    vector<Book> getBooksInCategory(const string& category) const;
     void clear();
 };
 

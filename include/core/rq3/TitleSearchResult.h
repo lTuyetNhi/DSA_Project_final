@@ -5,18 +5,20 @@
 #include <string>
 #include "../../../src/models/Book.h"
 
+using namespace std;
+
 // Kết quả tìm kiếm sách theo tên / từ khóa (không dùng con trỏ)
 struct TitleSearchResult {
-    std::vector<Book> books;        // Danh sách sách tìm thấy
+    vector<Book> books;             // Danh sách sách tìm thấy
     bool found = false;             // Có tìm thấy sách hay không
     long long executionTime = 0;    // Thời gian chạy (nanoseconds)
     long long booksChecked = 0;     // Số cuốn sách đã kiểm tra
-    std::string method;             // Tên giải thuật
-    std::string bigO;               // Độ phức tạp lý thuyết
+    string method;                  // Tên giải thuật
+    string bigO;                    // Độ phức tạp lý thuyết
 
     TitleSearchResult() = default;
 
-    TitleSearchResult(const std::vector<Book>& bList, bool isFound, long long timeNs, long long chk, const std::string& m, const std::string& bo)
+    TitleSearchResult(const vector<Book>& bList, bool isFound, long long timeNs, long long chk, const string& m, const string& bo)
         : books(bList), found(isFound), executionTime(timeNs), booksChecked(chk), method(m), bigO(bo) {}
 };
 

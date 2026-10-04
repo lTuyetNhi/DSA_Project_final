@@ -4,6 +4,8 @@
 #include <string>
 #include <cctype>
 
+using namespace std;
+
 // Tiện ích xử lý và kiểm tra tính hợp lệ của ngày tháng ("YYYY-MM-DD")
 class DateUtils {
 public:
@@ -20,16 +22,16 @@ public:
     }
 
     // Tách chuỗi "YYYY-MM-DD" thành năm, tháng, ngày
-    static bool parseDate(const std::string& s, int& y, int& m, int& d) {
+    static bool parseDate(const string& s, int& y, int& m, int& d) {
         if (s.length() != 10 || s[4] != '-' || s[7] != '-') return false;
         for (int i = 0; i < 10; ++i) {
             if (i == 4 || i == 7) continue;
             if (!isdigit(static_cast<unsigned char>(s[i]))) return false;
         }
         try {
-            y = std::stoi(s.substr(0, 4));
-            m = std::stoi(s.substr(5, 2));
-            d = std::stoi(s.substr(8, 2));
+            y = stoi(s.substr(0, 4));
+            m = stoi(s.substr(5, 2));
+            d = stoi(s.substr(8, 2));
         } catch (...) {
             return false;
         }
@@ -42,7 +44,7 @@ public:
     }
 
     // Kiểm tra chuỗi ngày có đúng chuẩn "YYYY-MM-DD" và hợp lệ không
-    static bool isValidDate(const std::string& s) {
+    static bool isValidDate(const string& s) {
         int y = 0, m = 0, d = 0;
         return parseDate(s, y, m, d);
     }
@@ -57,7 +59,7 @@ public:
     }
 
     // Tính số ngày chênh lệch giữa date1 và date2 (date2 - date1)
-    static int daysBetween(const std::string& date1, const std::string& date2) {
+    static int daysBetween(const string& date1, const string& date2) {
         int y1 = 0, m1 = 0, d1 = 0, y2 = 0, m2 = 0, d2 = 0;
         if (!parseDate(date1, y1, m1, d1) || !parseDate(date2, y2, m2, d2)) {
             return 0;

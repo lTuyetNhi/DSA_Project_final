@@ -3,12 +3,14 @@
 
 #include <string>
 
+using namespace std;
+
 // Model Độc giả - tương ứng data/readers.json
 struct Reader {
-    std::string reader_id;
-    std::string name;
-    std::string email;
-    std::string phone;
+    string reader_id;
+    string name;
+    string email;
+    string phone;
 };
 
 #endif // READER_H

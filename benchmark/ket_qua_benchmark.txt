@@ -2,7 +2,7 @@
            HE THONG THUC NGHIEM BENCHMARK VA DOI SANH HIEU NANG THUAT TOAN (DSA ENGINE)                 
 ========================================================================================================
 
-Thoi gian chay thuc nghiem: 2026-10-04 23:29:02
+Thoi gian chay thuc nghiem: 2026-10-05 01:40:52
 Moi truong: C++17 In-Memory Engine | Compiler: GCC / MinGW-w64 (Optimization: -O3)
 
 [Building DSA Structures] Dang nap vao Hash Table, Max-Heap, AVL Tree, Inverted Index...
@@ -25,11 +25,11 @@ Moi truong: C++17 In-Memory Engine | Compiler: GCC / MinGW-w64 (Optimization: -O
 --------------------------------------------------------------------------------------------------------
 Ma    Nghiep vu           Baseline Algo       T Baseline   Optimized Algo      T Optimized  Speedup   Test    
 --------------------------------------------------------------------------------------------------------
-MC1   Tra cuu Ma sach     Linear Search       0.48200 us   Hash Table DJB2     0.28140 us   1.7128x   [PASS]  
-MC2   Top 1 Sach muon     Linear Max Scan     0.41290 us   Max-Heap Floyd      0.29780 us   1.3865x   [PASS]  
-RQ1   Loc theo The loai   Linear Scan Filter  2.17400 us   Category Hash Table 1.08390 us   2.0057x   [PASS]  
-RQ2   Loc Phieu qua han   Linear Scan Records 0.48840 us   AVL Tree Range Prune1.80780 us   0.2701x   [PASS]  
-RQ3   Tim theo Tu khoa    Linear Substr Scan  1.43420 us   Inverted Index Hash 0.99550 us   1.4406x   [PASS]  
+MC1   Tra cuu Ma sach     Linear Search       0.59590 us   Hash Table DJB2     0.34210 us   1.7418x   [PASS]  
+MC2   Top 1 Sach muon     Linear Max Scan     0.51730 us   Max-Heap Floyd      0.37250 us   1.3887x   [PASS]  
+RQ1   Loc theo The loai   Linear Scan Filter  2.48780 us   Category Hash Table 0.93520 us   2.6601x   [PASS]  
+RQ2   Loc Phieu qua han   Linear Scan Records 0.57900 us   AVL Tree Range Prune1.86700 us   0.3101x   [PASS]  
+RQ3   Tim theo Tu khoa    Linear Substr Scan  1.61290 us   Inverted Index Hash 1.14510 us   1.4085x   [PASS]  
 --------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@ RQ3   Tim theo Tu khoa    Linear Substr Scan  1.43420 us   Inverted Index Hash 0
 --------------------------------------------------------------------------------------------------------
 Ma    Nghiep vu           Baseline Algo       T Baseline   Optimized Algo      T Optimized  Speedup   Test    
 --------------------------------------------------------------------------------------------------------
-MC1   Tra cuu Ma sach     Linear Search       153.475 us   Hash Table DJB2     0.29270 us   524.34x   [PASS]  
-MC2   Top 1 Sach muon     Linear Max Scan     16.1604 us   Max-Heap Floyd      0.22970 us   70.354x   [PASS]  
-RQ1   Loc theo The loai   Linear Scan Filter  662.647 us   Category Hash Table 285.476 us   2.3211x   [PASS]  
-RQ2   Loc Phieu qua han   Linear Scan Records 302.720 us   AVL Tree Range Prune198.920 us   1.5218x   [PASS]  
-RQ3   Tim theo Tu khoa    Linear Substr Scan  2076.13 us   Inverted Index Hash 746.574 us   2.7808x   [PASS]  
+MC1   Tra cuu Ma sach     Linear Search       148.817 us   Hash Table DJB2     0.28680 us   518.88x   [PASS]  
+MC2   Top 1 Sach muon     Linear Max Scan     15.2851 us   Max-Heap Floyd      0.22750 us   67.187x   [PASS]  
+RQ1   Loc theo The loai   Linear Scan Filter  682.613 us   Category Hash Table 278.627 us   2.4499x   [PASS]  
+RQ2   Loc Phieu qua han   Linear Scan Records 305.456 us   AVL Tree Range Prune202.850 us   1.5058x   [PASS]  
+RQ3   Tim theo Tu khoa    Linear Substr Scan  1943.92 us   Inverted Index Hash 708.318 us   2.7444x   [PASS]  
 --------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------
@@ -49,11 +49,11 @@ RQ3   Tim theo Tu khoa    Linear Substr Scan  2076.13 us   Inverted Index Hash 7
 --------------------------------------------------------------------------------------------------------
 Ma    Nghiep vu           Baseline Algo       T Baseline   Optimized Algo      T Optimized  Speedup   Test    
 --------------------------------------------------------------------------------------------------------
-MC1   Tra cuu Ma sach     Linear Search       1547.57 us   Hash Table DJB2     0.52966 us   2921.7x   [PASS]  
-MC2   Top 1 Sach muon     Linear Max Scan     382.256 us   Max-Heap Floyd      0.25166 us   1518.8x   [PASS]  
-RQ1   Loc theo The loai   Linear Scan Filter  9520.85 us   Category Hash Table 4990.13 us   1.9079x   [PASS]  
-RQ2   Loc Phieu qua han   Linear Scan Records 7654.06 us   AVL Tree Range Prune5513.66 us   1.3882x   [PASS]  
-RQ3   Tim theo Tu khoa    Linear Substr Scan  21258.2 us   Inverted Index Hash 11938.3 us   1.7806x   [PASS]  
+MC1   Tra cuu Ma sach     Linear Search       1520.63 us   Hash Table DJB2     0.60266 us   2523.1x   [PASS]  
+MC2   Top 1 Sach muon     Linear Max Scan     288.800 us   Max-Heap Floyd      0.23066 us   1252.0x   [PASS]  
+RQ1   Loc theo The loai   Linear Scan Filter  8364.52 us   Category Hash Table 4072.63 us   2.0538x   [PASS]  
+RQ2   Loc Phieu qua han   Linear Scan Records 6102.90 us   AVL Tree Range Prune5042.39 us   1.2103x   [PASS]  
+RQ3   Tim theo Tu khoa    Linear Substr Scan  20423.7 us   Inverted Index Hash 10310.8 us   1.9807x   [PASS]  
 --------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------
@@ -61,11 +61,11 @@ RQ3   Tim theo Tu khoa    Linear Substr Scan  21258.2 us   Inverted Index Hash 1
 --------------------------------------------------------------------------------------------------------
 Ma    Nghiep vu           Baseline Algo       T Baseline   Optimized Algo      T Optimized  Speedup   Test    
 --------------------------------------------------------------------------------------------------------
-MC1   Tra cuu Ma sach     Linear Search       16143.3 us   Hash Table DJB2     1.90800 us   8460.8x   [PASS]  
-MC2   Top 1 Sach muon     Linear Max Scan     7551.93 us   Max-Heap Floyd      0.25100 us   30087.x   [PASS]  
-RQ1   Loc theo The loai   Linear Scan Filter  98546.9 us   Category Hash Table 50650.6 us   1.9456x   [PASS]  
-RQ2   Loc Phieu qua han   Linear Scan Records 69008.9 us   AVL Tree Range Prune52010.2 us   1.3268x   [PASS]  
-RQ3   Tim theo Tu khoa    Linear Substr Scan  228879. us   Inverted Index Hash 138915. us   1.6476x   [PASS]  
+MC1   Tra cuu Ma sach     Linear Search       16103.2 us   Hash Table DJB2     1.85900 us   8662.3x   [PASS]  
+MC2   Top 1 Sach muon     Linear Max Scan     6340.11 us   Max-Heap Floyd      0.31300 us   20255.x   [PASS]  
+RQ1   Loc theo The loai   Linear Scan Filter  106534. us   Category Hash Table 48070.7 us   2.2162x   [PASS]  
+RQ2   Loc Phieu qua han   Linear Scan Records 64268.8 us   AVL Tree Range Prune51406.8 us   1.2502x   [PASS]  
+RQ3   Tim theo Tu khoa    Linear Substr Scan  220074. us   Inverted Index Hash 119532. us   1.8411x   [PASS]  
 --------------------------------------------------------------------------------------------------------
 
 ========================================================================================================

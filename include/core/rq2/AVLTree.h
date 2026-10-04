@@ -3,19 +3,22 @@
 
 #include <vector>
 #include <string>
+#include <cstddef>
 #include "OverdueResult.h"
+
+using namespace std;
 
 // Node trên cây AVL: mỗi node là một mốc ngày hẹn trả (dueDate)
 struct AVLNode {
-    std::string dueDate;                // Ngày hẹn trả ("YYYY-MM-DD")
-    std::vector<BorrowRecord> records;  // Danh sách phiếu mượn có cùng hạn trả này
+    string dueDate;                     // Ngày hẹn trả ("YYYY-MM-DD")
+    vector<BorrowRecord> records;       // Danh sách phiếu mượn có cùng hạn trả này
     AVLNode* left;                      // Nhánh con trái (ngày < dueDate)
     AVLNode* right;                     // Nhánh con phải (ngày > dueDate)
     int height;                         // Chiều cao node
 
-    std::size_t borrowingCount;
+    size_t borrowingCount;
 
-    AVLNode(const std::string& d) 
+    AVLNode(const string& d) 
         : dueDate(d), left(nullptr), right(nullptr), height(1), borrowingCount(0) {}
 };
 
@@ -32,8 +35,8 @@ private:
     AVLNode* rotateLeft(AVLNode* x);  // Xoay trái
 
     AVLNode* insert(AVLNode* node, const BorrowRecord& record);
-    void rangeQueryOverdue(AVLNode* node, const std::string& currentDate, std::vector<BorrowRecord>& result, long long& nodesVisited) const;
-    size_t countRangeOverdue(AVLNode* node, const std::string& currentDate, long long* nodesVisited) const;
+    void rangeQueryOverdue(AVLNode* node, const string& currentDate, vector<BorrowRecord>& result, long long& nodesVisited) const;
+    size_t countRangeOverdue(AVLNode* node, const string& currentDate, long long* nodesVisited) const;
     void destroy(AVLNode* node);
 
 public:
@@ -43,10 +46,10 @@ public:
     AVLTree(const AVLTree&) = delete;
     AVLTree& operator=(const AVLTree&) = delete;
 
-    void build(const std::vector<BorrowRecord>& records);
+    void build(const vector<BorrowRecord>& records);
     void insert(const BorrowRecord& record);
-    OverdueResult findOverdue(const std::string& currentDate) const;
-    size_t countOverdue(const std::string& currentDate, long long* nodesVisited = nullptr) const;
+    OverdueResult findOverdue(const string& currentDate) const;
+    size_t countOverdue(const string& currentDate, long long* nodesVisited = nullptr) const;
     void clear();
 };
 

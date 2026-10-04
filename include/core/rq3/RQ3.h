@@ -8,27 +8,29 @@
 #include "CategoryTitleSearch.h"
 #include "TitleSearchResult.h"
 
+using namespace std;
+
 // Điều phối tìm sách theo tên/từ khóa (không dùng con trỏ)
 class RQ3 {
 private:
-    std::vector<Book>& books;               // Danh mục sách gốc
+    vector<Book>& books;                    // Danh mục sách gốc
     LinearTitleScan baseline;               // Quét chuỗi tuyến tính O(n*m)
     CategoryTitleSearch finalSolution;      // Prefix index cho tieu de da chuan hoa
 
 public:
-    explicit RQ3(std::vector<Book>& bookList);
+    explicit RQ3(vector<Book>& bookList);
 
     void build();
-    void comparisonMode(const std::string& keyword);
-    void normalMode(const std::string& keyword);
+    void comparisonMode(const string& keyword);
+    void normalMode(const string& keyword);
 
     LinearTitleScan& getBaseline() { return baseline; }
     CategoryTitleSearch& getFinalSolution() { return finalSolution; }
-    std::vector<Book>& getBooks() { return books; }
+    vector<Book>& getBooks() { return books; }
 
     static bool sameResultSet(const TitleSearchResult& baselineRes, const TitleSearchResult& finalSolRes);
-    static void printComparison(std::size_t datasetSize, const std::string& keyword, const TitleSearchResult& baselineRes, const TitleSearchResult& finalSolRes);
-    static void printBooks(const std::vector<Book>& books);
+    static void printComparison(size_t datasetSize, const string& keyword, const TitleSearchResult& baselineRes, const TitleSearchResult& finalSolRes);
+    static void printBooks(const vector<Book>& books);
 };
 
 #endif // RQ3_H
