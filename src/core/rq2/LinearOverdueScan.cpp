@@ -13,7 +13,7 @@ OverdueResult LinearOverdueScan::search(vector<BorrowRecord>& records, const str
         for (size_t i = 0; i < records.size(); ++i) {
             checks++;
             // Phieu muon qua han neu dang muon (chua tra) va han tra nho hon ngay kiem tra hien tai
-            if (records[i].status == "BORROWING" && records[i].due_date < currentDate) {
+            if (records[i].isBorrowing() && records[i].due_date < currentDate) {
                 overdueList.push_back(records[i]);
             }
         }
@@ -33,7 +33,7 @@ size_t LinearOverdueScan::count(const vector<BorrowRecord>& records, const strin
         if (checks) ++(*checks);
         // Valid ISO YYYY-MM-DD strings sort in chronological order. Input is
         // validated during loading/index construction, so no per-row parsing.
-        if (record.status == "BORROWING" && record.due_date < currentDate) ++total;
+        if (record.isBorrowing() && record.due_date < currentDate) ++total;
     }
     return total;
 }

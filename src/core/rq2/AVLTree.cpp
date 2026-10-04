@@ -58,7 +58,7 @@ AVLNode* AVLTree::insert(AVLNode* node, const BorrowRecord& record) {
     if (!node) {
         AVLNode* newNode = new AVLNode(record.due_date);
         newNode->records.push_back(record);
-        if (record.status == "BORROWING") ++newNode->borrowingCount;
+        if (record.isBorrowing()) ++newNode->borrowingCount;
         return newNode;
     }
 
@@ -69,7 +69,7 @@ AVLNode* AVLTree::insert(AVLNode* node, const BorrowRecord& record) {
     } else {
         // Trùng ngày hẹn trả -> gom chung vào vector của node hiện tại
         node->records.push_back(record);
-        if (record.status == "BORROWING") ++node->borrowingCount;
+        if (record.isBorrowing()) ++node->borrowingCount;
         return node;
     }
 
@@ -111,7 +111,7 @@ void AVLTree::rangeQueryOverdue(AVLNode* node, const string& currentDate, vector
     // Kiểm tra node hiện tại có quá hạn so với ngày kiểm tra không
     if (DateUtils::daysBetween(node->dueDate, currentDate) > 0) {
         for (const auto& rec : node->records) {
-            if (rec.status == "BORROWING") {
+            if (rec.isBorrowing()) {
                 result.push_back(rec);
             }
         }
@@ -124,7 +124,7 @@ void AVLTree::rangeQueryOverdue(AVLNode* node, const string& currentDate, vector
 void AVLTree::build(const vector<BorrowRecord>& records) {
     clear();
     for (const auto& rec : records) {
-        if (rec.status == "BORROWING" && DateUtils::isValidDate(rec.due_date)) {
+        if (rec.isBorrowing() && DateUtils::isValidDate(rec.due_date)) {
             insert(rec);
         }
     }

@@ -13,7 +13,11 @@ struct BorrowRecord {
     string borrow_date;
     string due_date;
     string return_date; // "null" hoặc rỗng nếu chưa trả
-    string status;      // "BORROWING" hoặc "RETURNED"
+    string status;      // "BORROWING" / "Đang mượn" hoặc "RETURNED" / "Đã trả"
+
+    bool isBorrowing() const {
+        return status == "BORROWING" || status == "Đang mượn" || status == "ĐANG MƯỢN" || status == "Dang muon" || status == "DANG MUON";
+    }
 };
 
 #endif // BORROW_RECORD_H
