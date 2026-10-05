@@ -8,9 +8,9 @@
 
 #include "../src/models/Book.h"
 #include "../src/models/BorrowRecord.h"
-#include "../src/models/WaitlistEntry.h"
 #include "../src/persistence/FileStore.h"
 #include "../include/core/mc1/HashTable.h"
+
 #include "../include/core/mc1/LinearSearch.h"
 #include "../include/core/mc2/MaxHeap.h"
 #include "../include/core/mc2/LinearMaxScan.h"
@@ -294,37 +294,11 @@ public:
     }
 
     // -------------------------------------------------------------
-    // SUITE 6: KIỂM THỬ HÀNG ĐỢI DANH SÁCH CHỜ (WAITLIST QUEUE FIFO)
-    // -------------------------------------------------------------
-    void runWaitlistTests() {
-        log("\n======================================================================\n");
-        log(" SUITE 6: KIEM THU HANG DOI DANH SACH CHO MUON SACH (FIFO WAITLIST)\n");
-        log("======================================================================\n");
-
-        vector<WaitlistEntry> waitlist;
-        // Giả lập thêm 3 độc giả vào hàng chờ
-        waitlist.push_back({"WL01", "B001", "RD01", "2026-09-01 08:00:00"});
-        waitlist.push_back({"WL02", "B001", "RD02", "2026-09-01 08:30:00"});
-        waitlist.push_back({"WL03", "B001", "RD03", "2026-09-01 09:00:00"});
-
-        // TC-WL-01: Kiểm tra tính chất FIFO (người đến trước được phục vụ trước)
-        bool fifoOk = (waitlist.front().reader_id == "RD01");
-        recordResult("TC-WL-01", "Queue - FIFO", "Doc gia vao hang cho truoc nhat duoc uu tien muon sach dau tien", 
-                     fifoOk);
-
-        // TC-WL-02: Phục vụ và xóa độc giả đầu hàng chờ
-        waitlist.erase(waitlist.begin());
-        bool nextOk = (waitlist.front().reader_id == "RD02" && waitlist.size() == 2);
-        recordResult("TC-WL-02", "Queue - FIFO", "Cap nhat hang cho chinh xac sau khi doc gia dau tien duoc phuc vu", 
-                     nextOk);
-    }
-
-    // -------------------------------------------------------------
-    // SUITE 7: KIỂM THỬ TẦNG LƯU TRỮ VÀ TOÀN VẸN DỮ LIỆU (PERSISTENCE)
+    // SUITE 6: KIỂM THỬ TẦNG LƯU TRỮ VÀ TOÀN VẸN DỮ LIỆU (PERSISTENCE)
     // -------------------------------------------------------------
     void runPersistenceTests() {
         log("\n======================================================================\n");
-        log(" SUITE 7: KIEM THU TANG LUU TRU FILE VA TOAN VEN DU LIEU (PERSISTENCE)\n");
+        log(" SUITE 6: KIEM THU TANG LUU TRU FILE VA TOAN VEN DU LIEU (PERSISTENCE)\n");
         log("======================================================================\n");
 
         // TC-FS-01: Nạp danh sách sách thực tế từ data/books.json
@@ -382,13 +356,12 @@ int main() {
 
     auto start = chrono::high_resolution_clock::now();
 
-    // Chạy toàn bộ 7 Test Suites
+    // Chạy toàn bộ 6 Test Suites (MC1, MC2, RQ1, RQ2, RQ3, Persistence)
     suite.runMC1Tests();
     suite.runMC2Tests();
     suite.runRQ1Tests();
     suite.runRQ2Tests();
     suite.runRQ3Tests();
-    suite.runWaitlistTests();
     suite.runPersistenceTests();
 
     auto end = chrono::high_resolution_clock::now();
@@ -400,3 +373,4 @@ int main() {
 
     return 0;
 }
+

@@ -3,14 +3,9 @@
 #include <string>
 #include <chrono>
 #include <iomanip>
-#include <fstream>
-#include <numeric>
-#include <algorithm>
 
 #include "../src/models/Book.h"
 #include "../src/models/BorrowRecord.h"
-#include "../src/models/Reader.h"
-#include "../src/models/WaitlistEntry.h"
 #include "../src/persistence/FileStore.h"
 #include "../include/core/mc1/MC1.h"
 #include "../include/core/mc2/MC2.h"

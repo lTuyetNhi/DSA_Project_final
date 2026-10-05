@@ -39,13 +39,7 @@
   [PASSED] TC-RQ3-04  | RQ3 - Equivalence  | Doi chung ket qua tim tu khoa khop tuyet doi voi Baseline Scan
 
 ======================================================================
- SUITE 6: KIEM THU HANG DOI DANH SACH CHO MUON SACH (FIFO WAITLIST)
-======================================================================
-  [PASSED] TC-WL-01   | Queue - FIFO       | Doc gia vao hang cho truoc nhat duoc uu tien muon sach dau tien
-  [PASSED] TC-WL-02   | Queue - FIFO       | Cap nhat hang cho chinh xac sau khi doc gia dau tien duoc phuc vu
-
-======================================================================
- SUITE 7: KIEM THU TANG LUU TRU FILE VA TOAN VEN DU LIEU (PERSISTENCE)
+ SUITE 6: KIEM THU TANG LUU TRU FILE VA TOAN VEN DU LIEU (PERSISTENCE)
 ======================================================================
   [PASSED] TC-FS-01   | Persistence        | Nap danh sach sach hop le tu tep books.json
   [PASSED] TC-FS-02   | Persistence        | Nap danh sach phieu muon hop le tu borrow_records.json
@@ -54,8 +48,8 @@
 ======================================================================
                      TONG KET KIEM THU HE THONG (TEST REPORT)          
 ======================================================================
-Tong so ca kiem thu (Total Tests):  24
-So ca kiem thu THANH CONG (Passed):  24 (100.0%)
+Tong so ca kiem thu (Total Tests):  22
+So ca kiem thu THANH CONG (Passed):  22 (100.0%)
 So ca kiem thu THAT BAI (Failed):    0
 Danh gia chung (Overall Status):     [100% PASS - HE THONG SAN SANG DUA VAO VAN HANH]
 ======================================================================

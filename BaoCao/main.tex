@@ -453,15 +453,13 @@ Người sử dụng hệ thống bao gồm hai nhóm đối tượng chính v�
 \subsubsection*{1.1.2. Mô hình hóa thực thể dữ liệu và các trường thuộc tính}
 \addcontentsline{toc}{subsubsection}{1.1.2. Mô hình hóa thực thể dữ liệu và các trường thuộc tính}
 
-Để hệ thống có thể quản trị toàn diện các nghiệp vụ thư viện, các đối tượng trong thế giới thực được trừu tượng hóa và mô hình hóa thành các cấu trúc bản ghi cụ thể trong bộ nhớ chính. Hệ thống tập trung quản lý bốn thực thể dữ liệu nòng cốt, bao gồm Tài liệu, Độc giả, Phiếu mượn trả và Danh sách chờ.
+Để hệ thống có thể quản trị toàn diện các nghiệp vụ thư viện, các đối tượng trong thế giới thực được trừu tượng hóa và mô hình hóa thành các cấu trúc bản ghi cụ thể trong bộ nhớ chính. Hệ thống tập trung quản lý ba thực thể dữ liệu nòng cốt, bao gồm Tài liệu, Độc giả và Phiếu mượn trả.
 
 Thực thể Tài liệu đại diện cho từng đầu sách được lưu trữ trong thư viện, bao gồm các trường thuộc tính định danh mã sách duy nhất dưới dạng chuỗi ký tự, tên tài liệu, tên tác giả, thể loại chuyên ngành, năm xuất bản, số lượng sách tồn kho hiện có tại thư viện và bộ đếm tổng số lượt mượn tích lũy. Bộ đếm lượt mượn này đóng vai trò quan trọng trong việc đánh giá mức độ phổ biến của tài liệu.
 
 Thực thể Độc giả lưu trữ hồ sơ của các thành viên có quyền mượn tài liệu, gồm mã độc giả định danh duy nhất, họ và tên đầy đủ, địa chỉ thư điện tử liên lạc và số điện thoại.
 
 Thực thể Phiếu mượn ghi nhận các giao dịch lưu thông tài liệu, bao gồm mã phiếu mượn duy nhất, mã độc giả mượn sách, mã tài liệu được mượn, ngày mượn, ngày hạn trả quy định, ngày độc giả thực tế trả sách và trạng thái của phiếu mượn như đang mượn, đã trả hoặc báo mất tài liệu.
-
-Thực thể Danh sách chờ ghi nhận nhu cầu của độc giả khi một đầu sách tạm thời hết số lượng tồn kho, bao gồm mã phiếu chờ, mã độc giả, mã tài liệu và mốc thời gian đăng ký chờ theo thứ tự thời gian.
 
 \subsubsection*{1.1.3. Phân tích các mô thức truy cập dữ liệu và thao tác chủ đạo}
 \addcontentsline{toc}{subsubsection}{1.1.3. Phân tích các mô thức truy cập dữ liệu và thao tác chủ đạo}
@@ -1288,7 +1286,7 @@ Khi duyệt tuyến tính trên một mảng nửa triệu hoặc một triệu 
 
 Trong quá trình hiện thực mã nguồn, nhóm đã xây dựng quy trình kiểm thử đơn vị độc lập và ghi nhận nhật ký gỡ lỗi chi tiết cho từng cấu trúc dữ liệu cốt lõi:
 
-Tầng Lưu trữ \& Hàng đợi (Nguyễn Ngọc Hồng Nhung): Xử lý chuẩn hóa chuỗi ngày tháng chứa khoảng trắng thừa trong bộ phân tích cú pháp nạp tệp; bảo đảm tính toàn vẹn dữ liệu hàng đợi danh sách chờ FIFO.
+Tầng Lưu trữ Bền vững (Nguyễn Ngọc Hồng Nhung): Phụ trách thiết kế và hiện thực bộ phân tích cú pháp JSON Serializer/Deserializer tự viết tại lớp FileStore; xử lý chuẩn hóa chuỗi ngày tháng, bóc tách dữ liệu an toàn và duy trì tính toàn vẹn khi đồng bộ giữa đĩa cứng và bộ nhớ RAM.
 
 Hệ thống Bảng băm (Trần Quốc Việt Nam): Khắc phục hiện tượng va chạm phân cụm bằng cách chuyển kích thước bảng sang số nguyên tố lớn ($100.003$) kết hợp hàm băm DJB2 tối ưu; tích hợp đồng bộ bộ đo kiểm benchmark 1.000.000 bản ghi.
 
@@ -1372,7 +1370,11 @@ Hướng phát triển tiếp theo của đề tài tập trung vào các nội 
 \subsection*{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 \addcontentsline{toc}{subsection}{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 
-\vspace{2.5cm}
+Trong khuôn khổ đồ án, tôi đảm nhận trách nhiệm thiết kế và hiện thực Tầng Lưu trữ Bền vững (Persistence Layer) với trọng tâm là lớp \texttt{FileStore}, chịu trách nhiệm đọc và ghi dữ liệu từ các tệp tin định dạng chuẩn JSON (\texttt{books.json}, \texttt{readers.json}, \texttt{borrow\_records.json}) và nạp an toàn vào các cấu trúc dữ liệu trên bộ nhớ chính (In-Memory Engine).
+
+Quá trình hiện thực đã mang lại cho tôi những bài học chuyên sâu về xử lý luồng dữ liệu (Stream I/O), bóc tách cú pháp (JSON Parsing) và kiểm soát tính toàn vẹn dữ liệu. Thách thức lớn nhất mà tôi giải quyết là việc xử lý các trường hợp dữ liệu biên không hoàn hảo như chuỗi ngày tháng chứa khoảng trắng thừa, định dạng dữ liệu bị khuyết thiếu, hoặc các ký tự đặc biệt có thể gây sập chương trình. Tôi đã xây dựng cơ chế kiểm tra tính hợp lệ nghiêm ngặt và xử lý ngoại lệ an toàn trước khi ánh xạ vào các đối tượng \texttt{Book}, \texttt{Reader} và \texttt{BorrowRecord}. Đặc biệt, tôi luôn quán triệt nguyên tắc kiến trúc 3 tầng: Tầng Persistence chỉ làm nhiệm vụ nạp và lưu thô, tuyệt đối không can thiệp vào logic tìm kiếm hay sắp xếp của tầng DSA Core.
+
+Về việc ứng dụng Trí tuệ Nhân tạo (AI), tôi sử dụng AI để tham khảo các mẫu kiểm thử xử lý ngoại lệ đọc ghi tệp và đối chiếu định dạng chuẩn của JSON. Toàn bộ mã nguồn ánh xạ mô hình và các hàm nạp dữ liệu tại \texttt{FileStore} đều do tôi tự tay thiết kế và kiểm thử. Đồ án giúp tôi nắm vững tư duy thiết kế phần mềm module hóa, kỹ năng quản lý tệp tin và nâng cao trách nhiệm đối với sự ổn định chung của toàn hệ thống.
 
 \subsection*{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}
 \addcontentsline{toc}{subsection}{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}

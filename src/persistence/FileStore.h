@@ -6,7 +6,6 @@
 #include "../models/Book.h"
 #include "../models/Reader.h"
 #include "../models/BorrowRecord.h"
-#include "../models/WaitlistEntry.h"
 
 using namespace std;
 
@@ -23,10 +22,6 @@ public:
     // Đọc và ghi Borrow Records
     static vector<BorrowRecord> loadBorrowRecords(const string& filePath = "data/borrow_records.json");
     static bool saveBorrowRecords(const string& filePath, const vector<BorrowRecord>& records);
-
-    // Đọc và ghi Waitlist
-    static vector<WaitlistEntry> loadWaitlist(const string& filePath = "data/waitlist.json");
-    static bool saveWaitlist(const string& filePath, const vector<WaitlistEntry>& waitlist);
 };
 
 #endif // FILE_STORE_H

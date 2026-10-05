@@ -143,27 +143,6 @@ int main() {
         f.close();
     }
 
-    // 4. Generate waitlist.json (10,000 waitlist records)
-    {
-        cout << "4/4. Dang ghi data/waitlist.json (10,000 luot cho)..." << endl;
-        ofstream f("data/waitlist.json", ios::out | ios::binary);
-        f << "[\n";
-        for (int i = 1; i <= TOTAL_WAITLIST; ++i) {
-            string w_id = "W" + to_string(10000 + i);
-            string bk_id = "B" + to_string(1000000 + ((i * 7) % TOTAL_BOOKS + 1));
-            string r_id = "R" + to_string(10000 + (i % TOTAL_READERS + 1));
-            
-            f << "  {\n"
-              << "    \"wait_id\": \"" << w_id << "\",\n"
-              << "    \"book_id\": \"" << bk_id << "\",\n"
-              << "    \"reader_id\": \"" << r_id << "\",\n"
-              << "    \"registered_at\": \"2026-09-20T08:30:00\"\n"
-              << "  }" << (i == TOTAL_WAITLIST ? "\n" : ",\n");
-        }
-        f << "]\n";
-        f.close();
-    }
-
     cout << "\n========================================================\n";
     cout << "HOAN TAT SINH DU LIEU 500.000 BAN GHI THANH CONG!\n";
     cout << "========================================================\n";
