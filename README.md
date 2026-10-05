@@ -217,9 +217,16 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 
 * **Cách 2: Khởi động thủ công bằng lệnh npm:**
   ```powershell
+  # Bước 1: Biên dịch C++ Web Bridge (nếu chưa biên dịch)
+  g++ -std=c++17 -O2 -DNDEBUG tools/dsa_web_bridge.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp src/core/mc2/LinearMaxScan.cpp src/core/mc2/MaxHeap.cpp src/core/mc2/MC2.cpp src/core/rq1/LinearCategoryScan.cpp src/core/rq1/CategoryHashTable.cpp src/core/rq1/RQ1.cpp src/core/rq2/LinearOverdueScan.cpp src/core/rq2/AVLTree.cpp src/core/rq2/RQ2.cpp src/core/rq3/LinearTitleScan.cpp src/core/rq3/CategoryTitleSearch.cpp src/core/rq3/RQ3.cpp -o tools/dsa_web_bridge.exe
+
+  # Bước 2: Cài đặt và Chạy Website
   cd website
   npm.cmd install
-  npm.cmd run dev
+  npm.cmd run dev       # Chế độ phát triển (Development: http://localhost:3000)
+  # Hoặc đóng gói và chạy bản Production siêu tốc:
+  npm.cmd run build     # Đóng gói Production Build (0 Warning, 0 Error)
+  npm.cmd run start     # Chạy Production Server tại http://localhost:3000
   ```
 
 * **Truy cập Giao diện Web:**
