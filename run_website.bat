@@ -4,8 +4,11 @@ echo ===================================================
 echo   KHOI DONG WEB VISUALIZER VA C++ BRIDGE ENGINE
 echo ===================================================
 
-:: Tu dong them Node.js vao PATH neu chua co
-set "PATH=C:\Program Files\nodejs;%PATH%"
+:: Tu dong them cac duong dan Node.js pho bien vao PATH
+if exist "C:\Program Files\nodejs" set "PATH=C:\Program Files\nodejs;%PATH%"
+if exist "C:\Program Files (x86)\nodejs" set "PATH=C:\Program Files (x86)\nodejs;%PATH%"
+if exist "%APPDATA%\npm" set "PATH=%APPDATA%\npm;%PATH%"
+
 taskkill /F /IM dsa_web_bridge.exe >nul 2>&1
 
 echo [1/2] Kiem tra va bien dich C++ Native Web Bridge...
@@ -21,4 +24,15 @@ echo [OK] Bien dich C++ Bridge thanh cong!
 echo.
 echo [2/2] Dang khoi dong Next.js Server tai http://localhost:3000...
 cd website
-call npm.cmd run dev
+
+if exist "C:\Program Files\nodejs\npm.cmd" (
+    call "C:\Program Files\nodejs\npm.cmd" run dev
+) else if exist "C:\Program Files (x86)\nodejs\npm.cmd" (
+    call "C:\Program Files (x86)\nodejs\npm.cmd" run dev
+) else (
+    call npm run dev 2>nul || call npx next dev 2>nul || (
+        echo [ERROR] Khong tim thay Node.js / npm tren he thong!
+        echo Vui long cai dat Node.js tai: https://nodejs.org/
+        pause
+    )
+)

@@ -2,8 +2,11 @@ Write-Host "===================================================" -ForegroundColo
 Write-Host "  KHOI DONG WEB VISUALIZER VA C++ BRIDGE ENGINE" -ForegroundColor Cyan
 Write-Host "===================================================" -ForegroundColor Cyan
 
-# Tu dong them Node.js vao PATH trong session hien tai
-$env:Path = "C:\Program Files\nodejs;" + $env:Path
+# Tu dong them cac duong dan Node.js pho bien vao PATH
+if (Test-Path "C:\Program Files\nodejs") { $env:Path = "C:\Program Files\nodejs;" + $env:Path }
+if (Test-Path "C:\Program Files (x86)\nodejs") { $env:Path = "C:\Program Files (x86)\nodejs;" + $env:Path }
+if (Test-Path "$env:APPDATA\npm") { $env:Path = "$env:APPDATA\npm;" + $env:Path }
+
 Stop-Process -Name "dsa_web_bridge" -Force -ErrorAction SilentlyContinue
 
 Write-Host "[1/2] Kiem tra va bien dich C++ Native Web Bridge..." -ForegroundColor Yellow
@@ -19,4 +22,10 @@ Write-Host ""
 Write-Host "[2/2] Dang khoi dong Next.js Server tai http://localhost:3000..." -ForegroundColor Cyan
 
 Set-Location website
-& "C:\Program Files\nodejs\npm.cmd" run dev
+if (Test-Path "C:\Program Files\nodejs\npm.cmd") {
+    & "C:\Program Files\nodejs\npm.cmd" run dev
+} elseif (Test-Path "C:\Program Files (x86)\nodejs\npm.cmd") {
+    & "C:\Program Files (x86)\nodejs\npm.cmd" run dev
+} else {
+    npm.cmd run dev
+}
