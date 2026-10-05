@@ -1370,12 +1370,20 @@ Hướng phát triển tiếp theo của đề tài tập trung vào các nội 
 \subsection*{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 \addcontentsline{toc}{subsection}{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 
-\vspace{2.5cm}
+Khi nhận nhiệm vụ thực hiện đồ án, tôi đảm nhận trách nhiệm hiện thực Tầng Lưu trữ Bền vững (Persistence Layer) với trọng tâm là lớp \texttt{FileStore}, chịu trách nhiệm đọc và ghi dữ liệu từ các tệp tin định dạng chuẩn JSON (\texttt{books.json}, \texttt{readers.json}, \texttt{borrow\_records.json}) và nạp an toàn vào các cấu trúc dữ liệu trên bộ nhớ chính (In-Memory Engine).
+
+Quá trình hiện thực đã mang lại cho tôi những bài học chuyên sâu về xử lý luồng dữ liệu, bóc tách cú pháp (JSON Parsing) và kiểm soát tính toàn vẹn dữ liệu. Thách thức lớn nhất mà tôi giải quyết là việc xử lý các trường hợp dữ liệu biên không hoàn hảo như chuỗi ngày tháng chứa khoảng trắng thừa, định dạng dữ liệu bị khuyết thiếu, hoặc các ký tự đặc biệt có thể gây sập chương trình. Tôi đã xây dựng cơ chế kiểm tra tính hợp lệ và xử lý ngoại lệ an toàn trước khi ánh xạ vào các đối tượng \texttt{Book}, \texttt{Reader} và \texttt{BorrowRecord}. Đặc biệt, tôi luôn quán triệt nguyên tắc kiến trúc 3 tầng: Tầng Persistence chỉ làm nhiệm vụ nạp và lưu thô, tuyệt đối không can thiệp vào logic tìm kiếm hay sắp xếp của tầng DSA Core.
+
+Về việc ứng dụng Trí tuệ Nhân tạo (AI), tôi sử dụng AI để tham khảo các mẫu kiểm thử xử lý ngoại lệ đọc ghi tệp và đối chiếu định dạng chuẩn của JSON. Toàn bộ mã nguồn ánh xạ mô hình và các hàm nạp dữ liệu tại \texttt{FileStore} đều do tôi tự tay thiết kế và kiểm thử. Đồ án giúp tôi nắm vững tư duy thiết kế phần mềm module hóa, kỹ năng quản lý tệp tin và nâng cao trách nhiệm đối với sự ổn định chung của toàn hệ thống.
 
 \subsection*{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}
 \addcontentsline{toc}{subsection}{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}
 
-\vspace{2.5cm}
+Đảm nhận triển khai Module MC1 (Tra cứu tài liệu theo Book ID) cùng các yêu cầu RQ1, RQ3 cho toàn hệ thống, tôi nhận thấy rằng một thuật toán tối ưu chỉ thực sự phát huy tác dụng khi được đặt trong một cấu trúc mô hình hóa bài bản và được đối sánh rõ ràng với phương án nền tảng.
+
+Trong quá trình xây dựng Module MC1, với mục tiêu không phụ thuộc vào \texttt{std::unordered\_map}, nhiệm vụ chính của tôi là xây dựng Hash Table từ đầu (dùng Separate Chaining) để đạt độ phức tạp trung bình $O(1)$. Khi thực hiện Mode 1 (Comparison Mode), tôi tiến hành đo benchmark thực tế giữa Hash Table và Linear Search $O(N)$ thông qua độ phân giải nanosecond (\texttt{chrono}) và đếm số lần so sánh. Về mặt kiến trúc, tôi áp dụng nghiêm ngặt Single Responsibility: tách biệt rõ ràng giữa logic tìm kiếm, cấu trúc kết quả (\texttt{SearchResult}) và controller (MC1), giúp tầng Presentation hoàn toàn độc lập với cấu trúc dữ liệu bên dưới.
+
+Trong quá trình làm, tôi tận dụng AI như một công cụ tham khảo để tham vấn tối ưu hàm băm và thiết kế giao diện bảng so sánh trực quan trên Terminal. Tuy nhiên, các phần cốt lõi như quản lý con trỏ node (\texttt{HashNode}), quản lý bộ nhớ động (allocate/deallocate bucket) và luồng xử lý dữ liệu cho RQ1, RQ3 đều do tôi tự viết và stress-test với dataset từ nhỏ đến hàng trăm nghìn bản ghi.
 
 \subsection*{3. Phản tư của sinh viên Lê Nhật Ninh (MSSV: 25110288)}
 \addcontentsline{toc}{subsection}{3. Phản tư của sinh viên Lê Nhật Ninh (MSSV: 25110288)}
