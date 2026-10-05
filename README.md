@@ -29,7 +29,7 @@
 
 Dự án là một **Library Records-and-Decision Engine** hoàn chỉnh, giải quyết trọn vẹn các bài toán nghiệp vụ thư viện vận hành hoàn toàn trên bộ nhớ trong (In-Memory). Hệ thống thiết lập cơ chế đối chứng song song hai giải pháp:
 - **Baseline Solution**: Giải pháp tuần tự tuyến tính $O(N)$ mang tính đối chứng.
-- **Final DSA Solution**: Các Cấu trúc Dữ liệu Nâng cao tự lập trình from-scratch (Bảng băm xích rời, Cây đống cực đại Max-Heap, Cây tự cân bằng AVL, Bảng băm Chỉ mục ngược Inverted Index, Hàng đợi FIFO).
+- **Final DSA Solution**: Các Cấu trúc Dữ liệu Nâng cao tự lập trình from-scratch (Bảng băm xích rời, Cây đống cực đại Max-Heap, Cây tự cân bằng AVL, Bảng băm Danh mục & Chỉ mục tiền tố).
 
 ### 🏆 Các điểm nổi bật kỹ thuật:
 - **100% Cài đặt from-scratch**: Tuyệt đối không dùng STL Container dựng sẵn cho logic cấu trúc dữ liệu cốt lõi.
@@ -46,8 +46,7 @@ DSA_Project_final/
 ├── data/                               # Dữ liệu nguồn JSON
 │   ├── books.json                      # Danh mục sách (Mã, tên, tác giả, thể loại, tồn kho, lượt mượn...)
 │   ├── readers.json                    # Hồ sơ độc giả thư viện
-│   ├── borrow_records.json             # Lịch sử phiếu mượn/trả sách
-│   └── waitlist.json                   # Danh sách chờ khi sách hết tồn kho
+│   └── borrow_records.json             # Lịch sử phiếu mượn/trả sách
 │
 ├── include/                            # Header định nghĩa giao diện thuật toán & cấu trúc
 │   ├── core/                           # Header các module DSA
@@ -67,7 +66,7 @@ DSA_Project_final/
 ├── src/                                # Hiện thực mã nguồn C++
 │   ├── core/                           # Source code giải thuật DSA from-scratch
 │   │   ├── mc1/, mc2/, rq1/, rq2/, rq3/
-│   ├── models/                         # Khai báo Struct thực thể (Book, Reader, BorrowRecord, WaitlistEntry)
+│   ├── models/                         # Khai báo Struct thực thể (Book, Reader, BorrowRecord)
 │   ├── persistence/                    # Tầng FileStore nạp/lưu JSON
 │   └── presentation/                   # Điều hướng TUI Menu, Bắt phím Esc, BenchmarkRunner
 │
@@ -125,8 +124,7 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 |   - MC2: Max-Heap (Thuật toán vun đống Floyd O(N))                    |
 |   - RQ1: Category Hash Table + Danh sách liên kết đơn con trỏ        |
 |   - RQ2: AVL Tree tự cân bằng 4 phép quay + Range Pruning             |
-|   - RQ3: Inverted Index Hash Table + Tokenizer                        |
-|   - Waitlist: Hàng đợi FIFO Queue quản lý danh sách chờ              |
+|   - RQ3: Category Title Search + Prefix Scan / Trie                   |
 +-----------------------------------------------------------------------+
                                    | (chỉ đọc/ghi thô lúc khởi động/tắt)
                                    v
@@ -280,7 +278,7 @@ Giao diện Terminal UI được thiết kế tối ưu công thái học, trự
 | 1 | **Lê Thị Tuyết Nhi** | 25110283 | **Trưởng nhóm** — Phụ trách Presentation Layer, Thiết kế Mô hình Dữ liệu Lõi (`models/`), Dựng khung sườn hàm toàn hệ thống |
 | 2 | **Trần Quốc Việt Nam** | 25110274 | Phụ trách Hệ thống Bảng băm: MC1 (Hash Table DJB2), RQ1 (Category Hash), RQ3 (Inverted Index) & Benchmark 1M |
 | 3 | **Lê Nhật Ninh** | 25110288 | Phụ trách Cấu trúc Cây: MC2 (Max-Heap Floyd Build-Heap), RQ2 (AVL Tree 4 phép quay & Range Pruning) |
-| 4 | **Nguyễn Ngọc Hồng Nhung** | 25110285 | Phụ trách Persistence Layer (`FileStore`), Quản lý Hàng đợi Chờ mượn (`Waitlist FIFO Queue`) & Parser JSON |
+| 4 | **Nguyễn Ngọc Hồng Nhung** | 25110285 | Phụ trách Persistence Layer (`FileStore`), Quản lý Lịch sử mượn trả & Parser JSON |
 | 5 | **Trần Phạm Huỳnh Như** | 25110286 | Phụ trách Kịch bản Nghiệp vụ Thư viện, Kiểm thử Đơn vị Hệ thống & Video Demo 5 phút |
 
 ---

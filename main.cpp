@@ -13,14 +13,11 @@ int main() {
         vector<Reader> readers = FileStore::loadReaders("data/readers.json");
         vector<BorrowRecord> borrowRecords =
             FileStore::loadBorrowRecords("data/borrow_records.json");
-        vector<WaitlistEntry> waitlist =
-            FileStore::loadWaitlist("data/waitlist.json");
 
         cout << "Tai thanh cong:\n";
         cout << " - " << books.size() << " cuon sach\n";
         cout << " - " << readers.size() << " doc gia\n";
-        cout << " - " << borrowRecords.size() << " phieu muon\n";
-        cout << " - " << waitlist.size() << " luot cho muon\n\n";
+        cout << " - " << borrowRecords.size() << " phieu muon\n\n";
 
         // 2. Khoi tao cac module
         MC1 mc1(books);
