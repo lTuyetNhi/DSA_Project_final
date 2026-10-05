@@ -170,29 +170,28 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 
 ### 1. Chạy Ứng dụng Chính (C++ TUI Console)
 
-* **Cách 1: Sử dụng Script 1-Click (Khuyên dùng)**
-  - Trên Command Prompt (CMD):
+* **Cách 1: Sử dụng Script 1-Click (Khuyên dùng — Tự động build và chạy `main.exe`)**
+  - Trên Command Prompt (CMD) hoặc Double-click chuột:
     ```cmd
     build.bat
     ```
   - Hoặc trên PowerShell:
     ```powershell
-    .\build.ps1
-    # hoặc: .\build.bat
+    .\build.bat
+    # Hoặc: .\build.ps1
     ```
-  - *(Nếu đã biên dịch sẵn và muốn chạy trực tiếp không cần build lại: `.\main.exe`)*
 
 * **Cách 2: Lệnh biên dịch thủ công `g++`:**
-  - Trên PowerShell:
-    ```powershell
-    g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
-    .\main.exe
-    ```
-  - Hoặc liệt kê chi tiết toàn bộ các file nguồn:
+  - Trên PowerShell / Terminal:
     ```powershell
     g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp src/core/mc2/LinearMaxScan.cpp src/core/mc2/MaxHeap.cpp src/core/mc2/MC2.cpp src/core/rq1/LinearCategoryScan.cpp src/core/rq1/CategoryHashTable.cpp src/core/rq1/RQ1.cpp src/core/rq2/LinearOverdueScan.cpp src/core/rq2/AVLTree.cpp src/core/rq2/RQ2.cpp src/core/rq3/LinearTitleScan.cpp src/core/rq3/CategoryTitleSearch.cpp src/core/rq3/RQ3.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
     .\main.exe
     ```
+
+* **Cách 3: Chạy trực tiếp file thực thi đã biên dịch sẵn:**
+  ```powershell
+  .\main.exe
+  ```
 
 ---
 
