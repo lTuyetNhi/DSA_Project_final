@@ -22,15 +22,27 @@ if %errorlevel% neq 0 (
 
 echo [OK] Bien dich C++ Bridge thanh cong!
 echo.
-echo [2/2] Dang khoi dong Next.js Server tai http://localhost:3000...
+echo [2/2] Dang khoi dong Next.js Production Server tai http://localhost:3000...
 cd website
 
+:: Kiem tra neu chua build thi tu dong build production truoc
+if not exist ".next" (
+    echo [*] Dang dong goi Production Build lan dau...
+    if exist "C:\Program Files\nodejs\npm.cmd" (
+        call "C:\Program Files\nodejs\npm.cmd" run build
+    ) else if exist "C:\Program Files (x86)\nodejs\npm.cmd" (
+        call "C:\Program Files (x86)\nodejs\npm.cmd" run build
+    ) else (
+        call npm.cmd run build 2>nul || call npx next build 2>nul
+    )
+)
+
 if exist "C:\Program Files\nodejs\npm.cmd" (
-    call "C:\Program Files\nodejs\npm.cmd" run dev
+    call "C:\Program Files\nodejs\npm.cmd" run start
 ) else if exist "C:\Program Files (x86)\nodejs\npm.cmd" (
-    call "C:\Program Files (x86)\nodejs\npm.cmd" run dev
+    call "C:\Program Files (x86)\nodejs\npm.cmd" run start
 ) else (
-    call npm run dev 2>nul || call npx next dev 2>nul || (
+    call npm.cmd run start 2>nul || call npx next start 2>nul || (
         echo [ERROR] Khong tim thay Node.js / npm tren he thong!
         echo Vui long cai dat Node.js tai: https://nodejs.org/
         pause

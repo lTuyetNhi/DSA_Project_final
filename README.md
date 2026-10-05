@@ -196,37 +196,32 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 
 ---
 
-### 2. Chạy Giao diện Web Trực quan (Next.js Dashboard)
+### 2. Chạy Giao diện Web Trực quan (Next.js Dashboard - Production Mode)
 
-* **Cách 1: Sử dụng Script `run_website.bat` (Khuyên dùng)**
-  - Trên PowerShell:
-    ```powershell
-    .\run_website.bat
-    ```
+> **Lưu ý**: Hệ thống mặc định khởi chạy ở chế độ **Production Server (`npm start`)** sau khi đóng gói tối ưu, giúp triệt tiêu hoàn toàn thanh thông báo Dev Overlay (*"1 Issue"*), mang lại trải nghiệm mượt mà và tốc độ phản hồi nhanh nhất.
+
+* **Cách 1: Sử dụng Script 1-Click `run_website.bat` (Khuyên dùng)**
   - Trên Command Prompt (CMD) hoặc Double-click chuột:
     ```cmd
     run_website.bat
     ```
-  - Hoặc nếu dùng script PowerShell:
+  - Hoặc trên PowerShell:
     ```powershell
-    .\run_website.ps1
+    .\run_website.bat
+    # Hoặc: .\run_website.ps1
     ```
-    *(Lưu ý: Nếu PowerShell báo lỗi `UnauthorizedAccess / Execution_Policies`, hãy chạy `.\run_website.bat` hoặc gõ `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`)*
+  *(Script sẽ tự động biên dịch C++ Web Bridge `tools/dsa_web_bridge.exe`, tự động build nếu chưa có và khởi chạy Next.js Production Server)*
 
-  *(Script sẽ tự động biên dịch C++ Web Bridge `tools/dsa_web_bridge.exe` và khởi chạy server Next.js)*
-
-* **Cách 2: Khởi động thủ công bằng lệnh npm:**
+* **Cách 2: Khởi động thủ công bằng dòng lệnh Production:**
   ```powershell
   # Bước 1: Biên dịch C++ Web Bridge (nếu chưa biên dịch)
   g++ -std=c++17 -O2 -DNDEBUG tools/dsa_web_bridge.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp src/core/mc2/LinearMaxScan.cpp src/core/mc2/MaxHeap.cpp src/core/mc2/MC2.cpp src/core/rq1/LinearCategoryScan.cpp src/core/rq1/CategoryHashTable.cpp src/core/rq1/RQ1.cpp src/core/rq2/LinearOverdueScan.cpp src/core/rq2/AVLTree.cpp src/core/rq2/RQ2.cpp src/core/rq3/LinearTitleScan.cpp src/core/rq3/CategoryTitleSearch.cpp src/core/rq3/RQ3.cpp -o tools/dsa_web_bridge.exe
 
-  # Bước 2: Cài đặt và Chạy Website
+  # Bước 2: Đóng gói và Khởi chạy Production Server
   cd website
   npm.cmd install
-  npm.cmd run dev       # Chế độ phát triển (Development: http://localhost:3000)
-  # Hoặc đóng gói và chạy bản Production siêu tốc:
   npm.cmd run build     # Đóng gói Production Build (0 Warning, 0 Error)
-  npm.cmd run start     # Chạy Production Server tại http://localhost:3000
+  npm.cmd run start     # Khởi chạy Production Server tại http://localhost:3000
   ```
 
 * **Truy cập Giao diện Web:**

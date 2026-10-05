@@ -19,13 +19,25 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "[OK] Bien dich C++ Bridge thanh cong!" -ForegroundColor Green
 Write-Host ""
-Write-Host "[2/2] Dang khoi dong Next.js Server tai http://localhost:3000..." -ForegroundColor Cyan
+Write-Host "[2/2] Dang khoi dong Next.js Production Server tai http://localhost:3000..." -ForegroundColor Cyan
 
 Set-Location website
+
+if (-not (Test-Path ".next")) {
+    Write-Host "[*] Dang dong goi Production Build lan dau..." -ForegroundColor Yellow
+    if (Test-Path "C:\Program Files\nodejs\npm.cmd") {
+        & "C:\Program Files\nodejs\npm.cmd" run build
+    } elseif (Test-Path "C:\Program Files (x86)\nodejs\npm.cmd") {
+        & "C:\Program Files (x86)\nodejs\npm.cmd" run build
+    } else {
+        npm.cmd run build
+    }
+}
+
 if (Test-Path "C:\Program Files\nodejs\npm.cmd") {
-    & "C:\Program Files\nodejs\npm.cmd" run dev
+    & "C:\Program Files\nodejs\npm.cmd" run start
 } elseif (Test-Path "C:\Program Files (x86)\nodejs\npm.cmd") {
-    & "C:\Program Files (x86)\nodejs\npm.cmd" run dev
+    & "C:\Program Files (x86)\nodejs\npm.cmd" run start
 } else {
-    npm.cmd run dev
+    npm.cmd run start
 }
