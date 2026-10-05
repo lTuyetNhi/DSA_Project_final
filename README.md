@@ -307,7 +307,7 @@ Giao diện Terminal UI được thiết kế tối ưu công thái học, trự
 | 1 | **Trần Quốc Việt Nam** | 25110274 | **Trưởng nhóm** — Phụ trách Hệ thống Bảng băm: MC1 (Hash Table DJB2), RQ1 (Category Hash), RQ3 (Inverted Index) & Benchmark 1M |
 | 2 | **Lê Thị Tuyết Nhi** | 25110283 | Phụ trách Presentation Layer, Thiết kế Mô hình Dữ liệu Lõi (`models/`), Dựng khung sườn hàm toàn hệ thống |
 | 3 | **Lê Nhật Ninh** | 25110288 | Phụ trách Cấu trúc Cây: MC2 (Max-Heap Floyd Build-Heap), RQ2 (AVL Tree 4 phép quay & Range Pruning) |
-| 4 | **Nguyễn Ngọc Hồng Nhung** | 25110285 | Phụ trách Persistence Layer (`FileStore`), Nạp / Lưu trữ & Parser JSON |
+| 4 | **Nguyễn Ngọc Hồng Nhung** | 25110285 | Phụ trách Persistence Layer (`FileStore`), Nạp / Lưu trữ & Ánh xạ dữ liệu JSON |
 | 5 | **Trần Phạm Huỳnh Như** | 25110286 | Phụ trách Kịch bản Nghiệp vụ Thư viện, Kiểm thử Đơn vị Hệ thống & Video Demo 5 phút |
 
 ---

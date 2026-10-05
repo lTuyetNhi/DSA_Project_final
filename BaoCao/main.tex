@@ -294,7 +294,7 @@ Chúng em xin trân trọng tiếp thu mọi ý kiến đóng góp quý báu t�
 \begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}m{1.2cm}|>{\raggedright\arraybackslash}m{3.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}m{2.2cm}|}
 \hline
 \textbf{STT} & \textbf{Họ và tên / MSSV} & \textbf{Nhiệm vụ phân công} & \textbf{Hoàn thành} \\ \hline
-1 & \textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & Phụ trách tầng Lưu trữ bền vững (Persistence: JSON Serializer/Deserializer tự viết). & 100\% \\ \hline
+1 & \textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & Phụ trách tầng Lưu trữ bền vững (Persistence Layer: Nạp và lưu trữ dữ liệu an toàn từ các tệp JSON vào In-Memory Engine). & 100\% \\ \hline
 2 & \textbf{Trần Quốc Việt Nam}\newline (Trưởng nhóm)\newline MSSV: 25110274 & Điều phối chung dự án và phụ trách toàn bộ hệ thống Bảng băm gồm: MC1 (Tra cứu Mã Sách), RQ1 (Phân cụm Thể loại), và RQ3 (Chỉ mục ngược Inverted Index). & 100\% \\ \hline
 3 & \textbf{Lê Nhật Ninh}\newline MSSV: 25110288 & Phụ trách Cây đống cực đại Max-Heap (MC2: Top sách mượn nhiều nhất) và Cây tự cân bằng AVL (RQ2: Truy vết phiếu quá hạn). & 100\% \\ \hline
 4 & \textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & Phụ trách tầng Trình diễn (Giao diện dòng lệnh TUI) và định nghĩa các Cấu trúc dữ liệu cơ bản (struct Book, Reader, BorrowRecord) cùng khung sườn các hàm. & 100\% \\ \hline
@@ -329,7 +329,7 @@ Tuân thủ quy định đánh giá năng lực cá nhân theo đề bài học 
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}m{3.1cm}|>{\raggedright\arraybackslash}m{2.8cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Thành viên \& MSSV} & \textbf{Thành phần sở hữu} & \textbf{Đóng góp Kỹ thuật \& Biện minh Thiết kế} \\ \hline
-\textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & \textbf{Persistence Layer} & Thiết kế cơ chế đồng bộ đĩa-RAM (JSON Parser/Serializer tự viết không dùng thư viện ngoài). \\ \hline
+\textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & \textbf{Persistence Layer} & Thiết kế cơ chế đồng bộ đĩa-RAM tại lớp FileStore (nạp và lưu trữ tệp JSON, xử lý ngoại lệ và kiểm soát tính toàn vẹn dữ liệu). \\ \hline
 \textbf{Trần Quốc Việt Nam}\newline (Trưởng nhóm)\newline MSSV: 25110274 & \textbf{Hệ thống Bảng băm}\newline \textit{(MC1, RQ1, RQ3)} & Tự cài đặt Bảng băm Separate Chaining (DJB2) cho MC1, CategoryHashTable cho RQ1 và InvertedIndex cho RQ3; điều phối chung. \\ \hline
 \textbf{Lê Nhật Ninh}\newline MSSV: 25110288 & \textbf{Max-Heap \& Cây AVL}\newline \textit{(MC2, RQ2)} & Cài đặt Cây đống cực đại Max-Heap Floyd cho MC2 (Top sách) và Cây tự cân bằng AVL 4 phép quay cho RQ2 (Truy vết quá hạn). \\ \hline
 \textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & \textbf{Presentation TUI \& Data Models} & Thiết kế giao diện dòng lệnh TUI tương tác, định nghĩa mô hình dữ liệu lõi (struct Book, Reader, BorrowRecord) và khung hàm. \\ \hline
@@ -1286,7 +1286,7 @@ Khi duyệt tuyến tính trên một mảng nửa triệu hoặc một triệu 
 
 Trong quá trình hiện thực mã nguồn, nhóm đã xây dựng quy trình kiểm thử đơn vị độc lập và ghi nhận nhật ký gỡ lỗi chi tiết cho từng cấu trúc dữ liệu cốt lõi:
 
-Tầng Lưu trữ Bền vững (Nguyễn Ngọc Hồng Nhung): Phụ trách thiết kế và hiện thực bộ phân tích cú pháp JSON Serializer/Deserializer tự viết tại lớp FileStore; xử lý chuẩn hóa chuỗi ngày tháng, bóc tách dữ liệu an toàn và duy trì tính toàn vẹn khi đồng bộ giữa đĩa cứng và bộ nhớ RAM.
+Tầng Lưu trữ Bền vững (Nguyễn Ngọc Hồng Nhung): Phụ trách thiết kế và hiện thực tầng Persistence tại lớp FileStore; xử lý chuẩn hóa chuỗi ngày tháng, bóc tách và ánh xạ dữ liệu an toàn, duy trì tính toàn vẹn khi đồng bộ giữa đĩa cứng và bộ nhớ RAM.
 
 Hệ thống Bảng băm (Trần Quốc Việt Nam): Khắc phục hiện tượng va chạm phân cụm bằng cách chuyển kích thước bảng sang số nguyên tố lớn ($100.003$) kết hợp hàm băm DJB2 tối ưu; tích hợp đồng bộ bộ đo kiểm benchmark 1.000.000 bản ghi.
 
@@ -1322,7 +1322,7 @@ Nguyễn Ngọc Hồng Nhung & Trần Quốc Việt Nam & Hệ thống Bảng b�
 Trần Quốc Việt Nam & Lê Nhật Ninh & Max-Heap \& Cây AVL (MC2, RQ2) & Thuật toán Floyd xây đống từ dưới lên chính xác; 4 phép quay cây AVL chuẩn xác, cơ chế tỉa nhánh mốc ngày đạt hiệu năng vượt trội. \\ \hline
 Lê Nhật Ninh & Lê Thị Tuyết Nhi & Presentation TUI \& Mô hình Dữ liệu & Đóng gói cấu trúc thực thể mạch lạc; giao diện điều hướng mượt mà, khung hàm phân tách rõ ràng với tầng giải thuật Core. \\ \hline
 Lê Thị Tuyết Nhi & Trần Phạm Huỳnh Như & Kịch bản \& Video Demo 5 phút & Kịch bản phân bổ thời lượng hợp lý, nêu bật được sự khác biệt hiệu năng giữa Baseline và Final solution trên tập 1.000.000 bản ghi. \\ \hline
-Trần Phạm Huỳnh Như & Nguyễn Ngọc Hồng Nhung & Persistence Layer & Bộ phân tích cú pháp JSON tự viết xử lý ngoại lệ tốt, định dạng dữ liệu an toàn và nhất quán. \\ \hline
+Trần Phạm Huỳnh Như & Nguyễn Ngọc Hồng Nhung & Persistence Layer & Tầng Persistence tại lớp FileStore xử lý ngoại lệ nạp tệp JSON tốt, kiểm tra dữ liệu biên an toàn và nhất quán. \\ \hline
 \end{xltabular}
 \endgroup
 
