@@ -198,27 +198,33 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 
 ### 2. Chạy Giao diện Web Trực quan (Next.js Dashboard)
 
-* **Cách 1: Sử dụng Script 1-Click (Khuyên dùng)**
-  - Trên Command Prompt (CMD) hoặc double-click:
+* **Cách 1: Sử dụng Script `run_website.bat` (Khuyên dùng)**
+  - Trên PowerShell:
+    ```powershell
+    .\run_website.bat
+    ```
+  - Trên Command Prompt (CMD) hoặc Double-click chuột:
     ```cmd
     run_website.bat
     ```
-  - Hoặc trên PowerShell:
+  - Hoặc nếu dùng script PowerShell:
     ```powershell
     .\run_website.ps1
-    # hoặc: .\run_website.bat
     ```
-  *(Script sẽ tự động biên dịch `tools/dsa_web_bridge.exe` để kết nối thuật toán C++ với Web và khởi chạy server Next.js)*
+    *(Lưu ý: Nếu PowerShell báo lỗi `UnauthorizedAccess / Execution_Policies`, hãy chạy `.\run_website.bat` hoặc gõ `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`)*
 
-* **Cách 2: Khởi động thủ công:**
+  *(Script sẽ tự động biên dịch C++ Web Bridge `tools/dsa_web_bridge.exe` và khởi chạy server Next.js)*
+
+* **Cách 2: Khởi động thủ công bằng lệnh npm:**
   ```powershell
   cd website
-  npm install
-  npm run dev
+  npm.cmd install
+  npm.cmd run dev
   ```
 
 * **Truy cập Giao diện Web:**
-  Sau khi server khởi động xong, mở trình duyệt truy cập: **`http://localhost:3000`**
+  Sau khi server khởi động xong (hiển thị `- Local: http://localhost:3000`), mở trình duyệt truy cập:  
+  👉 **`http://localhost:3000`**
 
 ---
 

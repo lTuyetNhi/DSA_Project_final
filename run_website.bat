@@ -20,4 +20,4 @@ echo [OK] Bien dich C++ Bridge thanh cong!
 echo.
 echo [2/2] Dang khoi dong Next.js Server tai http://localhost:3000...
 cd website
-call npm run dev
+call npm.cmd run dev
