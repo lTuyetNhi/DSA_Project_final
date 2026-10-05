@@ -1,0 +1,22 @@
+% Bang ket qua thuc nghiem benchmark duoc tao tu dong boi BenchmarkRunner
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|r|r|r|r|r|r|}
+\hline
+\textbf{Module} & \textbf{Kịch bản} & \textbf{N} & \textbf{T tuyến tính ($\mu$s)} & \textbf{T tối ưu ($\mu$s)} & \textbf{Ops Linear} & \textbf{Ops DSA} & \textbf{Speedup} \\
+\hline
+MC1 & Tra cuu Book ID & 10 & 1.27 & 0.71 & 6 & 1 & 1.8x \\
+\hline
+MC2 & Top Borrowed & 10 & 0.80 & 0.53 & 10 & 1 & 1.5x \\
+\hline
+RQ1 & Filter Category & 10 & 4.40 & 1.98 & 10 & 1 & 2.2x \\
+\hline
+RQ2 & Filter Overdue & 10 & 3.21 & 6.24 & 10 & 4 & 0.5x \\
+\hline
+RQ3 & Keyword Search & 10 & 6.46 & 2.12 & 10 & 1 & 3.0x \\
+\hline
+\end{tabular}
+\caption{Bảng so sánh hiệu năng thực tế giữa giải thuật Baseline và cấu trúc dữ liệu tối ưu}
+\label{tab:benchmark_results}
+\end{table}

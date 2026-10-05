@@ -185,7 +185,7 @@
     citecolor=black,
     urlcolor=blue,
     pdftitle={Báo cáo Đồ án DSA - Library Records-and-Decision Engine},
-    pdfauthor={Nhóm 06}
+    pdfauthor={Nhóm 07}
 }
 \usepackage{bookmark}
 \bookmarksetup{
@@ -235,7 +235,7 @@
     \begin{flushleft}
         \hspace{1.2cm}\textbf{Giảng viên hướng dẫn:} ThS. Bảo Vũ Đình (T-Bao)\\[0.15cm]
         \hspace{1.2cm}\textbf{Mã lớp học phần:} 261DASA230179\_06\\[0.15cm]
-        \hspace{1.2cm}\textbf{Nhóm thực hiện:} Nhóm 06\\[0.15cm]
+        \hspace{1.2cm}\textbf{Nhóm thực hiện:} Nhóm 07\\[0.15cm]
         \hspace{1.2cm}\textbf{Sinh viên thực hiện:}\\[0.1cm]
         \hspace{1.5cm}\begin{tabular}{ll}
             \textbf{Họ và tên} & \textbf{MSSV} \\
@@ -259,7 +259,7 @@
 \thispagestyle{empty}
 \section*{LỜI CẢM ƠN}
 
-Lời đầu tiên, Nhóm 06 chúng em xin chân thành gửi lời cảm ơn sâu sắc nhất đến Ban Giám hiệu Trường Đại học Công nghệ Kỹ thuật TP. Hồ Chí Minh cùng toàn thể quý Thầy Cô Khoa Công nghệ Thông tin đã tạo mọi điều kiện học tập thuận lợi và trang bị cho chúng em nền tảng tư duy khoa học máy tính vững chắc.
+Lời đầu tiên, Nhóm 07 chúng em xin chân thành gửi lời cảm ơn sâu sắc nhất đến Ban Giám hiệu Trường Đại học Công nghệ Kỹ thuật TP. Hồ Chí Minh cùng toàn thể quý Thầy Cô Khoa Công nghệ Thông tin đã tạo mọi điều kiện học tập thuận lợi và trang bị cho chúng em nền tảng tư duy khoa học máy tính vững chắc.
 
 Đặc biệt, chúng em xin bày tỏ lòng tri ân sâu sắc đến Thầy ThS. Bảo Vũ Đình (T-Bao) --- giảng viên phụ trách học phần Cấu trúc Dữ liệu và Giải thuật (Mã lớp học phần: 261DASA230179\_06). Trong suốt học kỳ vừa qua, Thầy đã luôn mang đến cho chúng em những bài giảng giàu tính học thuật, rèn luyện tư duy phản biện thuật toán và phương pháp tiếp cận vấn đề theo chuẩn kỹ sư chuyên nghiệp. Sự định hướng tận tâm của Thầy đã giúp chúng em thấu hiểu sâu sắc bản chất tối ưu hóa trên bộ nhớ chính (In-Memory Engine) và hoàn thành tốt đồ án capstone này.
 
@@ -269,7 +269,7 @@ Chúng em xin trân trọng tiếp thu mọi ý kiến đóng góp quý báu t�
 \begin{flushright}
     TP. Hồ Chí Minh, ngày 03 tháng 10 năm 2026\\[0.2cm]
     \textbf{Sinh viên thực hiện}\\[0.2cm]
-    \textbf{Nhóm 06}
+    \textbf{Nhóm 07}
 \end{flushright}
 
 % ------------------------------------------------------------------------------
@@ -284,7 +284,7 @@ Chúng em xin trân trọng tiếp thu mọi ý kiến đóng góp quý báu t�
 \vspace{-0.25cm}
 \noindent
 \textbf{Mã lớp học phần:} 261DASA230179\_06\\[0.1cm]
-\textbf{Nhóm thực hiện:} Nhóm 06\\[0.1cm]
+\textbf{Nhóm thực hiện:} Nhóm 07\\[0.1cm]
 \textbf{Giảng viên hướng dẫn:} ThS. Bảo Vũ Đình (T-Bao)\\[0.25cm]
 \noindent
 \begingroup
@@ -406,7 +406,7 @@ CLO & Course Learning Outcomes & Chuẩn đầu ra tích hợp của học phầ
 
 Trong các trung tâm thông tin thư viện đại học và các nền tảng học liệu số hiện đại, khối lượng đầu sách và nhật ký mượn/trả tài liệu không ngừng gia tăng theo cấp số nhân qua các năm học. Hệ thống quản lý thư viện không chỉ đơn thuần là nơi lưu trữ thông tin tĩnh, mà đóng vai trò là một động cơ xử lý hồ sơ và hỗ trợ ra quyết định (\textit{Records-and-Decision Engine})\footnote{Records-and-Decision Engine: Hệ thống phần mềm hợp nhất lưu trữ tập hợp bản ghi lớn và trả lời tức thì các câu hỏi vận hành cốt lõi ngay cả khi dữ liệu liên tục thay đổi.} thời gian thực. Động cơ này phải phản hồi tức thì các yêu cầu nghiệp vụ cấp thiết: tra cứu tức thì tình trạng một đầu sách phục vụ độc giả tại quầy, thống kê Top sách mượn nhiều nhất để tái cung ứng tài liệu, phân cụm sách theo thể loại nghiên cứu, kiểm soát danh sách mượn quá hạn để gửi thông báo phạt trễ và tìm kiếm nhanh tựa sách theo từ khóa linh hoạt.
 
-Khi dữ liệu thư viện mở rộng quy mô lớn, các giải pháp tìm kiếm vét cạn tuyến tính ($O(N)$) hay quét xâu con $O(N \times M)$ bộc lộ điểm nghẽn nghiêm trọng, làm chậm hệ thống và lãng phí tài nguyên CPU. Việc áp dụng các cấu trúc dữ liệu chuyên biệt trong bộ nhớ chính (In-Memory Data Structures) như Bảng băm xích rời (Separate Chaining Hash Table), Cây đống cực đại (Max-Heap), Cây tự cân bằng AVL (AVL Tree) và Bảng băm chỉ mục ngược (Inverted Index) là giải pháp tiên quyết để tối ưu hóa thời gian phản hồi về mức $O(1)$, $O(\log N)$, $O(1+K)$ và $O(\log N + K)$. Xuất phát từ nhu cầu thực tiễn đó, Nhóm 06 triển khai đề tài: ''Hệ thống Quản lý Tài liệu Thư viện và Engine Đối sánh Hiệu năng Thuật toán (DSA) -- Library Records-and-Decision Engine''.
+Khi dữ liệu thư viện mở rộng quy mô lớn, các giải pháp tìm kiếm vét cạn tuyến tính ($O(N)$) hay quét xâu con $O(N \times M)$ bộc lộ điểm nghẽn nghiêm trọng, làm chậm hệ thống và lãng phí tài nguyên CPU. Việc áp dụng các cấu trúc dữ liệu chuyên biệt trong bộ nhớ chính (In-Memory Data Structures) như Bảng băm xích rời (Separate Chaining Hash Table), Cây đống cực đại (Max-Heap), Cây tự cân bằng AVL (AVL Tree) và Bảng băm chỉ mục ngược (Inverted Index) là giải pháp tiên quyết để tối ưu hóa thời gian phản hồi về mức $O(1)$, $O(\log N)$, $O(1+K)$ và $O(\log N + K)$. Xuất phát từ nhu cầu thực tiễn đó, Nhóm 07 triển khai đề tài: ''Hệ thống Quản lý Tài liệu Thư viện và Engine Đối sánh Hiệu năng Thuật toán (DSA) -- Library Records-and-Decision Engine''.
 
 \subsection*{2. Mục tiêu nghiên cứu và chuẩn đầu ra học phần (CLO Alignment)}
 \addcontentsline{toc}{subsection}{2. Mục tiêu nghiên cứu và chuẩn đầu ra học phần (CLO Alignment)}

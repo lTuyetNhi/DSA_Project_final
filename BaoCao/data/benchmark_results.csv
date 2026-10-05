@@ -1,0 +1,6 @@
+Module,Scenario,DataSize,BaselineName,BaselineAvgUs,BaselineMinUs,BaselineMaxUs,BaselineOps,OptimizedName,OptimizedAvgUs,OptimizedMinUs,OptimizedMaxUs,OptimizedOps,Speedup
+MC1,"Tra cuu Book ID",10,Linear Search,1.273,1.2,1.4,6,Hash Table,0.708,0.6,0.8,1,1.79802
+MC2,"Top Borrowed",10,Linear Max Scan,0.804,0.7,0.9,10,Max-Heap,0.525,0.5,0.6,1,1.53143
+RQ1,"Filter Category",10,Linear Scan,4.398,4.2,4.9,10,Category Hash,1.984,1.9,2.2,1,2.21673
+RQ2,"Filter Overdue",10,Linear Scan,3.206,3.1,4.1,10,AVL Tree,6.241,6,18.2,4,0.5137
+RQ3,"Keyword Search",10,Linear Scan,6.464,6.2,6.9,10,Prefix Title Index,2.123,2,2.5,1,3.04475
