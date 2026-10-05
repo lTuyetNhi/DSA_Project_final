@@ -1370,11 +1370,7 @@ Hướng phát triển tiếp theo của đề tài tập trung vào các nội 
 \subsection*{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 \addcontentsline{toc}{subsection}{1. Phản tư của sinh viên Nguyễn Ngọc Hồng Nhung (MSSV: 25110285)}
 
-Trong khuôn khổ đồ án, tôi đảm nhận trách nhiệm thiết kế và hiện thực Tầng Lưu trữ Bền vững (Persistence Layer) với trọng tâm là lớp \texttt{FileStore}, chịu trách nhiệm đọc và ghi dữ liệu từ các tệp tin định dạng chuẩn JSON (\texttt{books.json}, \texttt{readers.json}, \texttt{borrow\_records.json}) và nạp an toàn vào các cấu trúc dữ liệu trên bộ nhớ chính (In-Memory Engine).
-
-Quá trình hiện thực đã mang lại cho tôi những bài học chuyên sâu về xử lý luồng dữ liệu (Stream I/O), bóc tách cú pháp (JSON Parsing) và kiểm soát tính toàn vẹn dữ liệu. Thách thức lớn nhất mà tôi giải quyết là việc xử lý các trường hợp dữ liệu biên không hoàn hảo như chuỗi ngày tháng chứa khoảng trắng thừa, định dạng dữ liệu bị khuyết thiếu, hoặc các ký tự đặc biệt có thể gây sập chương trình. Tôi đã xây dựng cơ chế kiểm tra tính hợp lệ nghiêm ngặt và xử lý ngoại lệ an toàn trước khi ánh xạ vào các đối tượng \texttt{Book}, \texttt{Reader} và \texttt{BorrowRecord}. Đặc biệt, tôi luôn quán triệt nguyên tắc kiến trúc 3 tầng: Tầng Persistence chỉ làm nhiệm vụ nạp và lưu thô, tuyệt đối không can thiệp vào logic tìm kiếm hay sắp xếp của tầng DSA Core.
-
-Về việc ứng dụng Trí tuệ Nhân tạo (AI), tôi sử dụng AI để tham khảo các mẫu kiểm thử xử lý ngoại lệ đọc ghi tệp và đối chiếu định dạng chuẩn của JSON. Toàn bộ mã nguồn ánh xạ mô hình và các hàm nạp dữ liệu tại \texttt{FileStore} đều do tôi tự tay thiết kế và kiểm thử. Đồ án giúp tôi nắm vững tư duy thiết kế phần mềm module hóa, kỹ năng quản lý tệp tin và nâng cao trách nhiệm đối với sự ổn định chung của toàn hệ thống.
+\vspace{2.5cm}
 
 \subsection*{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}
 \addcontentsline{toc}{subsection}{2. Phản tư của sinh viên Trần Quốc Việt Nam (MSSV: 25110274)}
@@ -1402,7 +1398,11 @@ Về việc sử dụng Trí tuệ Nhân tạo (AI), tôi đã sử dụng AI nh
 \subsection*{5. Phản tư của sinh viên Trần Phạm Huỳnh Như (MSSV: 25110286)}
 \addcontentsline{toc}{subsection}{5. Phản tư của sinh viên Trần Phạm Huỳnh Như (MSSV: 25110286)}
 
-\vspace{2.5cm}
+Khi nhận nhiệm vụ tham gia đồ án học phần Cấu trúc Dữ liệu và Giải thuật, tôi đảm nhận nghiên cứu tổng quan luồng nghiệp vụ hệ thống, xây dựng kịch bản, trực tiếp quay và dựng video demo sản phẩm. Bên cạnh đó, tôi cũng là người chủ động đóng góp các ý tưởng thực tiễn và xây dựng ví dụ minh họa cho bài toán tìm kiếm tựa sách theo từ khóa qua Chỉ mục ngược (RQ3).
+
+Quá trình tham gia đồ án mang lại cho tôi góc nhìn toàn diện về cách vận hành của một hệ thống xử lý dữ liệu trong bộ nhớ chính. Do định hướng công việc tập trung nhiều hơn vào tầng nghiệp vụ, kịch bản hệ thống và đánh giá luồng tương tác, việc tiếp cận sâu các đoạn mã nguồn thuật toán phức tạp đôi khi đòi hỏi nhiều thời gian nghiên cứu. Trong quá trình đó, tôi đã sử dụng Trí tuệ Nhân tạo (AI) như một công cụ hỗ trợ đắc lực để làm rõ các cơ chế thuật toán chưa nắm bắt tường tận, tham khảo cấu trúc bố cục khi xây dựng kịch bản video, cũng như tìm kiếm các ý tưởng gợi ý ban đầu cho module tìm kiếm từ khóa RQ3. Các gợi ý từ AI sau đó được tôi cùng các thành viên trong nhóm phân tích, chắt lọc và điều chỉnh để phù hợp hoàn toàn với định hướng kỹ thuật của đồ án.
+
+Thông qua việc hệ thống hóa toàn bộ luồng vận hành để thực hiện video demo, tôi đã nắm bắt sâu sắc bản chất và sự khác biệt về hiệu năng giữa giải pháp quét tuyến tính truyền thống và các cấu trúc dữ liệu tối ưu. Đồ án không chỉ giúp tôi củng cố kiến thức chuyên môn mà còn rèn luyện tư duy tổng hợp, khả năng truyền đạt kỹ thuật và tinh thần hợp tác hiệu quả trong làm việc nhóm.
 
 % ==============================================================================
 % TÀI LIỆU THAM KHẢO

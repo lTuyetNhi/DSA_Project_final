@@ -1,3 +1,6 @@
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [System.Text.Encoding]::UTF8
+
 Write-Host "===================================================" -ForegroundColor Cyan
 Write-Host "  BIEN DICH HE THONG QUAN LY THU VIEN (DSA PROJECT)" -ForegroundColor Cyan
 Write-Host "===================================================" -ForegroundColor Cyan

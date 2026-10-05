@@ -1,4 +1,6 @@
 @echo off
+chcp 65001 > nul
+taskkill /F /IM main.exe >nul 2>&1
 echo ===================================================
 echo   BIEN DICH HE THONG QUAN LY THU VIEN (DSA PROJECT)
 echo ===================================================

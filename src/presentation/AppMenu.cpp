@@ -300,7 +300,7 @@ bool AppMenu::runRQ1() {
     cout << "             RQ1: TRA CUU DANH SACH SACH THEO THE LOAI                \n";
     cout << "======================================================================\n\n";
 
-    cout << " [i] Goi y the loai: Computer Science, Software Engineering, Database, Mathematics...\n";
+    cout << " [i] Goi y the loai: Computer Science, Software Engineering, Database, Networking, Operating System, Mathematics...\n";
     cout << " [i] Nhan phim [Esc] bat ky luc nao de Quay lai Menu.\n\n";
 
     bool cancelled = false;
@@ -342,7 +342,7 @@ bool AppMenu::runRQ3() {
     cout << "          RQ3: TIM KIEM TAI LIEU THEO TEN / TU KHOA                   \n";
     cout << "======================================================================\n\n";
 
-    cout << " [i] Goi y tu khoa: data, clean, python, system, algorithms, code, design...\n";
+    cout << " [i] Goi y tu khoa: Algorithms, Code, Patterns, Intelligence, Database, System, Mathematics...\n";
     cout << " [i] Nhan phim [Esc] bat ky luc nao de Quay lai Menu.\n\n";
 
     bool cancelled = false;
@@ -383,7 +383,7 @@ bool AppMenu::runFullBenchmark() {
     double mc1Speedup = mc1Opt.avgTimeUs > 0 ? (mc1Base.avgTimeUs / mc1Opt.avgTimeUs) : 1.0;
     results.push_back(ModuleBenchmarkResult("MC1", "Tim book_id", static_cast<int>(mc1.getBooks().size()), mc1Base, mc1Opt, mc1Speedup));
 
-    // 2. MC2: Tim sach muon nhieu nhat
+    // 2. MC2: Tìm sach muon nhieu nhat
     auto r2Base = mc2.getBaseline().findMax(mc2.getBooks());
     auto r2Opt = mc2.getFinalSolution().getMax();
     auto mc2Base = BenchmarkRunner::run("Linear Max Scan", r2Base.comparisons, r2Base.found, [&]() { return mc2.getBaseline().findMax(mc2.getBooks()); }, iterations, warmup);
@@ -410,7 +410,7 @@ bool AppMenu::runFullBenchmark() {
     results.push_back(ModuleBenchmarkResult("RQ2", "Filter Overdue", static_cast<int>(rq2.getRecords().size()), rq2Base, rq2Opt, rq2Speedup));
 
     // 5. RQ3: Tim kiem tu khoa
-    string testKeyword = "data";
+    string testKeyword = "Algorithms";
     auto rq3BaseRes = rq3.getBaseline().search(rq3.getBooks(), testKeyword);
     auto rq3OptRes = rq3.getFinalSolution().search(testKeyword);
     auto rq3Base = BenchmarkRunner::run("Linear Scan", rq3BaseRes.booksChecked, rq3BaseRes.found, [&]() { return rq3.getBaseline().search(rq3.getBooks(), testKeyword); }, iterations, warmup);

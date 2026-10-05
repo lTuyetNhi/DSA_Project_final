@@ -171,20 +171,28 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 ### 1. Chạy Ứng dụng Chính (C++ TUI Console)
 
 * **Cách 1: Sử dụng Script 1-Click (Khuyên dùng)**
-  - Double click file `build.bat` hoặc chạy trên CMD:
+  - Trên Command Prompt (CMD):
     ```cmd
     build.bat
     ```
   - Hoặc trên PowerShell:
     ```powershell
     .\build.ps1
+    # hoặc: .\build.bat
     ```
+  - *(Nếu đã biên dịch sẵn và muốn chạy trực tiếp không cần build lại: `.\main.exe`)*
 
 * **Cách 2: Lệnh biên dịch thủ công `g++`:**
-  ```powershell
-  g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
-  .\main.exe
-  ```
+  - Trên PowerShell:
+    ```powershell
+    g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
+    .\main.exe
+    ```
+  - Hoặc liệt kê chi tiết toàn bộ các file nguồn:
+    ```powershell
+    g++ -std=c++17 main.cpp src/persistence/FileStore.cpp src/core/mc1/LinearSearch.cpp src/core/mc1/HashTable.cpp src/core/mc1/MC1.cpp src/core/mc2/LinearMaxScan.cpp src/core/mc2/MaxHeap.cpp src/core/mc2/MC2.cpp src/core/rq1/LinearCategoryScan.cpp src/core/rq1/CategoryHashTable.cpp src/core/rq1/RQ1.cpp src/core/rq2/LinearOverdueScan.cpp src/core/rq2/AVLTree.cpp src/core/rq2/RQ2.cpp src/core/rq3/LinearTitleScan.cpp src/core/rq3/CategoryTitleSearch.cpp src/core/rq3/RQ3.cpp src/presentation/AppMenu.cpp src/presentation/BenchmarkRunner.cpp -o main.exe
+    .\main.exe
+    ```
 
 ---
 
@@ -211,8 +219,11 @@ Hệ thống tuân thủ nghiêm ngặt mô hình kiến trúc phân tầng đ�
 Thư mục [`test/`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test) chứa toàn bộ chương trình kiểm thử tự động 7 Test Suites với 24 ca test:
 
 * **Cách 1: Script 1-Click:**
-  - Double click file [`test/chay_test.bat`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/test/chay_test.bat).
-* **Cách 2: Biên dịch và chạy bằng dòng lệnh:**
+  - Chạy trên CMD / PowerShell:
+    ```powershell
+    .\test\chay_test.bat
+    ```
+* **Cách 2: Biên dịch và chạy bằng dòng lệnh `g++`:**
   ```powershell
   g++ -O3 -std=c++17 test/run_all_tests.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp -o test/run_all_tests.exe
   .\test\run_all_tests.exe
@@ -226,8 +237,11 @@ Thư mục [`test/`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_f
 Thư mục [`benchmark/`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark) chứa công cụ đo kiểm qua 4 quy mô ($N = 10$, $N = 10.000$, $N = 100.000$, $N = 1.000.000$):
 
 * **Cách 1: Script 1-Click:**
-  - Double click file [`benchmark/chay_benchmark.bat`](file:///c:/Users/TuyetNhi/Documents/workspace/DSA_Project_final/benchmark/chay_benchmark.bat).
-* **Cách 2: Biên dịch và chạy bằng dòng lệnh:**
+  - Chạy trên CMD / PowerShell:
+    ```powershell
+    .\benchmark\chay_benchmark.bat
+    ```
+* **Cách 2: Biên dịch và chạy bằng dòng lệnh `g++`:**
   ```powershell
   g++ -O3 -std=c++17 benchmark/run_benchmark.cpp src/persistence/FileStore.cpp src/core/mc1/*.cpp src/core/mc2/*.cpp src/core/rq1/*.cpp src/core/rq2/*.cpp src/core/rq3/*.cpp -o benchmark/run_benchmark.exe
   .\benchmark\run_benchmark.exe
