@@ -11,10 +11,11 @@
 
 using namespace std;
 
-// 2 chế độ chính của chương trình
+// Các chế độ hoạt động của chương trình
 enum AppMode {
-    BENCHMARK_MODE = 1, // So sánh hiệu năng giữa thuật toán cơ sở và thuật toán tối ưu
-    NORMAL_MODE = 2     // Chạy bình thường chỉ dùng thuật toán tối ưu
+    BENCHMARK_MODE = 1,      // So sánh hiệu năng giữa thuật toán cơ sở và thuật toán tối ưu
+    NORMAL_MODE = 2,         // Chạy bình thường chỉ dùng thuật toán tối ưu
+    AUTO_BENCHMARK_MODE = 3  // Chạy benchmark tự động và xuất file txt theo ngày giờ
 };
 
 // Giao diện dòng lệnh tương tác (Terminal UI với phím mũi tên và Esc)
@@ -40,7 +41,8 @@ private:
     bool runRQ1();
     bool runRQ2();
     bool runRQ3();
-    bool runFullBenchmark(); // Chạy benchmark tự động cho cả 5 bài toán và xuất báo cáo
+    bool runFullBenchmark(); // Chạy benchmark tự động cho cả 5 bài toán
+    bool runAutoBenchmarkWithExport(); // Chạy benchmark và xuất file .txt định dạng ngày giờ vào benchmark/
 
 public:
     AppMenu(MC1& m1, MC2& m2, RQ1& r1, RQ2& r2, RQ3& r3);

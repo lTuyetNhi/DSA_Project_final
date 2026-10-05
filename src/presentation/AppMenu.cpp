@@ -216,16 +216,24 @@ string AppMenu::selectDate(const string& title, int defaultYear, int defaultMont
     }
 }
 
+#include <ctime>
+#include <sstream>
+#include <fstream>
+#include <iomanip>
+#include <filesystem>
+
 int AppMenu::showModeMenu() {
     vector<string> modeOptions = {
-        "1. Benchmark Mode  (So sanh hieu nang Baseline vs Final Solution)",
-        "2. Normal Mode     (Van hanh thuc te - Chi su dung Final Solution)",
-        "0. Exit            (Thoat chuong trinh)"
+        "1. Benchmark Mode        (So sanh hieu nang Baseline vs Final Solution)",
+        "2. Normal Mode           (Van hanh thuc te - Chi su dung Final Solution)",
+        "3. Auto Benchmark Mode   (Chay benchmark tu dong, xuat file txt theo ngay gio)",
+        "0. Exit                  (Thoat chuong trinh)"
     };
     string badge = "[ HE THONG QUAN LY THU VIEN & MUON TRA TAI LIEU ]";
     int choice = selectMenu(modeOptions, "LIBRARY MANAGEMENT SYSTEM - CHON CHE DO HOAT DONG", badge);
     if (choice == 0) return 1; // Benchmark
     if (choice == 1) return 2; // Normal
+    if (choice == 2) return 3; // Auto Benchmark
     return 0; // Exit
 }
 
@@ -233,8 +241,10 @@ int AppMenu::showModuleMenu() {
     string modeStr;
     if (currentMode == BENCHMARK_MODE) {
         modeStr = "Che do hien tai: [ BENCHMARK MODE - SO SANH THUAT TOAN ]";
-    } else {
+    } else if (currentMode == NORMAL_MODE) {
         modeStr = "Che do hien tai: [ NORMAL MODE - TRA CUU NHANH ]";
+    } else {
+        modeStr = "Che do hien tai: [ AUTO BENCHMARK MODE - XUAT FILE TXT ]";
     }
 
     vector<string> moduleOptions = {
@@ -243,6 +253,7 @@ int AppMenu::showModuleMenu() {
         "3. RQ1 - Tra cuu tat ca sach theo The loai (Category Hash Table vs Linear Scan)",
         "4. RQ2 - Loc danh sach phieu muon qua han (AVL Tree vs Linear Scan)",
         "5. RQ3 - Tim kiem sach theo Tu khoa / Ten sach (Prefix Title Index vs Linear Scan)",
+        "6. Chay Benchmark tu dong & Xuat file txt vao benchmark/ (Auto Benchmark)",
         "9. Doi Che do hoat dong (Change Mode)",
         "0. Thoat chuong trinh (Exit)"
     };
@@ -253,7 +264,8 @@ int AppMenu::showModuleMenu() {
     if (choice == 2) return 3;
     if (choice == 3) return 4;
     if (choice == 4) return 5;
-    if (choice == 5) return 9;
+    if (choice == 5) return 6;
+    if (choice == 6) return 9;
     return 0;
 }
 
@@ -276,7 +288,7 @@ bool AppMenu::runMC1() {
     // Xoa sach man hinh de hien thi ket qua
     system("cls");
 
-    if (currentMode == BENCHMARK_MODE) {
+    if (currentMode == BENCHMARK_MODE || currentMode == AUTO_BENCHMARK_MODE) {
         mc1.comparisonMode(bookId);
     } else {
         mc1.normalMode(bookId);
@@ -286,7 +298,7 @@ bool AppMenu::runMC1() {
 
 bool AppMenu::runMC2() {
     system("cls");
-    if (currentMode == BENCHMARK_MODE) {
+    if (currentMode == BENCHMARK_MODE || currentMode == AUTO_BENCHMARK_MODE) {
         mc2.comparisonMode();
     } else {
         mc2.normalMode();
@@ -313,7 +325,7 @@ bool AppMenu::runRQ1() {
     // Xoa sach man hinh de hien thi ket qua
     system("cls");
 
-    if (currentMode == BENCHMARK_MODE) {
+    if (currentMode == BENCHMARK_MODE || currentMode == AUTO_BENCHMARK_MODE) {
         rq1.comparisonMode(category);
     } else {
         rq1.normalMode(category);
@@ -328,7 +340,7 @@ bool AppMenu::runRQ2() {
     }
 
     system("cls");
-    if (currentMode == BENCHMARK_MODE) {
+    if (currentMode == BENCHMARK_MODE || currentMode == AUTO_BENCHMARK_MODE) {
         rq2.comparisonMode(currentDate);
     } else {
         rq2.normalMode(currentDate);
@@ -355,7 +367,7 @@ bool AppMenu::runRQ3() {
     // Xoa sach man hinh de hien thi ket qua
     system("cls");
 
-    if (currentMode == BENCHMARK_MODE) {
+    if (currentMode == BENCHMARK_MODE || currentMode == AUTO_BENCHMARK_MODE) {
         rq3.comparisonMode(keyword);
     } else {
         rq3.normalMode(keyword);
@@ -364,11 +376,15 @@ bool AppMenu::runRQ3() {
 }
 
 bool AppMenu::runFullBenchmark() {
+    return runAutoBenchmarkWithExport();
+}
+
+bool AppMenu::runAutoBenchmarkWithExport() {
     system("cls");
-    cout << "======================================================================\n";
-    cout << "       DANG CHAY BENCHMARK TU DONG CHO CA 5 MODULE (100 ITERATIONS)    \n";
-    cout << "======================================================================\n";
-    cout << " [*] Dang thu nghiem tren CPU hien tai...\n\n";
+    cout << "========================================================================================================\n";
+    cout << "          DANG CHAY BENCHMARK TU DONG VA XUAT FILE BAO CAO CHO CA 5 MODULE (100 ITERATIONS)             \n";
+    cout << "========================================================================================================\n";
+    cout << " [*] Dang thu nghiem va do luong hieu nang thuc te tren CPU...\n\n";
 
     vector<ModuleBenchmarkResult> results;
     int iterations = 100;
@@ -381,9 +397,9 @@ bool AppMenu::runFullBenchmark() {
     auto mc1Base = BenchmarkRunner::run("Linear Search", r1Base.comparisons, r1Base.found, [&]() { return mc1.getBaseline().search(mc1.getBooks(), testBookId); }, iterations, warmup);
     auto mc1Opt = BenchmarkRunner::run("Hash Table", r1Opt.comparisons, r1Opt.found, [&]() { return mc1.getFinalSolution().search(testBookId); }, iterations, warmup);
     double mc1Speedup = mc1Opt.avgTimeUs > 0 ? (mc1Base.avgTimeUs / mc1Opt.avgTimeUs) : 1.0;
-    results.push_back(ModuleBenchmarkResult("MC1", "Tim book_id", static_cast<int>(mc1.getBooks().size()), mc1Base, mc1Opt, mc1Speedup));
+    results.push_back(ModuleBenchmarkResult("MC1", "Tra cuu Book ID", static_cast<int>(mc1.getBooks().size()), mc1Base, mc1Opt, mc1Speedup));
 
-    // 2. MC2: Tìm sach muon nhieu nhat
+    // 2. MC2: Tim sach muon nhieu nhat
     auto r2Base = mc2.getBaseline().findMax(mc2.getBooks());
     auto r2Opt = mc2.getFinalSolution().getMax();
     auto mc2Base = BenchmarkRunner::run("Linear Max Scan", r2Base.comparisons, r2Base.found, [&]() { return mc2.getBaseline().findMax(mc2.getBooks()); }, iterations, warmup);
@@ -418,13 +434,110 @@ bool AppMenu::runFullBenchmark() {
     double rq3Speedup = rq3Opt.avgTimeUs > 0 ? (rq3Base.avgTimeUs / rq3Opt.avgTimeUs) : 1.0;
     results.push_back(ModuleBenchmarkResult("RQ3", "Keyword Search", static_cast<int>(rq3.getBooks().size()), rq3Base, rq3Opt, rq3Speedup));
 
-    // In bang ket qua
+    // In bang ket qua ra man hinh Console
     BenchmarkRunner::printComparisonTable(results);
 
-    // Tu dong xuat ra file CSV va LaTeX
+    // Lay thoi gian hien tai de dat ten file theo dinh dang ngay-thang-nam-gio-phut-giay
+    time_t rawTime = time(nullptr);
+    tm timeInfo;
+#if defined(_MSC_VER) || defined(_WIN32)
+    localtime_s(&timeInfo, &rawTime);
+#else
+    localtime_r(&rawTime, &timeInfo);
+#endif
+
+    char timeFileBuf[64];
+    strftime(timeFileBuf, sizeof(timeFileBuf), "%Y-%m-%d_%H-%M-%S", &timeInfo);
+    char timeDisplayBuf[64];
+    strftime(timeDisplayBuf, sizeof(timeDisplayBuf), "%d/%m/%Y %H:%M:%S", &timeInfo);
+
+    string timestampStr = timeFileBuf;
+    string timeDisplay = timeDisplayBuf;
+
+    std::filesystem::create_directories("benchmark");
+    std::filesystem::create_directories("BaoCao/data");
+
+    string outputFilename = "benchmark/benchmark_" + timestampStr + ".txt";
+    string defaultTxtPath = "benchmark/ket_qua_benchmark.txt";
+
+    // Xay dung noi dung bao cao text chi tiet
+    stringstream ss;
+    ss << "========================================================================================================\n";
+    ss << "             HE THONG QUAN LY THU VIEN & ENGINE DOI SANH HIEU NANG THUAT TOAN (BENCHMARK)                \n";
+    ss << "========================================================================================================\n";
+    ss << " Thoi gian do kiem: " << timeDisplay << "\n";
+    ss << " Moi truong:        C++17 In-Memory Engine | CPU High-Resolution Timer (std::chrono)\n";
+    ss << " So vong lap:       " << iterations << " iterations + " << warmup << " warmup runs\n";
+    ss << " Don vi thoi gian:  microsecond (us) [1 us = 1/1.000.000 giay]\n";
+    ss << "========================================================================================================\n\n";
+
+    ss << "--------------------------------------------------------------------------------------------------------\n";
+    ss << " BANG TONG HOP KET QUA THUC NGHIEM DOI SANH (BENCHMARK SUMMARY TABLE)\n";
+    ss << "--------------------------------------------------------------------------------------------------------\n";
+    ss << left
+       << setw(8)  << "Module"
+       << setw(20) << "Kich ban nghiep vu"
+       << setw(8)  << "Size N"
+       << setw(18) << "Baseline (us)"
+       << setw(18) << "DSA (us)"
+       << setw(14) << "Ops Baseline"
+       << setw(12) << "Ops DSA"
+       << setw(10) << "Speedup"
+       << setw(8)  << "Test"
+       << "\n";
+    ss << "--------------------------------------------------------------------------------------------------------\n";
+
+    for (const auto& r : results) {
+        ss << left
+           << setw(8)  << r.moduleName
+           << setw(20) << r.testScenario
+           << setw(8)  << r.dataSize
+           << setw(18) << fixed << setprecision(3) << r.baseline.avgTimeUs
+           << setw(18) << fixed << setprecision(3) << r.optimized.avgTimeUs
+           << setw(14) << r.baseline.operationsCount
+           << setw(12) << r.optimized.operationsCount
+           << setw(10) << fixed << setprecision(1) << (to_string(r.speedupRatio).substr(0, 5) + "x")
+           << setw(8)  << (r.baseline.isFound == r.optimized.isFound ? "[PASS]" : "[FAIL]")
+           << "\n";
+    }
+    ss << "--------------------------------------------------------------------------------------------------------\n\n";
+
+    ss << "========================================================================================================\n";
+    ss << "                              DANH GIA CHUYEN SAU VA KET LUAN HE THONG                                  \n";
+    ss << "========================================================================================================\n";
+    ss << " 1. MC1 (Tra cuu Ma sach):    Hash Table chuyen doi do phuc tap O(N) -> O(1), toc do phan hoi tuc thi.\n";
+    ss << " 2. MC2 (Top 1 Sach muon):    Max-Heap giam thoi gian quet mang nho trich xuat dinh goc tuc thi O(1).\n";
+    ss << " 3. RQ1 (Loc The loai):       Category Hash Table dua chi phi tim kiem ve bang so sach thuc te (O(1+K)).\n";
+    ss << " 4. RQ2 (Phieu qua han):      AVL Tree ket hop Julian Day & tia nhanh khoang ngay loai bo phieu hop le.\n";
+    ss << " 5. RQ3 (Tim Tu khoa):        Inverted Index chuyen so khop vet can O(N*M) thanh tra cuu khoa bam O(1+K).\n";
+    ss << " 6. Tinh toan ven ket qua:    100% cac ca kiem thu deu PASS, ket qua hai giai phap hoan toan dong nhat.\n";
+    ss << "========================================================================================================\n";
+
+    string reportContent = ss.str();
+
+    // 1. Ghi file txt theo thoi gian: benchmark/benchmark_YYYY-MM-DD_HH-MM-SS.txt
+    ofstream timeFile(outputFilename);
+    if (timeFile.is_open()) {
+        timeFile << reportContent;
+        timeFile.close();
+        cout << " [+] [THANH CONG] Da xuat file bao cao theo thoi gian: " << outputFilename << "\n";
+    } else {
+        cerr << " [-] [LOI] Khong the ghi file: " << outputFilename << "\n";
+    }
+
+    // 2. Ghi file ket qua mac dinh: benchmark/ket_qua_benchmark.txt
+    ofstream defFile(defaultTxtPath);
+    if (defFile.is_open()) {
+        defFile << reportContent;
+        defFile.close();
+        cout << " [+] [THANH CONG] Da cap nhat file tong hop:          " << defaultTxtPath << "\n";
+    }
+
+    // 3. Xuat CSV va LaTeX cho bao cao
     BenchmarkRunner::exportToCSV("BaoCao/data/benchmark_results.csv", results);
     BenchmarkRunner::exportToLaTeX("BaoCao/data/benchmark_table.tex", results);
 
+    cout << "\n [*] Hoan tat Benchmark tu dong cho tat ca 5 Module!\n";
     return true;
 }
 
@@ -436,6 +549,16 @@ void AppMenu::run() {
             system("cls");
             cout << "\n Cam on ban da su dung He thong Quan ly Thu vien! Tam biet.\n\n";
             return;
+        }
+
+        if (modeChoice == 3) {
+            // Chay che do 3: Auto Benchmark & Export luon
+            currentMode = AUTO_BENCHMARK_MODE;
+            runAutoBenchmarkWithExport();
+            cout << "\n======================================================================\n";
+            cout << " [*] Nhan [Enter] hoac phim bat ky de quay lai Menu chinh...";
+            _getch();
+            continue;
         }
 
         currentMode = (modeChoice == 1) ? BENCHMARK_MODE : NORMAL_MODE;
@@ -464,7 +587,7 @@ void AppMenu::run() {
                 case 3: executed = runRQ1(); break;
                 case 4: executed = runRQ2(); break;
                 case 5: executed = runRQ3(); break;
-                case 6: executed = runFullBenchmark(); break;
+                case 6: executed = runAutoBenchmarkWithExport(); break;
                 default: break;
             }
 

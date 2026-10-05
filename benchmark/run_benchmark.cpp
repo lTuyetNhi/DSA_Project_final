@@ -291,12 +291,32 @@ int main() {
     printBoth("6. Tinh dung dan: 100% cac kịch ban deu dat trang thai [PASS], ket qua tra ve khop tuyet doi giua 2 phuong phap.\n");
     printBoth("========================================================================================================\n");
 
-    // Ghi file kết quả
+    // Lay thoi gian hien tai de ghi file theo ngay gio
+    time_t rawTime = time(nullptr);
+    tm timeInfo;
+#if defined(_MSC_VER) || defined(_WIN32)
+    localtime_s(&timeInfo, &rawTime);
+#else
+    localtime_r(&rawTime, &timeInfo);
+#endif
+    char timeFileBuf[64];
+    strftime(timeFileBuf, sizeof(timeFileBuf), "%Y-%m-%d_%H-%M-%S", &timeInfo);
+    string timestampFile = "benchmark/benchmark_" + string(timeFileBuf) + ".txt";
+
+    // 1. Ghi file kết quả theo ngày giờ
+    ofstream timeOut(timestampFile);
+    if (timeOut.is_open()) {
+        timeOut << ss.str();
+        timeOut.close();
+        cout << "\n[THANH CONG] Da ghi ket qua Benchmark theo ngay gio: " << timestampFile << "\n" << flush;
+    }
+
+    // 2. Ghi file kết quả mặc định
     ofstream outFile("benchmark/ket_qua_benchmark.txt");
     if (outFile.is_open()) {
         outFile << ss.str();
         outFile.close();
-        cout << "\n[THANH CONG] Da ghi toan bo ket qua Benchmark vao: benchmark/ket_qua_benchmark.txt\n" << flush;
+        cout << "[THANH CONG] Da cap nhat file tong hop:          benchmark/ket_qua_benchmark.txt\n" << flush;
     } else {
         cerr << "\n[LOI] Khong the ghi file benchmark/ket_qua_benchmark.txt\n" << flush;
     }
