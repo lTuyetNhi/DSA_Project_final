@@ -294,10 +294,10 @@ Chúng em xin trân trọng tiếp thu mọi ý kiến đóng góp quý báu t�
 \begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}m{1.2cm}|>{\raggedright\arraybackslash}m{3.5cm}|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}m{2.2cm}|}
 \hline
 \textbf{STT} & \textbf{Họ và tên / MSSV} & \textbf{Nhiệm vụ phân công} & \textbf{Hoàn thành} \\ \hline
-1 & \textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & Phụ trách tầng Lưu trữ bền vững (Persistence: JSON Serializer/Deserializer tự viết) và Quản lý danh sách chờ mượn (Waitlist Queue). & 100\% \\ \hline
+1 & \textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & Phụ trách tầng Lưu trữ bền vững (Persistence: JSON Serializer/Deserializer tự viết). & 100\% \\ \hline
 2 & \textbf{Trần Quốc Việt Nam}\newline (Trưởng nhóm)\newline MSSV: 25110274 & Điều phối chung dự án và phụ trách toàn bộ hệ thống Bảng băm gồm: MC1 (Tra cứu Mã Sách), RQ1 (Phân cụm Thể loại), và RQ3 (Chỉ mục ngược Inverted Index). & 100\% \\ \hline
 3 & \textbf{Lê Nhật Ninh}\newline MSSV: 25110288 & Phụ trách Cây đống cực đại Max-Heap (MC2: Top sách mượn nhiều nhất) và Cây tự cân bằng AVL (RQ2: Truy vết phiếu quá hạn). & 100\% \\ \hline
-4 & \textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & Phụ trách tầng Trình diễn (Giao diện dòng lệnh TUI) và định nghĩa các Cấu trúc dữ liệu cơ bản (struct Book, Reader,...) cùng khung sườn các hàm. & 100\% \\ \hline
+4 & \textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & Phụ trách tầng Trình diễn (Giao diện dòng lệnh TUI) và định nghĩa các Cấu trúc dữ liệu cơ bản (struct Book, Reader, BorrowRecord) cùng khung sườn các hàm. & 100\% \\ \hline
 5 & \textbf{Trần Phạm Huỳnh Như}\newline MSSV: 25110286 & Phụ trách đọc hiểu toàn bộ hệ thống, xây dựng kịch bản và thực hiện quay video thuyết trình demo sản phẩm thời lượng 5 phút. & 100\% \\ \hline
 \end{tabularx}
 \endgroup
@@ -329,10 +329,10 @@ Tuân thủ quy định đánh giá năng lực cá nhân theo đề bài học 
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}m{3.1cm}|>{\raggedright\arraybackslash}m{2.8cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Thành viên \& MSSV} & \textbf{Thành phần sở hữu} & \textbf{Đóng góp Kỹ thuật \& Biện minh Thiết kế} \\ \hline
-\textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & \textbf{Persistence \& Waitlist Queue} & Thiết kế cơ chế đồng bộ đĩa-RAM (JSON Parser/Serializer tự viết không dùng thư viện ngoài) và danh sách chờ Waitlist Queue (FIFO). \\ \hline
+\textbf{Nguyễn Ngọc Hồng Nhung}\newline MSSV: 25110285 & \textbf{Persistence Layer} & Thiết kế cơ chế đồng bộ đĩa-RAM (JSON Parser/Serializer tự viết không dùng thư viện ngoài). \\ \hline
 \textbf{Trần Quốc Việt Nam}\newline (Trưởng nhóm)\newline MSSV: 25110274 & \textbf{Hệ thống Bảng băm}\newline \textit{(MC1, RQ1, RQ3)} & Tự cài đặt Bảng băm Separate Chaining (DJB2) cho MC1, CategoryHashTable cho RQ1 và InvertedIndex cho RQ3; điều phối chung. \\ \hline
 \textbf{Lê Nhật Ninh}\newline MSSV: 25110288 & \textbf{Max-Heap \& Cây AVL}\newline \textit{(MC2, RQ2)} & Cài đặt Cây đống cực đại Max-Heap Floyd cho MC2 (Top sách) và Cây tự cân bằng AVL 4 phép quay cho RQ2 (Truy vết quá hạn). \\ \hline
-\textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & \textbf{Presentation TUI \& Data Models} & Thiết kế giao diện dòng lệnh TUI tương tác, định nghĩa mô hình dữ liệu lõi (struct Book, Reader, BorrowRecord, WaitlistEntry) và khung hàm. \\ \hline
+\textbf{Lê Thị Tuyết Nhi}\newline MSSV: 25110283 & \textbf{Presentation TUI \& Data Models} & Thiết kế giao diện dòng lệnh TUI tương tác, định nghĩa mô hình dữ liệu lõi (struct Book, Reader, BorrowRecord) và khung hàm. \\ \hline
 \textbf{Trần Phạm Huỳnh Như}\newline MSSV: 25110286 & \textbf{Kịch bản \& Video Thuyết trình 5p} & Nghiên cứu toàn diện luồng nghiệp vụ, xây dựng kịch bản thuyết trình và trực tiếp quay dựng video demo 5 phút minh họa đồ án. \\ \hline
 \end{tabularx}
 \endgroup
@@ -424,7 +424,7 @@ Thứ tư, đối với chuẩn CLO8 về capstone và bảo vệ cấu trúc d�
 \subsection*{3. Đối tượng, phạm vi nghiên cứu và tập dữ liệu thử nghiệm}
 \addcontentsline{toc}{subsection}{3. Đối tượng, phạm vi nghiên cứu và tập dữ liệu thử nghiệm}
 
-Về đối tượng nghiên cứu, đề tài tập trung vào các cấu trúc dữ liệu trên bộ nhớ chính (RAM-based) và các thuật toán nâng cao phục vụ 5 bài toán nghiệp vụ: Tra cứu mã sách (MC1), Top sách mượn nhiều nhất (MC2), Lọc theo thể loại (RQ1), Truy vết mượn quá hạn (RQ2) và Tìm kiếm từ khóa tựa sách (RQ3). Về tập dữ liệu thử nghiệm, hệ thống nạp các tệp dữ liệu chuẩn \texttt{data/books.json}, \texttt{data/borrow\_records.json}, \texttt{data/readers.json} và \texttt{data/waitlist.json}.
+Về đối tượng nghiên cứu, đề tài tập trung vào các cấu trúc dữ liệu trên bộ nhớ chính (RAM-based) và các thuật toán nâng cao phục vụ 5 bài toán nghiệp vụ: Tra cứu mã sách (MC1), Top sách mượn nhiều nhất (MC2), Lọc theo thể loại (RQ1), Truy vết mượn quá hạn (RQ2) và Tìm kiếm từ khóa tựa sách (RQ3). Về tập dữ liệu thử nghiệm, hệ thống nạp các tệp dữ liệu chuẩn \texttt{data/books.json}, \texttt{data/borrow\_records.json} và \texttt{data/readers.json}.
 
 \subsection*{4. Phương pháp tiếp cận, công cụ thực hiện và bố cục báo cáo}
 \addcontentsline{toc}{subsection}{4. Phương pháp tiếp cận, công cụ thực hiện và bố cục báo cáo}
@@ -1324,7 +1324,7 @@ Nguyễn Ngọc Hồng Nhung & Trần Quốc Việt Nam & Hệ thống Bảng b�
 Trần Quốc Việt Nam & Lê Nhật Ninh & Max-Heap \& Cây AVL (MC2, RQ2) & Thuật toán Floyd xây đống từ dưới lên chính xác; 4 phép quay cây AVL chuẩn xác, cơ chế tỉa nhánh mốc ngày đạt hiệu năng vượt trội. \\ \hline
 Lê Nhật Ninh & Lê Thị Tuyết Nhi & Presentation TUI \& Mô hình Dữ liệu & Đóng gói cấu trúc thực thể mạch lạc; giao diện điều hướng mượt mà, khung hàm phân tách rõ ràng với tầng giải thuật Core. \\ \hline
 Lê Thị Tuyết Nhi & Trần Phạm Huỳnh Như & Kịch bản \& Video Demo 5 phút & Kịch bản phân bổ thời lượng hợp lý, nêu bật được sự khác biệt hiệu năng giữa Baseline và Final solution trên tập 1.000.000 bản ghi. \\ \hline
-Trần Phạm Huỳnh Như & Nguyễn Ngọc Hồng Nhung & Persistence \& Waitlist Queue & Bộ phân tích cú pháp JSON tự viết xử lý ngoại lệ tốt, định dạng an toàn; cơ chế hàng đợi FIFO đảm bảo công bằng cho độc giả chờ mượn. \\ \hline
+Trần Phạm Huỳnh Như & Nguyễn Ngọc Hồng Nhung & Persistence Layer & Bộ phân tích cú pháp JSON tự viết xử lý ngoại lệ tốt, định dạng dữ liệu an toàn và nhất quán. \\ \hline
 \end{xltabular}
 \endgroup
 
@@ -1391,7 +1391,7 @@ Về việc ứng dụng Trí tuệ Nhân tạo (AI), tôi đã sử dụng AI n
 \subsection*{4. Phản tư của sinh viên Lê Thị Tuyết Nhi (MSSV: 25110283)}
 \addcontentsline{toc}{subsection}{4. Phản tư của sinh viên Lê Thị Tuyết Nhi (MSSV: 25110283)}
 
-Phụ trách Tầng Trình diễn (Presentation Layer) và thiết kế hệ thống mô hình thực thể dữ liệu lõi (\texttt{struct Book}, \texttt{struct Reader}, \texttt{struct BorrowRecord}, \texttt{struct WaitlistEntry}) cùng việc dựng khung sườn các hàm điều phối cho toàn bộ dự án, tôi nhận thức sâu sắc rằng một hệ thống giải thuật mạnh mẽ chỉ thực sự phát huy giá trị khi được đặt trên một nền tảng mô hình dữ liệu chuẩn mực và giao diện người dùng trực quan, khoa học.
+Phụ trách Tầng Trình diễn (Presentation Layer) và thiết kế hệ thống mô hình thực thể dữ liệu lõi (\texttt{struct Book}, \texttt{struct Reader}, \texttt{struct BorrowRecord}) cùng việc dựng khung sườn các hàm điều phối cho toàn bộ dự án, tôi nhận thức sâu sắc rằng một hệ thống giải thuật mạnh mẽ chỉ thực sự phát huy giá trị khi được đặt trên một nền tảng mô hình dữ liệu chuẩn mực và giao diện người dùng trực quan, khoa học.
 
 Trong quá trình xây dựng giao diện dòng lệnh tương tác (TUI), bài học kỹ thuật lớn nhất của tôi là việc xử lý tối ưu hóa việc vẽ lại màn hình (screen refresh) và đồng bộ hóa luồng tương tác bàn phím (bộ chọn ngày tháng động và phím thoát khẩn cấp). Tôi đã học được cách tách bạch rạch ròi giữa giao diện người dùng và tầng Core giải thuật: tầng Presentation chỉ đóng vai trò nhận đầu vào và hiển thị kết quả, tuyệt đối không can thiệp vào cấu trúc dữ liệu bên trong.
 
