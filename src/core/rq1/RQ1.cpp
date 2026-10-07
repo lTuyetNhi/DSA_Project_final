@@ -83,48 +83,122 @@ void RQ1::printComparison(size_t datasetSize, const string& category, const Cate
     cout << "+--------------------------+-----------------------------------------------------------------+\n";
 }
 
-void RQ1::printBooks(const vector<Book>& bookList) {
+#ifdef _WIN32
+#include <conio.h>
+#endif
+#include <functional>
+
+static void paginateBooks(const vector<Book>& bookList, const function<void()>& headerPrinter) {
     if (bookList.empty()) {
+        system("cls");
+        if (headerPrinter) headerPrinter();
         cout << "  [!] Khong tim thay cuon sach nao thuoc the loai nay.\n";
         return;
     }
 
-    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
-    cout << "| STT | Ma sach | Ten sach                        | Tac gia            | Nam  | San co  |\n";
-    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
-    for (size_t i = 0; i < bookList.size(); ++i) {
-        const auto& b = bookList[i];
-        string titleShort = b.title.length() > 31 ? b.title.substr(0, 28) + "..." : b.title;
-        string authorShort = b.author.length() > 18 ? b.author.substr(0, 15) + "..." : b.author;
-        string qtyStr = to_string(b.available_quantity) + "/" + to_string(b.total_quantity);
+    const size_t pageSize = 15;
+    const size_t total = bookList.size();
+    const size_t totalPages = (total + pageSize - 1) / pageSize;
+    size_t currentPage = 0;
 
-        cout << "| " << left << setw(3) << (i + 1)
-             << " | " << left << setw(7) << b.book_id
-             << " | " << left << setw(31) << titleShort
-             << " | " << left << setw(18) << authorShort
-             << " | " << left << setw(4) << b.published_year
-             << " | " << left << setw(7) << qtyStr << " |\n";
+    auto renderPage = [&](size_t page) {
+        system("cls");
+        if (headerPrinter) headerPrinter();
+
+        size_t startIdx = page * pageSize;
+        size_t endIdx = min(startIdx + pageSize, total);
+
+        cout << "\n  >> DANH SACH KET QUA [Trang " << (page + 1) << " / " << totalPages 
+             << " | Tong so sach: " << total << "]\n";
+        cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
+        cout << "| STT | Ma sach | Ten sach                        | Tac gia            | Nam  | San co  |\n";
+        cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
+        for (size_t i = startIdx; i < endIdx; ++i) {
+            const auto& b = bookList[i];
+            string titleShort = b.title.length() > 31 ? b.title.substr(0, 28) + "..." : b.title;
+            string authorShort = b.author.length() > 18 ? b.author.substr(0, 15) + "..." : b.author;
+            string qtyStr = to_string(b.available_quantity) + "/" + to_string(b.total_quantity);
+
+            cout << "| " << left << setw(3) << (i + 1)
+                 << " | " << left << setw(7) << b.book_id
+                 << " | " << left << setw(31) << titleShort
+                 << " | " << left << setw(18) << authorShort
+                 << " | " << left << setw(4) << b.published_year
+                 << " | " << left << setw(7) << qtyStr << " |\n";
+        }
+        cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
+    };
+
+    renderPage(currentPage);
+
+    if (total <= pageSize) {
+        return;
     }
-    cout << "+-----+---------+---------------------------------+--------------------+------+---------+\n";
+
+    while (true) {
+        cout << " [-> / N] Trang sau   [<- / P] Trang truoc   [Enter / Esc / 0] Thoat\n";
+        cout << " Lua chon dieu huong: ";
+
+#ifdef _WIN32
+        int ch = _getch();
+        if (ch == 0 || ch == 224) {
+            int ext = _getch();
+            if (ext == 77 || ext == 80) { // Mui ten Phai / Xuong -> Next
+                if (currentPage + 1 < totalPages) {
+                    ++currentPage;
+                    renderPage(currentPage);
+                }
+            } else if (ext == 75 || ext == 72) { // Mui ten Trai / Len -> Prev
+                if (currentPage > 0) {
+                    --currentPage;
+                    renderPage(currentPage);
+                }
+            }
+        } else if (ch == 'n' || ch == 'N' || ch == 'd' || ch == 'D' || ch == ' ') {
+            if (currentPage + 1 < totalPages) {
+                ++currentPage;
+                renderPage(currentPage);
+            }
+        } else if (ch == 'p' || ch == 'P' || ch == 'a' || ch == 'A') {
+            if (currentPage > 0) {
+                --currentPage;
+                renderPage(currentPage);
+            }
+        } else if (ch == 27 || ch == 13 || ch == '0' || ch == 'q' || ch == 'Q') {
+            cout << "\n";
+            break;
+        }
+#else
+        break;
+#endif
+    }
+}
+
+void RQ1::printBooks(const vector<Book>& bookList) {
+    paginateBooks(bookList, nullptr);
 }
 
 void RQ1::comparisonMode(const string& category) {
     CategoryResult baselineRes = LinearCategoryScan::search(books, category);
     CategoryResult finalSolRes = finalSolution.search(category);
-    printComparison(books.size(), category, baselineRes, finalSolRes);
 
-    cout << "\n";
-    printBooks(finalSolRes.books);
+    auto headerPrinter = [&]() {
+        printComparison(books.size(), category, baselineRes, finalSolRes);
+    };
+
+    paginateBooks(finalSolRes.books, headerPrinter);
 }
 
 void RQ1::normalMode(const string& category) {
-    cout << "==============================================================================================\n";
-    cout << "                    RQ1: TRA CUU SACH THEO THE LOAI (CATEGORY HASH)                           \n";
-    cout << "==============================================================================================\n\n";
-
     CategoryResult finalSolRes = finalSolution.search(category);
-    cout << "  * The loai can tim : " << category << "\n";
-    cout << "  * Thoi gian tra cuu: " << finalSolRes.executionTime << " ns\n\n";
 
-    printBooks(finalSolRes.books);
+    auto headerPrinter = [&]() {
+        cout << "==============================================================================================\n";
+        cout << "                    RQ1: TRA CUU SACH THEO THE LOAI (CATEGORY HASH)                           \n";
+        cout << "==============================================================================================\n\n";
+        cout << "  * The loai can tim : " << category << "\n";
+        cout << "  * Thoi gian tra cuu: " << finalSolRes.executionTime << " ns\n\n";
+    };
+
+    paginateBooks(finalSolRes.books, headerPrinter);
 }

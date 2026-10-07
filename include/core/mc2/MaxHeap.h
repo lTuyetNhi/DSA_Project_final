@@ -10,15 +10,19 @@ using namespace std;
 // Cấu trúc Max-Heap mảng động (lưu trực tiếp Book, không dùng con trỏ)
 class MaxHeap {
 private:
+    // data
     vector<Book> heap; // Mảng lưu trực tiếp các cuốn sách
 
+    // method private
     void heapifyUp(int index);   // Đẩy lên
     void heapifyDown(int index); // Kéo xuống
     static bool higherPriority(const Book& a, const Book& b);
 
 public:
+// constructor
     MaxHeap();
 
+    /// method public
     void build(const vector<Book>& books);
     void insert(const Book& book);
     MaxResult getMax() const;

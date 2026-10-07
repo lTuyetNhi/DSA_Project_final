@@ -39,29 +39,41 @@ vector<Book> FileStore::loadBooks(const string& filePath) {
     return list;
 }
 
+static void escapeJsonStream(ostream& os, const string& s) {
+    for (char c : s) {
+        if (c == '"') os << "\\\"";
+        else if (c == '\\') os << "\\\\";
+        else if (c == '\b') os << "\\b";
+        else if (c == '\f') os << "\\f";
+        else if (c == '\n') os << "\\n";
+        else if (c == '\r') os << "\\r";
+        else if (c == '\t') os << "\\t";
+        else os << c;
+    }
+}
+
 bool FileStore::saveBooks(const string& filePath, const vector<Book>& books) {
-    ofstream file(filePath);
+    ofstream file(filePath, ios::out | ios::binary);
     if (!file.is_open()) {
         cerr << "[FileStore] Khong the ghi file: " << filePath << "\n";
         return false;
     }
 
-    json j = json::array();
-    for (const auto& b : books) {
-        json item = {
-            {"book_id", b.book_id},
-            {"title", b.title},
-            {"author", b.author},
-            {"category", b.category},
-            {"published_year", b.published_year},
-            {"total_quantity", b.total_quantity},
-            {"available_quantity", b.available_quantity},
-            {"borrow_count", b.borrow_count}
-        };
-        j.push_back(item);
+    file << "[\n";
+    for (size_t i = 0; i < books.size(); ++i) {
+        const auto& b = books[i];
+        file << "  {\n"
+             << "    \"book_id\": \""; escapeJsonStream(file, b.book_id); file << "\",\n"
+             << "    \"title\": \""; escapeJsonStream(file, b.title); file << "\",\n"
+             << "    \"author\": \""; escapeJsonStream(file, b.author); file << "\",\n"
+             << "    \"category\": \""; escapeJsonStream(file, b.category); file << "\",\n"
+             << "    \"published_year\": " << b.published_year << ",\n"
+             << "    \"total_quantity\": " << b.total_quantity << ",\n"
+             << "    \"available_quantity\": " << b.available_quantity << ",\n"
+             << "    \"borrow_count\": " << b.borrow_count << "\n"
+             << "  }" << (i + 1 == books.size() ? "\n" : ",\n");
     }
-
-    file << j.dump(2);
+    file << "]\n";
     return true;
 }
 
@@ -95,24 +107,23 @@ vector<Reader> FileStore::loadReaders(const string& filePath) {
 }
 
 bool FileStore::saveReaders(const string& filePath, const vector<Reader>& readers) {
-    ofstream file(filePath);
+    ofstream file(filePath, ios::out | ios::binary);
     if (!file.is_open()) {
         cerr << "[FileStore] Khong the ghi file: " << filePath << "\n";
         return false;
     }
 
-    json j = json::array();
-    for (const auto& r : readers) {
-        json item = {
-            {"reader_id", r.reader_id},
-            {"name", r.name},
-            {"email", r.email},
-            {"phone", r.phone}
-        };
-        j.push_back(item);
+    file << "[\n";
+    for (size_t i = 0; i < readers.size(); ++i) {
+        const auto& r = readers[i];
+        file << "  {\n"
+             << "    \"reader_id\": \""; escapeJsonStream(file, r.reader_id); file << "\",\n"
+             << "    \"name\": \""; escapeJsonStream(file, r.name); file << "\",\n"
+             << "    \"email\": \""; escapeJsonStream(file, r.email); file << "\",\n"
+             << "    \"phone\": \""; escapeJsonStream(file, r.phone); file << "\"\n"
+             << "  }" << (i + 1 == readers.size() ? "\n" : ",\n");
     }
-
-    file << j.dump(2);
+    file << "]\n";
     return true;
 }
 
@@ -153,33 +164,30 @@ vector<BorrowRecord> FileStore::loadBorrowRecords(const string& filePath) {
 }
 
 bool FileStore::saveBorrowRecords(const string& filePath, const vector<BorrowRecord>& records) {
-    ofstream file(filePath);
+    ofstream file(filePath, ios::out | ios::binary);
     if (!file.is_open()) {
         cerr << "[FileStore] Khong the ghi file: " << filePath << "\n";
         return false;
     }
 
-    json j = json::array();
-    for (const auto& br : records) {
-        json item = {
-            {"borrow_id", br.borrow_id},
-            {"reader_id", br.reader_id},
-            {"book_id", br.book_id},
-            {"borrow_date", br.borrow_date},
-            {"due_date", br.due_date},
-            {"status", br.status}
-        };
-
+    file << "[\n";
+    for (size_t i = 0; i < records.size(); ++i) {
+        const auto& br = records[i];
+        file << "  {\n"
+             << "    \"borrow_id\": \""; escapeJsonStream(file, br.borrow_id); file << "\",\n"
+             << "    \"reader_id\": \""; escapeJsonStream(file, br.reader_id); file << "\",\n"
+             << "    \"book_id\": \""; escapeJsonStream(file, br.book_id); file << "\",\n"
+             << "    \"borrow_date\": \""; escapeJsonStream(file, br.borrow_date); file << "\",\n"
+             << "    \"due_date\": \""; escapeJsonStream(file, br.due_date); file << "\",\n";
         if (br.return_date.empty()) {
-            item["return_date"] = nullptr;
+            file << "    \"return_date\": null,\n";
         } else {
-            item["return_date"] = br.return_date;
+            file << "    \"return_date\": \""; escapeJsonStream(file, br.return_date); file << "\",\n";
         }
-
-        j.push_back(item);
+        file << "    \"status\": \""; escapeJsonStream(file, br.status); file << "\"\n"
+             << "  }" << (i + 1 == records.size() ? "\n" : ",\n");
     }
-
-    file << j.dump(2);
+    file << "]\n";
     return true;
 }
 

@@ -7,5 +7,10 @@
 *.out
 *.toc
 *.xdv
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 ~$*
 

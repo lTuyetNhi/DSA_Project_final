@@ -11,7 +11,7 @@ int main() {
     cin.tie(NULL);
 
     const int TOTAL_BOOKS = 500000;
-    const int TOTAL_READERS = 10000;
+    const int TOTAL_READERS = 500000;
     const int TOTAL_RECORDS = 500000;
     const int TOTAL_WAITLIST = 10000;
 
@@ -43,7 +43,7 @@ int main() {
 
     // 1. Generate books.json (500,000 books)
     {
-        cout << "1/4. Dang ghi data/books.json (500,000 cuon sach)..." << endl;
+        cout << "1/3. Dang ghi data/books.json (500,000 cuon sach)..." << endl;
         ofstream f("data/books.json", ios::out | ios::binary);
         if (!f.is_open()) { cerr << "Loi mo data/books.json\n"; return 1; }
         f << "[\n";
@@ -74,13 +74,13 @@ int main() {
         f.close();
     }
 
-    // 2. Generate readers.json (10,000 readers)
+    // 2. Generate readers.json (500,000 readers)
     {
-        cout << "2/4. Dang ghi data/readers.json (10,000 doc gia)..." << endl;
+        cout << "2/3. Dang ghi data/readers.json (500,000 doc gia)..." << endl;
         ofstream f("data/readers.json", ios::out | ios::binary);
         f << "[\n";
         for (int i = 1; i <= TOTAL_READERS; ++i) {
-            string id = "R" + to_string(10000 + i);
+            string id = "R" + to_string(1000000 + i);
             string name = "Doc Gia " + to_string(i);
             string email = "reader" + to_string(i) + "@library.edu.vn";
             string phone = "09" + to_string(10000000 + i);
@@ -91,6 +91,7 @@ int main() {
               << "    \"email\": \"" << email << "\",\n"
               << "    \"phone\": \"" << phone << "\"\n"
               << "  }" << (i == TOTAL_READERS ? "\n" : ",\n");
+            if (i % 100000 == 0) cout << "  -> Da ghi " << i << " / " << TOTAL_READERS << " doc gia\n";
         }
         f << "]\n";
         f.close();
@@ -98,12 +99,12 @@ int main() {
 
     // 3. Generate borrow_records.json (500,000 borrow records)
     {
-        cout << "3/4. Dang ghi data/borrow_records.json (500,000 phieu muon)..." << endl;
+        cout << "3/3. Dang ghi data/borrow_records.json (500,000 phieu muon)..." << endl;
         ofstream f("data/borrow_records.json", ios::out | ios::binary);
         f << "[\n";
         for (int i = 1; i <= TOTAL_RECORDS; ++i) {
             string b_id = "BR" + to_string(1000000 + i);
-            string r_id = "R" + to_string(10000 + (i % TOTAL_READERS + 1));
+            string r_id = "R" + to_string(1000000 + (i % TOTAL_READERS + 1));
             string bk_id = "B" + to_string(1000000 + ((i * 3) % TOTAL_BOOKS + 1));
             
             int dayOffset = i % 120;
